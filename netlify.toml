@@ -1,0 +1,44 @@
+# =============================================================
+# Netlify-Konfiguration für Tschakka! / PFF32
+# =============================================================
+# Subdomain wird im Netlify-Dashboard gesetzt (Site → Domain
+# management → Site name → "tschakka"). Diese Datei steuert
+# nur Build/Deploy/Header.
+# =============================================================
+
+[build]
+  # Reines Static-Hosting, kein Build nötig.
+  publish = "."
+
+# ---------- HTML niemals langfristig cachen ----------
+# Damit App-Updates sofort beim nächsten Reload greifen.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ---------- JS/CSS: 1 Tag Cache + revalidate ----------
+# index.html lädt sie mit ?v=5-Query, also Cache-Bust per Version.
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+# ---------- Globale Security-Header ----------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"

@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local env / secrets — NIEMALS committen
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Build / temporary
+dist/
+build/
+node_modules/
+.cache/
+.tmp/
+
+# Netlify CLI Cache (falls später lokaler CLI-Use)
+.netlify/
+
+# Local Claude scratch (Launch-Config bleibt drin, weil nicht sensibel)
+# .claude/ NICHT global ignorieren, nur sensibles darin:
+.claude/settings.local.json

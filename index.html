@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tschakka! — Cyberpunk-Lerntraining für die schriftliche Pflege-Abschlussprüfung der RBB Müritz.">
+<meta name="theme-color" content="#0a0612">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230a0612'/%3E%3Ctext x='50%25' y='62%25' font-family='Orbitron,sans-serif' font-size='34' font-weight='900' text-anchor='middle' fill='%23ff7a00' style='filter:drop-shadow(0 0 4px %23ff7a00)'%3EK%3C/text%3E%3C/svg%3E">
+<title>Tschakka!</title>
+<link rel="stylesheet" href="styles.css?v=5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="grid-bg"></div>
+
+<!-- ============ LANDING / AUTH (sichtbar wenn nicht eingeloggt) ============ -->
+<section id="landing" class="landing hidden">
+  <div class="landing-card">
+    <div class="landing-logo">
+      <span class="logo-bracket neon">[</span>
+      <span class="logo-main neon">Kr<span class="neon-flicker">a</span>nke<span class="logo-num neon neon-pink">(n)</span>Schw<span class="neon-flicker-heavy">e</span>ster</span>
+      <span class="logo-bracket neon neon-pink">]</span>
+    </div>
+    <div class="landing-sub">// RBB MÜRITZ · NEURAL TRAINING</div>
+
+    <div class="landing-tabs">
+      <button class="landing-tab active" data-mode="login" type="button">▸ Anmelden</button>
+      <button class="landing-tab"        data-mode="register" type="button">+ Registrieren</button>
+    </div>
+
+    <form class="landing-form" id="login-form" autocomplete="on">
+      <label class="landing-label">Benutzername
+        <input class="landing-input" type="text" name="username" autocomplete="username" required spellcheck="false">
+      </label>
+      <label class="landing-label">Passwort
+        <input class="landing-input" type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button class="btn btn-primary landing-submit" type="submit">Einloggen ▸</button>
+    </form>
+
+    <form class="landing-form hidden" id="register-form" autocomplete="on">
+      <label class="landing-label">Initial-Passwort <span class="landing-hint">(von deinem Lehrer)</span>
+        <input class="landing-input" type="password" name="initialCode" required>
+      </label>
+      <label class="landing-label">Benutzername <span class="landing-hint">frei wählbar — keine persönlichen Daten nötig</span>
+        <input class="landing-input" type="text" name="username" autocomplete="username" required spellcheck="false" placeholder="z.B. neon-schwester-42">
+      </label>
+      <label class="landing-label">Passwort <span class="landing-hint">mind. 6 Zeichen</span>
+        <input class="landing-input" type="password" name="password" autocomplete="new-password" required>
+      </label>
+      <label class="landing-label">Passwort wiederholen
+        <input class="landing-input" type="password" name="passwordAgain" autocomplete="new-password" required>
+      </label>
+      <button class="btn btn-primary landing-submit" type="submit">Konto erstellen ▸</button>
+    </form>
+
+    <div class="landing-error hidden" id="landing-error"></div>
+    <div class="landing-note">
+      Keine Email. Keine persönlichen Daten. Nur Benutzername + Passwort.
+    </div>
+  </div>
+</section>
+
+<header class="app-header">
+  <div class="logo">
+    <span class="logo-bracket neon">[</span>
+    <span class="logo-main neon">Kr<span class="neon-flicker">a</span>nke<span class="logo-num neon neon-pink">(n)</span>Schw<span class="neon-flicker-heavy">e</span>ster</span>
+    <span class="logo-bracket neon neon-pink">]</span>
+    <span class="logo-sub">// RBB MÜRITZ · NEURAL TRAINING</span>
+  </div>
+  <div class="user-stats">
+    <div class="stat">
+      <span class="stat-label">LVL</span>
+      <span class="stat-value" id="stat-level">1</span>
+    </div>
+    <div class="stat xp-stat">
+      <span class="stat-label">XP</span>
+      <div class="xp-bar-wrapper">
+        <div class="xp-bar" id="xp-bar"></div>
+        <span class="xp-text" id="xp-text">0 / 100</span>
+      </div>
+    </div>
+    <div class="stat">
+      <span class="stat-label">STREAK</span>
+      <span class="stat-value" id="stat-streak">0 <span class="flame">🔥</span></span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">COUNTDOWN</span>
+      <span class="stat-value" id="stat-countdown">--</span>
+    </div>
+    <div class="music-ctrl" id="music-ctrl">
+      <button class="music-btn" id="music-toggle" title="Musik an/aus">♪</button>
+      <div class="music-meta">
+        <span class="music-mode" id="music-mode">DRIVE</span>
+        <input type="range" class="music-vol" id="music-vol" min="0" max="100" value="25" title="Lautstärke">
+      </div>
+    </div>
+    <div class="user-ctrl" id="user-ctrl">
+      <span class="user-name" id="user-name">—</span>
+      <button class="btn-logout" id="btn-logout" title="Abmelden" type="button">⎋ Abmelden</button>
+    </div>
+  </div>
+</header>
+
+<nav class="main-nav">
+  <button class="nav-btn active" data-view="dashboard">◉ Dashboard</button>
+  <button class="nav-btn" data-view="wochen">▦ Wochen</button>
+  <button class="nav-btn" data-view="themen">☰ Themen</button>
+  <button class="nav-btn" data-view="spiele">▶ Spiele</button>
+  <button class="nav-btn" data-view="achievements">★ Achievements</button>
+  <button class="nav-btn" data-view="stats">▲ Stats</button>
+</nav>
+
+<main id="view-container"></main>
+
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<footer class="app-footer">
+  <span>PFF32 NEURAL TRAINING v1.0</span>
+  <span>// RBB MÜRITZ</span>
+  <span>// SYSTEM ONLINE</span>
+</footer>
+
+<script src="data.js?v=5"></script>
+<script src="auth.js?v=5"></script>
+<script src="music.js?v=5"></script>
+<script src="app.js?v=5"></script>
+</body>
+</html>
