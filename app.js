@@ -1226,11 +1226,20 @@ closeModal = function() {
 });
 
 /* ===========================================================
-   AUTH-GATE + HEADER-USER-CONTROL
-   - Ohne eingeloggten User: Landing zeigen, App verbergen
-   - Mit User: Username im Header, Logout-Button verdrahten
+   AUTH-GATE + HEADER-USER-CONTROL  (Stufe B — Cloud-Auth)
+   -----------------------------------------------------------
+   Ablauf beim Boot:
+     1. Landing erstmal sichtbar (kein FOUC).
+     2. Auth.init() prüft Supabase-Session, holt Cloud-State,
+        legt ihn im localStorage ab.
+     3. Wenn User → state neu aus localStorage laden, App rendern.
+        Wenn kein User → Landing bleibt, Forms warten auf Eingabe.
+
+   Form-Handler sind async — Login/Register hashen Passwörter
+   in der Cloud, das dauert ein paar Hundert ms. Solange ist der
+   Submit-Button disabled (siehe setBusy).
    =========================================================== */
-(function wireAuth() {
+(async function wireAuth() {
   const landing = document.getElementById("landing");
   const appChrome = [
     document.querySelector("header.app-header"),
@@ -1254,6 +1263,16 @@ closeModal = function() {
     el.textContent = msg;
     el.classList.remove("hidden");
   }
+  function setBusy(form, busy) {
+    if (!form) return;
+    const btn = form.querySelector("button[type=submit]");
+    if (btn) btn.disabled = !!busy;
+    form.classList.toggle("is-busy", !!busy);
+  }
+
+  /* Bis Auth bereit ist: Landing erstmal verstecken (kein Flash). */
+  showLanding();
+  setError(null);
 
   /* Tab-Umschaltung Anmelden ↔ Registrieren */
   document.querySelectorAll(".landing-tab").forEach(tab => {
@@ -1268,9 +1287,11 @@ closeModal = function() {
   });
 
   /* Login-Formular */
-  document.getElementById("login-form").addEventListener("submit", async (e) => {
+  const loginForm = document.getElementById("login-form");
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     setError(null);
+    setBusy(loginForm, true);
     const data = new FormData(e.target);
     try {
       await Auth.login({
@@ -1280,13 +1301,16 @@ closeModal = function() {
       location.reload();
     } catch (err) {
       setError(err.message);
+      setBusy(loginForm, false);
     }
   });
 
   /* Registrier-Formular */
-  document.getElementById("register-form").addEventListener("submit", async (e) => {
+  const registerForm = document.getElementById("register-form");
+  registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     setError(null);
+    setBusy(registerForm, true);
     const data = new FormData(e.target);
     try {
       await Auth.register({
@@ -1298,26 +1322,36 @@ closeModal = function() {
       location.reload();
     } catch (err) {
       setError(err.message);
+      setBusy(registerForm, false);
     }
   });
 
   /* Logout-Button */
   const logoutBtn = document.getElementById("btn-logout");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
+    logoutBtn.addEventListener("click", async () => {
       if (!confirm("Wirklich abmelden? Dein Fortschritt bleibt natürlich gespeichert.")) return;
-      Auth.logout();
+      try { await Auth.logout(); } catch (e) { console.warn(e); }
       location.reload();
     });
   }
 
-  /* Initialzustand entscheiden */
+  /* ---------- Auth bootstrappen: Session prüfen + Cloud-State holen ---------- */
+  try {
+    if (Auth.init) await Auth.init();
+  } catch (e) {
+    console.warn("[wireAuth] Auth.init:", e);
+  }
+
   if (!Auth.currentUser()) {
     showLanding();
     return;   // App gar nicht erst booten
   }
 
-  /* Eingeloggt → Username im Header zeigen, App booten */
+  /* Eingeloggt → State aus dem (jetzt cloud-hydratisierten) Cache neu laden */
+  state = loadState();
+
+  /* Username im Header anzeigen */
   const nameEl = document.getElementById("user-name");
   if (nameEl) nameEl.textContent = Auth.displayName();
   hideLanding();
