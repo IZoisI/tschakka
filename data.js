@@ -2638,33 +2638,140 @@ const WEEKS = [
 /* ===========================================================
    ACHIEVEMENTS
    =========================================================== */
+
+/* ---------- Helpers für Feiertags-Achievements ---------- */
+
+/* Computus (anonyme Gauß'sche Methode) — Ostersonntag im gregorianischen Kalender. */
+function easterSunday(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);   // 3=März, 4=April
+  const day   = ((h + l - 7 * m + 114) % 31) + 1;
+  return { month, day };
+}
+
+/* Christi Himmelfahrt = Ostersonntag + 39 Tage (immer Donnerstag). */
+function ascensionDay(year) {
+  const e = easterSunday(year);
+  const dt = new Date(Date.UTC(year, e.month - 1, e.day + 39));
+  return { month: dt.getUTCMonth() + 1, day: dt.getUTCDate() };
+}
+
+/* Hat irgendein Eintrag in studyLog ein YYYY-05-01 mit count > 0? */
+function studiedOnLaborDay(state) {
+  const log = state.studyLog || {};
+  return Object.keys(log).some(d => /^\d{4}-05-01$/.test(d) && log[d] > 0);
+}
+
+/* Hat irgendein studyLog-Eintrag auf Christi Himmelfahrt des jeweiligen Jahres gefallen? */
+function studiedOnAscension(state) {
+  const log = state.studyLog || {};
+  for (const dateStr of Object.keys(log)) {
+    if (!log[dateStr]) continue;
+    const [y, m, d] = dateStr.split('-').map(Number);
+    if (!y || !m || !d) continue;
+    const a = ascensionDay(y);
+    if (a.month === m && a.day === d) return true;
+  }
+  return false;
+}
+
+/* ---------- SVG-Icons (für Feiertage gibt's keine passenden Emojis) ---------- */
+
+/* Roter 5-Stern — Plakette "Heldin der Arbeit". */
+const ICON_LABOR_DAY =
+  '<svg viewBox="0 0 32 32" width="1em" height="1em" style="vertical-align:-0.18em" aria-hidden="true">' +
+    '<path d="M16 2 L19.5 12 L30 12 L21.5 18.5 L24.5 28.5 L16 22.5 L7.5 28.5 L10.5 18.5 L2 12 L12.5 12 Z" ' +
+          'fill="#e63946" stroke="#ff7a00" stroke-width="0.7"/>' +
+  '</svg>';
+
+/* Goldener Bollerwagen — schlicht, ohne Flasche. */
+const ICON_ASCENSION =
+  '<svg viewBox="0 0 32 32" width="1em" height="1em" style="vertical-align:-0.18em" aria-hidden="true">' +
+    /* Wagen-Kasten */
+    '<rect x="6" y="13" width="20" height="8" fill="#f4c542" stroke="#b8860b" stroke-width="0.8"/>' +
+    /* Bretter */
+    '<line x1="11" y1="13" x2="11" y2="21" stroke="#b8860b" stroke-width="0.5"/>' +
+    '<line x1="16" y1="13" x2="16" y2="21" stroke="#b8860b" stroke-width="0.5"/>' +
+    '<line x1="21" y1="13" x2="21" y2="21" stroke="#b8860b" stroke-width="0.5"/>' +
+    /* Deichsel */
+    '<line x1="6" y1="13" x2="2" y2="8" stroke="#b8860b" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<circle cx="2" cy="7" r="1.2" fill="#f4c542" stroke="#b8860b" stroke-width="0.5"/>' +
+    /* Räder */
+    '<circle cx="10" cy="24" r="3.2" fill="#2a1a05" stroke="#f4c542" stroke-width="0.9"/>' +
+    '<circle cx="22" cy="24" r="3.2" fill="#2a1a05" stroke="#f4c542" stroke-width="0.9"/>' +
+    '<circle cx="10" cy="24" r="0.9" fill="#f4c542"/>' +
+    '<circle cx="22" cy="24" r="0.9" fill="#f4c542"/>' +
+  '</svg>';
+
 const ACHIEVEMENTS = [
+  /* ===== Bestand: Themen-Meilensteine ===== */
   { id: "first_steps",   icon: "🚀", name: "Erste Schritte",        desc: "1. Thema abgeschlossen",                  check: s => s.completed.length >= 1 },
   { id: "ten_topics",    icon: "📚", name: "Fleißig gelernt",       desc: "10 Themen abgeschlossen",                 check: s => s.completed.length >= 10 },
+  { id: "topics_25",     icon: "📘", name: "Aufgewacht",            desc: "25 Themen abgeschlossen",                 check: s => s.completed.length >= 25 },
   { id: "half_way",      icon: "⚡", name: "Halbzeit",              desc: "50 Themen abgeschlossen",                 check: s => s.completed.length >= 50 },
+  { id: "topics_75",     icon: "📗", name: "Im Flow",               desc: "75 Themen abgeschlossen",                 check: s => s.completed.length >= 75 },
   { id: "all_done",      icon: "🏆", name: "Examen-Ready",          desc: "Alle Themen abgeschlossen",               check: s => s.completed.length >= Object.keys(TOPICS).length },
+
+  /* ===== Bestand + Block A: Kategorie-Master ===== */
   { id: "anatomy_ace",   icon: "🫀", name: "Anatomie-Ass",          desc: "Alle Anatomie-Themen geschafft",          check: s => categoryComplete(s, "anatomie") },
   { id: "ethics_expert", icon: "⚖️",  name: "Ethik-Experte",         desc: "Alle Ethik-Themen geschafft",             check: s => categoryComplete(s, "ethik") },
   { id: "psych_pro",     icon: "🧠", name: "Psych-Profi",           desc: "Alle Psychiatrie-Themen geschafft",       check: s => categoryComplete(s, "psychiatrie") },
+  { id: "innere_master", icon: "💉", name: "Innere-Spezialist",     desc: "Alle Innere-Medizin-Themen geschafft",    check: s => categoryComplete(s, "innere") },
+  { id: "onko_master",   icon: "☢️",  name: "Onko-Krieger",          desc: "Alle Onkologie-Themen geschafft",         check: s => categoryComplete(s, "onko") },
+  { id: "notfall_master",icon: "🚑", name: "Notfall-Held",          desc: "Alle Notfall-Themen geschafft",           check: s => categoryComplete(s, "notfall") },
+  { id: "hygiene_master",icon: "🦠", name: "Hygiene-Wächter",       desc: "Alle Hygiene-Themen geschafft",           check: s => categoryComplete(s, "hygiene") },
+  { id: "wunde_master",  icon: "🩹", name: "Wund-Doc",              desc: "Alle Wundmanagement-Themen geschafft",    check: s => categoryComplete(s, "wunde") },
+  { id: "prozess_master",icon: "📋", name: "Prozess-Architekt",     desc: "Alle Pflegeprozess-Themen geschafft",     check: s => categoryComplete(s, "pflegeprozess") },
+  { id: "wiss_master",   icon: "📖", name: "Theoretiker",           desc: "Alle Pflegewissenschafts-Themen geschafft", check: s => categoryComplete(s, "pflegewiss") },
+  { id: "sozial_master", icon: "📜", name: "Paragraphen-Ninja",     desc: "Alle Sozialrechts-Themen geschafft",      check: s => categoryComplete(s, "sozialrecht") },
+  { id: "paed_master",   icon: "👶", name: "Päd-Profi",             desc: "Alle Pädiatrie-Themen geschafft",         check: s => categoryComplete(s, "paed") },
+  { id: "kommun_master", icon: "💬", name: "Wort-Akrobat",          desc: "Alle Kommunikations-Themen geschafft",    check: s => categoryComplete(s, "kommunikation") },
+
+  /* ===== Bestand + Block B: Streaks, Levels, Quiz, Boss, Mini-Games ===== */
   { id: "streak_3",      icon: "🔥", name: "3-Tage-Streak",         desc: "3 Tage in Folge gelernt",                 check: s => s.streak >= 3 },
   { id: "streak_7",      icon: "🔥", name: "Wochen-Streak",         desc: "7 Tage in Folge gelernt",                 check: s => s.streak >= 7 },
-  { id: "streak_30",     icon: "🌋", name: "Unaufhaltsam",          desc: "30 Tage Streak",                           check: s => s.streak >= 30 },
+  { id: "streak_14",     icon: "🔥", name: "Zwei-Wochen-Glut",      desc: "14 Tage in Folge gelernt",                check: s => s.streak >= 14 },
+  { id: "streak_30",     icon: "🌋", name: "Unaufhaltsam",          desc: "30 Tage Streak",                          check: s => s.streak >= 30 },
   { id: "quiz_king",     icon: "👑", name: "Quiz-König",            desc: "100 richtige Antworten",                  check: s => s.correctAnswers >= 100 },
-  { id: "perfect",       icon: "💯", name: "Perfektionist",         desc: "Quiz mit 100% abgeschlossen",              check: s => s.perfectQuizzes >= 1 },
-  { id: "night_owl",     icon: "🦉", name: "Nachteule",             desc: "Nach 22 Uhr gelernt",                      check: s => s.lateNight },
-  { id: "early_bird",    icon: "🌅", name: "Frühaufsteher",         desc: "Vor 7 Uhr gelernt",                        check: s => s.earlyBird },
-  { id: "weekend",       icon: "🎮", name: "Wochenendkrieger",       desc: "Am Wochenende gelernt",                    check: s => s.weekendWarrior },
-  { id: "marathon",      icon: "🏃", name: "Marathon",              desc: "10 Themen an einem Tag",                   check: s => s.maxPerDay >= 10 },
-  { id: "level_5",       icon: "⭐", name: "Level 5",                desc: "Level 5 erreicht",                         check: s => s.level >= 5 },
-  { id: "level_10",      icon: "🌟", name: "Level 10",               desc: "Level 10 erreicht",                        check: s => s.level >= 10 },
-  { id: "level_20",      icon: "✨", name: "Level 20",               desc: "Level 20 erreicht",                        check: s => s.level >= 20 },
-  { id: "boss_win",      icon: "💀", name: "Boss besiegt",           desc: "Boss-Battle gewonnen",                      check: s => s.bossWins >= 1 },
-  { id: "flashcard_fan", icon: "🗂️", name: "Karteikarten-König",   desc: "100 Karteikarten studiert",                check: s => s.flashcardsStudied >= 100 },
-  { id: "match_master",  icon: "🧩", name: "Matching-Meister",      desc: "Matching-Spiel in < 30 Sek",               check: s => s.matchBestTime && s.matchBestTime < 30 }
+  { id: "quiz_legend",   icon: "🎯", name: "Quiz-Legende",          desc: "500 richtige Antworten",                  check: s => s.correctAnswers >= 500 },
+  { id: "perfect",       icon: "💯", name: "Perfektionist",         desc: "Quiz mit 100% abgeschlossen",             check: s => s.perfectQuizzes >= 1 },
+  { id: "perfect_5",     icon: "💯", name: "Perfektion ×5",         desc: "5× Quiz mit 100%",                        check: s => s.perfectQuizzes >= 5 },
+  { id: "night_owl",     icon: "🦉", name: "Nachteule",             desc: "Nach 22 Uhr gelernt",                     check: s => s.lateNight },
+  { id: "early_bird",    icon: "🌅", name: "Frühaufsteher",         desc: "Vor 7 Uhr gelernt",                       check: s => s.earlyBird },
+  { id: "weekend",       icon: "🎮", name: "Wochenendkrieger",      desc: "Am Wochenende gelernt",                   check: s => s.weekendWarrior },
+  { id: "marathon",      icon: "🏃", name: "Marathon",              desc: "10 Themen an einem Tag",                  check: s => s.maxPerDay >= 10 },
+  { id: "level_5",       icon: "⭐", name: "Level 5",                desc: "Level 5 erreicht",                        check: s => s.level >= 5 },
+  { id: "level_10",      icon: "🌟", name: "Level 10",              desc: "Level 10 erreicht",                       check: s => s.level >= 10 },
+  { id: "level_20",      icon: "✨", name: "Level 20",              desc: "Level 20 erreicht",                       check: s => s.level >= 20 },
+  { id: "level_30",      icon: "🌠", name: "Level 30",              desc: "Level 30 erreicht",                       check: s => s.level >= 30 },
+  { id: "level_50",      icon: "💎", name: "Level 50",              desc: "Level 50 erreicht",                       check: s => s.level >= 50 },
+  { id: "boss_win",      icon: "💀", name: "Boss besiegt",          desc: "Boss-Battle gewonnen",                    check: s => s.bossWins >= 1 },
+  { id: "boss_hunter",   icon: "☠️",  name: "Boss-Hunter",           desc: "5 Boss-Battles gewonnen",                 check: s => s.bossWins >= 5 },
+  { id: "boss_legend",   icon: "👹", name: "Boss-Legende",          desc: "25 Boss-Battles gewonnen",                check: s => s.bossWins >= 25 },
+  { id: "flashcard_fan", icon: "🗂️", name: "Karteikarten-König",   desc: "100 Karteikarten studiert",               check: s => s.flashcardsStudied >= 100 },
+  { id: "flashcard_500", icon: "🗃️", name: "Karteikarten-Maniac",  desc: "500 Karteikarten studiert",               check: s => s.flashcardsStudied >= 500 },
+  { id: "match_master",  icon: "🧩", name: "Matching-Meister",      desc: "Matching-Spiel in < 30 Sek",              check: s => s.matchBestTime && s.matchBestTime < 30 },
+  { id: "match_lightning",icon: "⚡", name: "Matching-Blitz",       desc: "Matching-Spiel in < 15 Sek",              check: s => s.matchBestTime && s.matchBestTime < 15 },
+
+  /* ===== Holiday-Specials ===== */
+  { id: "labor_day",     icon: ICON_LABOR_DAY, name: "Heldin der Arbeit",   desc: "Am 1. Mai gelernt",               check: s => studiedOnLaborDay(s) },
+  { id: "ascension_day", icon: ICON_ASCENSION, name: "Goldener Bollerwagen", desc: "An Christi Himmelfahrt gelernt", check: s => studiedOnAscension(s) }
 ];
 
 function categoryComplete(state, cat) {
   const ids = Object.keys(TOPICS).filter(id => TOPICS[id].category === cat);
+  if (ids.length === 0) return false;
   return ids.every(id => state.completed.includes(id));
 }
 
