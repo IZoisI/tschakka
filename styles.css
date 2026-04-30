@@ -1696,3 +1696,59 @@ main {
     justify-content: flex-end;
   }
 }
+
+/* ===========================================================
+   WHAT'S NEW MODAL (v1.2 Update-Hinweis, einmalig)
+   =========================================================== */
+.modal-title {
+  font-family: var(--font-display);
+  color: var(--c-orange);
+  letter-spacing: 0.08em;
+  margin: 0 0 0.4rem 0;
+  font-size: 1.4rem;
+  text-shadow: 0 0 12px rgba(255, 122, 0, 0.4);
+}
+.whatsnew-sub {
+  margin: 0 0 1.5rem 0;
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+.whatsnew {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.whatsnew-item {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.08), rgba(255, 46, 146, 0.05));
+  border: 1px solid rgba(255, 122, 0, 0.4);
+  border-radius: 6px;
+  align-items: flex-start;
+}
+.whatsnew-icon {
+  font-size: 2.2rem;
+  color: var(--c-orange);
+  text-shadow: 0 0 12px var(--c-orange);
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 0.1rem;
+}
+.whatsnew-text h3 {
+  font-family: var(--font-display);
+  color: var(--c-orange);
+  margin: 0 0 0.4rem 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+.whatsnew-text p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  opacity: 0.9;
+}
+.whatsnew-text strong {
+  color: var(--c-magenta);
+  font-weight: 600;
+}

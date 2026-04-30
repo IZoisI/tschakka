@@ -1359,4 +1359,46 @@ closeModal = function() {
   /* ---------- init ---------- */
   updateHeader();
   renderView("dashboard");
+
+  /* Einmaliges "What's New"-Modal nach erstem Login auf v1.2 */
+  maybeShowWhatsNew();
 })();
+
+/* ===========================================================
+   WHAT'S NEW — einmalige Info-Anzeige nach v1.2-Update
+   =========================================================== */
+function maybeShowWhatsNew() {
+  if (state.seenWhatsNewV12) return;
+
+  const html = `
+    <h2 class="modal-title">// SYSTEM-UPDATE v1.2</h2>
+    <p class="whatsnew-sub">Während du weg warst, hat sich was getan:</p>
+
+    <div class="whatsnew">
+      <div class="whatsnew-item">
+        <div class="whatsnew-icon">☁</div>
+        <div class="whatsnew-text">
+          <h3>Cross-Device Sync aktiv</h3>
+          <p>Dein Fortschritt liegt jetzt in der <strong>Cloud</strong> — nicht mehr nur lokal. Du kannst dich auf Handy, Tablet und Laptop einloggen und überall dort weitermachen, wo du aufgehört hast. XP, Streaks und Achievements wandern automatisch mit.</p>
+        </div>
+      </div>
+
+      <div class="whatsnew-item">
+        <div class="whatsnew-icon">★</div>
+        <div class="whatsnew-text">
+          <h3>23 neue Achievements</h3>
+          <p>Es gibt jetzt <strong>45 statt 22</strong> Achievements zu freischalten: neue Kategorie-Master (Innere, Onko, Notfall, Hygiene, Wunde, Päd u.a.), höhere Streak-, Level- und Boss-Stufen — und zwei Feiertags-Specials für den <strong>1. Mai</strong> und <strong>Christi Himmelfahrt</strong>. Schau mal im Achievements-Tab vorbei.</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="whatsnew-ack" style="width:100%;margin-top:1.5rem">Verstanden ▸</button>
+  `;
+
+  openModal(html);
+  document.getElementById("whatsnew-ack")?.addEventListener("click", () => {
+    state.seenWhatsNewV12 = true;
+    saveState();
+    closeModal();
+  });
+}
