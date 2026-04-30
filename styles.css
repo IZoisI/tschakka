@@ -1752,3 +1752,57 @@ main {
   color: var(--c-magenta);
   font-weight: 600;
 }
+
+/* ===========================================================
+   LANDING NOTICE — Hinweis für Stufe-A-Schüler
+   =========================================================== */
+.landing-notice {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  margin: 0 0 1.2rem 0;
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.12), rgba(255, 46, 146, 0.06));
+  border: 1px solid rgba(255, 122, 0, 0.5);
+  border-left: 3px solid var(--c-orange);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.landing-notice-icon {
+  font-size: 1.2rem;
+  color: var(--c-orange);
+  text-shadow: 0 0 8px var(--c-orange);
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.landing-notice-text {
+  flex: 1;
+}
+.landing-notice-text strong {
+  display: block;
+  color: var(--c-orange);
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.2rem;
+}
+.landing-notice-text em {
+  font-style: normal;
+  color: var(--c-magenta);
+  font-weight: 500;
+}
+
+/* ===========================================================
+   WHAT'S-NEW — Migration-Erfolgs-Block
+   =========================================================== */
+.whatsnew-item.whatsnew-success {
+  background: linear-gradient(135deg, rgba(0, 255, 128, 0.10), rgba(255, 122, 0, 0.05));
+  border-color: rgba(0, 255, 128, 0.45);
+}
+.whatsnew-item.whatsnew-success .whatsnew-icon {
+  color: #00ff88;
+  text-shadow: 0 0 12px #00ff88;
+}
+.whatsnew-item.whatsnew-success h3 {
+  color: #00ff88;
+}

@@ -1360,21 +1360,46 @@ closeModal = function() {
   updateHeader();
   renderView("dashboard");
 
-  /* Einmaliges "What's New"-Modal nach erstem Login auf v1.2 */
-  maybeShowWhatsNew();
+  /* Migration-Bestätigung + What's-New-Modal */
+  const migratedXp = Auth.consumeMigrationFlag?.();
+  if (state.seenWhatsNewV12) {
+    // Modal schon mal gesehen → Migration als Toast bestätigen (falls relevant)
+    if (migratedXp !== null && migratedXp !== undefined) {
+      toast(
+        "✓ Fortschritt übernommen",
+        `${migratedXp} XP von deinem alten Account migriert — willkommen zurück!`,
+        "green",
+      );
+    }
+  } else {
+    // Erstes Mal v1.2 → Modal zeigen, Migration ggf. integriert
+    maybeShowWhatsNew(migratedXp);
+  }
 })();
 
 /* ===========================================================
    WHAT'S NEW — einmalige Info-Anzeige nach v1.2-Update
    =========================================================== */
-function maybeShowWhatsNew() {
+function maybeShowWhatsNew(migratedXp) {
   if (state.seenWhatsNewV12) return;
+
+  const migrationBlock = (migratedXp !== null && migratedXp !== undefined)
+    ? `
+      <div class="whatsnew-item whatsnew-success">
+        <div class="whatsnew-icon">✓</div>
+        <div class="whatsnew-text">
+          <h3>Fortschritt übernommen</h3>
+          <p>Wir haben deinen alten Lernstand auf diesem Gerät gefunden und in dein neues Cloud-Konto übertragen — <strong>${migratedXp} XP</strong>, Streaks und freigeschaltete Achievements sind alle wieder da. Willkommen zurück!</p>
+        </div>
+      </div>`
+    : "";
 
   const html = `
     <h2 class="modal-title">// SYSTEM-UPDATE v1.2</h2>
     <p class="whatsnew-sub">Während du weg warst, hat sich was getan:</p>
 
     <div class="whatsnew">
+      ${migrationBlock}
       <div class="whatsnew-item">
         <div class="whatsnew-icon">☁</div>
         <div class="whatsnew-text">

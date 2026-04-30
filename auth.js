@@ -131,7 +131,11 @@
 
   /* ---------- Migration: Stufe-A localStorage → Cloud ----------
      Beim ersten Cloud-Login eines bisher rein lokalen Schülers
-     übernehmen wir seinen Fortschritt automatisch. */
+     übernehmen wir seinen Fortschritt automatisch.
+     Wenn Migration erfolgreich war, merken wir's in `migratedFlag`,
+     damit die App eine Bestätigung anzeigen kann. */
+  let migratedFlag = null; // null = nichts migriert; Zahl = übernommene XP
+
   async function migrateLocalToCloudIfNeeded() {
     if (!cachedSession?.user || !cachedUsername) return;
 
@@ -158,10 +162,19 @@
           await pushCloudState(parsed);
           // lokalen Cache auf den User-Key konsolidieren
           localStorage.setItem(LS_STATE(cachedUsername), JSON.stringify(parsed));
+          // Erfolgs-Flag für UI: XP übernommen
+          migratedFlag = (typeof parsed.xp === "number") ? parsed.xp : 0;
           return;
         }
       } catch { /* ignore broken */ }
     }
+  }
+
+  /* One-shot: gibt zurück, ob Migration grade lief (und löscht das Flag). */
+  function consumeMigrationFlag() {
+    const v = migratedFlag;
+    migratedFlag = null;
+    return v;
   }
 
   /* ---------- Cache-Hydration: Cloud → localStorage ----------
@@ -368,5 +381,6 @@
     deleteAccount,
     validateUsername,
     validatePassword,
+    consumeMigrationFlag,
   };
 })();
