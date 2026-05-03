@@ -1360,6 +1360,11 @@ closeModal = function() {
   updateHeader();
   renderView("dashboard");
 
+  /* Hintergrundmusik erst NACH erfolgreichem Login starten.
+     Music.start() ist async und blockiert nicht — der Track
+     wird im Hintergrund geladen und blendet sanft ein. */
+  if (window.Music) Music.start();
+
   /* Migration-Bestätigung + What's-New-Modal */
   const migratedXp = Auth.consumeMigrationFlag?.();
   if (state.seenWhatsNewV12) {
