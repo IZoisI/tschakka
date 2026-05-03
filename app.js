@@ -173,7 +173,11 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
 
 /* ---------- MODAL ---------- */
 const modalOverlay = document.getElementById("modal-overlay");
-document.getElementById("modal-close").addEventListener("click", closeModal);
+/* WICHTIG: closeModal wird später noch gewrapped (Music-Mode-Reset).
+   Wir verpacken in eine Arrow-Function, damit beim Klick die AKTUELLE
+   closeModal-Variable nachgeschaut wird, nicht die ursprüngliche
+   Funktions-Referenz von vor dem Wrap. */
+document.getElementById("modal-close").addEventListener("click", () => closeModal());
 modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) closeModal(); });
 
 function openModal(html) {
@@ -497,6 +501,9 @@ function runQuiz({ title, questions, onFinish, bossMode = false }) {
       state.bossWins = (state.bossWins || 0) + 1;
       saveState();
     }
+    /* Boss-Kampf vorbei → zurück zur normalen Musik. Result-Screen
+       läuft schon mit Drive-Musik, nicht mehr mit Boss-Track. */
+    if (bossMode && window.setMusicMode) setMusicMode("drive");
     openModal(`
       <div class="quiz-result">
         <div style="font-family:var(--font-display);letter-spacing:3px;color:var(--c-text-dim);text-transform:uppercase">${bossMode ? (won ? "Boss besiegt!" : "Boss hat gewonnen") : "Quiz beendet"}</div>
@@ -511,7 +518,10 @@ function runQuiz({ title, questions, onFinish, bossMode = false }) {
     `);
     document.getElementById("q-close").addEventListener("click", closeModal);
     document.getElementById("q-retry").addEventListener("click", () => {
-      idx = 0; correct = 0; hp = bossMode ? 3 : null; render();
+      idx = 0; correct = 0; hp = bossMode ? 3 : null;
+      /* Bei "Nochmal" im Boss-Modus wieder Boss-Musik einblenden. */
+      if (bossMode && window.setMusicMode) setMusicMode("boss");
+      render();
     });
     if (bossMode && won) addXP(100, "Boss-Sieg");
     if (typeof onFinish === "function") onFinish(score, correct, total);
@@ -1370,10 +1380,25 @@ if (typeof _origStartBossBattle === "function") {
   updateHeader();
   renderView("dashboard");
 
-  /* Hintergrundmusik erst NACH erfolgreichem Login starten.
-     Music.start() ist async und blockiert nicht — der Track
-     wird im Hintergrund geladen und blendet sanft ein. */
-  if (window.Music) Music.start();
+  /* Hintergrundmusik nach erfolgreichem Login.
+     Wegen Browser-Autoplay-Policy darf der AudioContext erst
+     nach einer User-Geste laufen — direkter Music.start()-Aufruf
+     scheitert nach einem Page-Reload still (suspended state).
+     Lösung: auf den nächsten Klick/Keydown warten. */
+  if (window.Music) {
+    let _musicKicked = false;
+    const _kickMusic = () => {
+      if (_musicKicked) return;
+      _musicKicked = true;
+      Music.start();
+      document.removeEventListener("click",      _kickMusic);
+      document.removeEventListener("keydown",    _kickMusic);
+      document.removeEventListener("touchstart", _kickMusic);
+    };
+    document.addEventListener("click",      _kickMusic);
+    document.addEventListener("keydown",    _kickMusic);
+    document.addEventListener("touchstart", _kickMusic);
+  }
 
   /* Migration-Bestätigung + What's-New-Modal */
   const migratedXp = Auth.consumeMigrationFlag?.();
