@@ -1194,8 +1194,9 @@ function setMusicMode(m) {
   Music.setMode(m);
   const el = document.getElementById("music-mode");
   if (el) {
-    el.textContent = m === "focus" ? "FOCUS" : "DRIVE";
+    el.textContent = m === "focus" ? "FOCUS" : (m === "boss" ? "BOSS" : "DRIVE");
     el.classList.toggle("focus-active", m === "focus");
+    el.classList.toggle("boss-active",  m === "boss");
     el.classList.remove("off");
   }
 }
@@ -1215,7 +1216,7 @@ closeModal = function() {
 };
 
 /* Jeder Start einer Aufgabe schaltet auf Focus. */
-["startQuiz","startFlashcards","startDailyQuiz","startBossBattle",
+["startQuiz","startFlashcards","startDailyQuiz",
  "startMatchGame","openCategoryDrill","startFlashcardMarathon"].forEach(name => {
   const orig = window[name];
   if (typeof orig !== "function") return;
@@ -1224,6 +1225,15 @@ closeModal = function() {
     return orig.apply(this, args);
   };
 });
+
+/* Boss-Battle bekommt eigenen "boss"-Modus mit Boss-Track. */
+const _origStartBossBattle = window.startBossBattle;
+if (typeof _origStartBossBattle === "function") {
+  window.startBossBattle = function(...args) {
+    setMusicMode("boss");
+    return _origStartBossBattle.apply(this, args);
+  };
+}
 
 /* ===========================================================
    AUTH-GATE + HEADER-USER-CONTROL  (Stufe B — Cloud-Auth)

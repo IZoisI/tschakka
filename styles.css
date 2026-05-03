@@ -1351,6 +1351,15 @@ main {
   color: var(--c-cyan);
   text-shadow: 0 0 4px var(--c-cyan);
 }
+.music-mode.boss-active {
+  color: var(--c-red);
+  text-shadow: 0 0 6px var(--c-red), 0 0 12px var(--c-red);
+  animation: music-mode-boss-pulse 1.2s ease-in-out infinite;
+}
+@keyframes music-mode-boss-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
 .music-mode.off {
   color: var(--c-text-dim);
   text-shadow: none;

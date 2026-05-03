@@ -1,19 +1,20 @@
 /* ===========================================================
-   PFF32 // MUSIC ENGINE (Track-based, v2)
+   PFF32 // MUSIC ENGINE (Multi-Track, v3)
    -----------------------------------------------------------
-   Spielt eine M4A-Datei nahtlos im Loop.
-   Crossfade beim Loop-Wechsel über zwei AudioBufferSources.
-   Kompatible Public-API zur prozeduralen Vorgängerversion:
-     start, toggle, setMode, setEnabled, setVolume,
-     isEnabled, getVolume.
+   Spielt einen Haupt-Track im Loop, wechselt bei Boss-Battle
+   nahtlos auf einen zweiten Boss-Track. Crossfade zwischen
+   Loop-Iterationen UND zwischen den beiden Tracks.
+
    Modi:
-     - "drive": volle Lautstärke, kein Filter (Default)
-     - "focus": Lowpass-Filter (1.2 kHz) + leichter Volume-Duck
-       → simuliert das "leiser/im Hintergrund"-Gefühl, das
-         die alte Procedural-Engine durch Track-Reduktion hatte.
-   WICHTIG: Auto-Start beim ersten Klick wurde entfernt —
-   `Music.start()` wird explizit nach erfolgreichem Login
-   aus app.js aufgerufen.
+     - "drive" (default): Haupt-Track, voller Klang
+     - "focus" (Quiz/Aufgaben):    Haupt-Track + Lowpass + Duck
+     - "boss"  (Boss-Battle):      Boss-Track, voller Klang
+
+   Public API: start, toggle, setMode, setEnabled, setVolume,
+               isEnabled, getVolume.
+
+   Boss.m4a wird lazy geladen — erst wenn der erste Boss-Battle
+   startet, sonst gar nicht.
    =========================================================== */
 (() => {
   if (!(window.AudioContext || window.webkitAudioContext)) {
@@ -26,16 +27,19 @@
   }
 
   /* ---------- Konfig ---------- */
-  const TRACK_URL  = "Musik.m4a";
-  const CROSSFADE  = 4.0;        // sek Overlap beim Loop-Wechsel
-  const FADE_IN    = 0.6;        // sek erstes Einblenden nach start()
-  const MODE_FADE  = 1.2;        // sek Crossfade drive/focus
-  const FOCUS_CUT  = 1200;       // Hz Lowpass-Cutoff in "focus"
-  const DRIVE_CUT  = 22000;      // praktisch bypass
-  const FOCUS_DUCK = 0.65;       // Lautstärke-Multi in "focus"
+  const TRACKS = {
+    main: { url: "Musik.m4a" },
+    boss: { url: "Boss.m4a"  }
+  };
+  const CROSSFADE   = 4.0;       // sek Overlap beim Loop-Wechsel
+  const FADE_IN     = 0.6;       // sek erstes Einblenden nach start()
+  const MODE_FADE   = 1.5;       // sek Crossfade zwischen Modi/Tracks
+  const FOCUS_CUT   = 1200;      // Hz Lowpass-Cutoff in "focus"
+  const DRIVE_CUT   = 22000;     // praktisch bypass
+  const FOCUS_DUCK  = 0.65;      // Lautstärke-Multi in "focus"
 
-  const LS_ENABLED = "pff32_music";
-  const LS_VOLUME  = "pff32_music_vol";
+  const LS_ENABLED  = "pff32_music";
+  const LS_VOLUME   = "pff32_music_vol";
 
   let enabled = localStorage.getItem(LS_ENABLED) !== "off";
   let volume  = parseFloat(localStorage.getItem(LS_VOLUME));
@@ -43,101 +47,178 @@
 
   /* ---------- Audio-Graph ---------- */
   let ctx = null;
-  let master = null;            // Master-Volume (enabled × volume)
-  let focusFilter = null;       // Lowpass für focus-Mode
-  let focusGain = null;         // zusätzlicher Duck für focus-Mode
-  let buffer = null;            // dekodierter AudioBuffer
-  let loadingPromise = null;    // verhindert doppelten Fetch
-  let activeSources = [];       // gerade laufende Sources (für stop)
-  let nextScheduleTimer = null; // setTimeout-Handle für nächstes Loop-Segment
+  let master = null;            // Master (enabled × volume)
+  let mainModeFilter = null;    // Lowpass für "focus"-Mode (nur main-Track)
+
+  // Pro-Track-State
+  // mainPath: source → segGain → mainModeFilter → mainGain → master
+  // bossPath: source → segGain → bossGain → master
+  const state = {
+    main: { buffer: null, gainNode: null, sources: [], timer: null,
+            isPlaying: false, loadingPromise: null },
+    boss: { buffer: null, gainNode: null, sources: [], timer: null,
+            isPlaying: false, loadingPromise: null }
+  };
+
   let currentMode = "drive";
 
   /* ---------- File-Loading ---------- */
-  async function loadTrack() {
-    if (buffer) return true;
-    if (loadingPromise) return loadingPromise;
-    loadingPromise = (async () => {
+  async function loadTrack(name) {
+    const t = state[name];
+    if (t.buffer) return true;
+    if (t.loadingPromise) return t.loadingPromise;
+    t.loadingPromise = (async () => {
       try {
-        const r = await fetch(TRACK_URL);
+        const r = await fetch(TRACKS[name].url);
         if (!r.ok) throw new Error("HTTP " + r.status);
         const ab = await r.arrayBuffer();
-        buffer = await ctx.decodeAudioData(ab);
+        t.buffer = await ctx.decodeAudioData(ab);
         return true;
       } catch (e) {
-        console.warn("[Music] Track konnte nicht geladen werden:", e);
+        console.warn(`[Music] Track "${name}" konnte nicht geladen werden:`, e);
         return false;
       } finally {
-        loadingPromise = null;
+        t.loadingPromise = null;
       }
     })();
-    return loadingPromise;
+    return t.loadingPromise;
   }
 
   /* ---------- Audio-Graph init ---------- */
   function initGraph() {
     master = ctx.createGain();
     master.gain.value = enabled ? volume : 0;
+    master.connect(ctx.destination);
 
-    focusFilter = ctx.createBiquadFilter();
-    focusFilter.type = "lowpass";
-    focusFilter.frequency.value = DRIVE_CUT;
-    focusFilter.Q.value = 0.7;
+    // main-Pfad
+    mainModeFilter = ctx.createBiquadFilter();
+    mainModeFilter.type = "lowpass";
+    mainModeFilter.frequency.value = DRIVE_CUT;
+    mainModeFilter.Q.value = 0.7;
 
-    focusGain = ctx.createGain();
-    focusGain.gain.value = 1;
+    state.main.gainNode = ctx.createGain();
+    state.main.gainNode.gain.value = 1;
+    mainModeFilter.connect(state.main.gainNode).connect(master);
 
-    // Sources → focusFilter → focusGain → master → destination
-    focusFilter.connect(focusGain).connect(master).connect(ctx.destination);
+    // boss-Pfad (parallel, ohne Filter)
+    state.boss.gainNode = ctx.createGain();
+    state.boss.gainNode.gain.value = 0;
+    state.boss.gainNode.connect(master);
+  }
+
+  function destinationFor(name) {
+    return name === "main" ? mainModeFilter : state.boss.gainNode;
   }
 
   /* ---------- Loop-Scheduling mit Crossfade ----------
-     Jedes Segment ist eine Instanz des AudioBuffers, mit eigenem
-     Gain-Envelope für Fade-In/-Out. Vor Ende jedes Segments wird
-     das nächste eingeplant, sodass sich Ende und Anfang
-     CROSSFADE Sekunden überlappen → keine Loop-Naht hörbar. */
-  function scheduleSegment(startTime, isLoopContinuation) {
-    if (!buffer || !ctx) return;
-    const dur = buffer.duration;
+     Pro Track. Jedes Segment ist eine Buffer-Source mit eigenem
+     Gain-Envelope. Vor Ende jedes Segments wird das nächste
+     eingeplant, sodass sich Ende und Anfang CROSSFADE Sek
+     überlappen → keine Loop-Naht hörbar. */
+  function scheduleSegmentFor(name, startTime, isLoopContinuation) {
+    const t = state[name];
+    if (!t.buffer || !ctx) return;
+    const dur = t.buffer.duration;
     const source = ctx.createBufferSource();
-    source.buffer = buffer;
+    source.buffer = t.buffer;
 
     const segGain = ctx.createGain();
-    // Fade-In: bei Loop-Anschluss CROSSFADE-lang, beim Allerersten kürzer
     const fadeInDur = isLoopContinuation ? CROSSFADE : FADE_IN;
     segGain.gain.setValueAtTime(0, startTime);
     segGain.gain.linearRampToValueAtTime(1, startTime + fadeInDur);
-    // Halte-Phase
     const fadeOutStart = startTime + dur - CROSSFADE;
     segGain.gain.setValueAtTime(1, fadeOutStart);
-    // Fade-Out am Ende → die nächste Instanz blendet gleichzeitig ein
     segGain.gain.linearRampToValueAtTime(0, startTime + dur);
 
-    source.connect(segGain).connect(focusFilter);
+    source.connect(segGain).connect(destinationFor(name));
     source.start(startTime);
     source.stop(startTime + dur + 0.1);
-    activeSources.push(source);
+    t.sources.push(source);
     source.onended = () => {
-      activeSources = activeSources.filter(s => s !== source);
+      t.sources = t.sources.filter(s => s !== source);
     };
 
-    // Nächstes Segment einplanen: startet CROSSFADE Sekunden vor Ende des aktuellen
     const nextStart = startTime + dur - CROSSFADE;
     const delayMs = (nextStart - ctx.currentTime - 0.5) * 1000;
-    nextScheduleTimer = setTimeout(
-      () => scheduleSegment(nextStart, true),
+    t.timer = setTimeout(
+      () => {
+        if (t.isPlaying) scheduleSegmentFor(name, nextStart, true);
+      },
       Math.max(50, delayMs)
     );
   }
 
-  function stopAllSources() {
-    if (nextScheduleTimer) {
-      clearTimeout(nextScheduleTimer);
-      nextScheduleTimer = null;
+  async function playTrack(name) {
+    const t = state[name];
+    if (t.isPlaying) return;
+    const ok = await loadTrack(name);
+    if (!ok) return;
+    if (t.isPlaying) return; // Race-Schutz: zweiter playTrack während load
+    t.isPlaying = true;
+    scheduleSegmentFor(name, ctx.currentTime + 0.1, false);
+  }
+
+  function stopTrack(name) {
+    const t = state[name];
+    t.isPlaying = false;
+    if (t.timer) {
+      clearTimeout(t.timer);
+      t.timer = null;
     }
-    for (const s of activeSources) {
+    for (const s of t.sources) {
       try { s.stop(); } catch {}
     }
-    activeSources = [];
+    t.sources = [];
+  }
+
+  /* ---------- Mode-Crossfade ---------- */
+  function setMode(mode) {
+    if (mode === currentMode) return;
+    if (!ctx) {
+      currentMode = mode;
+      return;
+    }
+    const t = ctx.currentTime;
+    const wasBoss = currentMode === "boss";
+    const goingBoss = mode === "boss";
+
+    // 1. Boss-Track ein-/ausblenden
+    if (goingBoss && !wasBoss) {
+      // Boss laden + abspielen, parallel zu main
+      playTrack("boss"); // async, läuft im Hintergrund
+      const g = state.boss.gainNode.gain;
+      g.cancelScheduledValues(t);
+      g.setValueAtTime(g.value, t);
+      g.linearRampToValueAtTime(1, t + MODE_FADE);
+    }
+    if (wasBoss && !goingBoss) {
+      // Boss ausblenden, dann anhalten
+      const g = state.boss.gainNode.gain;
+      g.cancelScheduledValues(t);
+      g.setValueAtTime(g.value, t);
+      g.linearRampToValueAtTime(0, t + MODE_FADE);
+      setTimeout(() => stopTrack("boss"), (MODE_FADE + 0.3) * 1000);
+    }
+
+    // 2. Main-Gain anpassen (drive=1, focus=duck, boss=0)
+    let mainGainTarget;
+    if (mode === "drive")      mainGainTarget = 1;
+    else if (mode === "focus") mainGainTarget = FOCUS_DUCK;
+    else /* boss */            mainGainTarget = 0;
+
+    const mg = state.main.gainNode.gain;
+    mg.cancelScheduledValues(t);
+    mg.setValueAtTime(mg.value, t);
+    mg.linearRampToValueAtTime(mainGainTarget, t + MODE_FADE);
+
+    // 3. Lowpass-Filter — nur in focus aktiv (drive/boss = bypass)
+    const cutTarget = mode === "focus" ? FOCUS_CUT : DRIVE_CUT;
+    const cf = mainModeFilter.frequency;
+    cf.cancelScheduledValues(t);
+    cf.setValueAtTime(cf.value, t);
+    cf.exponentialRampToValueAtTime(cutTarget, t + MODE_FADE);
+
+    currentMode = mode;
   }
 
   /* ---------- Public API ---------- */
@@ -150,10 +231,9 @@
     if (ctx.state === "suspended") {
       try { await ctx.resume(); } catch {}
     }
-    const ok = await loadTrack();
-    if (!ok) return;
-    if (activeSources.length > 0) return; // läuft schon
-    scheduleSegment(ctx.currentTime + 0.1, false);
+    if (!state.main.isPlaying) {
+      await playTrack("main");
+    }
   }
 
   function setEnabled(on) {
@@ -169,10 +249,7 @@
     master.gain.linearRampToValueAtTime(enabled ? volume : 0, t + 0.5);
     if (enabled) {
       if (ctx.state === "suspended") ctx.resume();
-      if (activeSources.length === 0) start();
-    } else {
-      // soft mute via master; sources weiter scheduled lassen,
-      // damit nach Re-Enable nahtlos weitergespielt wird
+      if (!state.main.isPlaying) start();
     }
   }
 
@@ -190,23 +267,6 @@
       master.gain.setValueAtTime(master.gain.value, t);
       master.gain.linearRampToValueAtTime(volume, t + 0.2);
     }
-  }
-
-  function setMode(mode) {
-    if (!ctx || mode === currentMode) return;
-    currentMode = mode;
-    const t = ctx.currentTime;
-
-    const cutTarget  = mode === "focus" ? FOCUS_CUT  : DRIVE_CUT;
-    const duckTarget = mode === "focus" ? FOCUS_DUCK : 1;
-
-    focusFilter.frequency.cancelScheduledValues(t);
-    focusFilter.frequency.setValueAtTime(focusFilter.frequency.value, t);
-    focusFilter.frequency.exponentialRampToValueAtTime(cutTarget, t + MODE_FADE);
-
-    focusGain.gain.cancelScheduledValues(t);
-    focusGain.gain.setValueAtTime(focusGain.gain.value, t);
-    focusGain.gain.linearRampToValueAtTime(duckTarget, t + MODE_FADE);
   }
 
   window.Music = {
