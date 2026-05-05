@@ -84,6 +84,114 @@
     return t.loadingPromise;
   }
 
+  /* ---------- AudioContext sicher anlegen ----------
+     Wird sowohl von Music.start() als auch von SFX-Funktionen
+     aufgerufen. Idempotent.
+     Wichtig: Wenn ein Mode (z.B. "boss") bereits VOR der Ctx-
+     Erstellung gesetzt wurde, wenden wir ihn jetzt an —
+     sonst läuft die Musik im Default-Mode. */
+  function ensureCtx() {
+    const wasNull = !ctx;
+    if (!ctx) {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      initGraph();
+    }
+    if (ctx.state === "suspended") {
+      try { ctx.resume(); } catch {}
+    }
+    if (wasNull && currentMode !== "drive") {
+      // Mode wurde aufgezeichnet bevor ctx existierte → jetzt anwenden
+      const recorded = currentMode;
+      currentMode = "_pending";  // sentinel, damit setMode nicht früh aussteigt
+      setMode(recorded);
+    }
+    return ctx;
+  }
+
+  /* ---------- SFX: prozedural generiert ----------
+     Footsteps und Türknarzen für Boss-Cinematic.
+     Bypassen den Music-Master, sind also auch hörbar wenn
+     Musik ausgeschaltet ist. */
+  function playFootstep(when) {
+    const c = ensureCtx();
+    const t = (typeof when === "number") ? when : c.currentTime;
+    const dur = 0.09;
+    const sr = c.sampleRate;
+    const buf = c.createBuffer(1, sr * dur | 0, sr);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) {
+      // Noise mit kurzer exp-decay-Hülle
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+    }
+    const src = c.createBufferSource(); src.buffer = buf;
+    const bp = c.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 350 + Math.random() * 250;  // pro Schritt anders
+    bp.Q.value = 1.6;
+    const lp = c.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 2200;
+    const g = c.createGain();
+    g.gain.value = 0.32;
+    src.connect(bp).connect(lp).connect(g).connect(c.destination);
+    src.start(t);
+    src.stop(t + dur + 0.02);
+  }
+
+  function playDoorCreak(when) {
+    const c = ensureCtx();
+    const t = (typeof when === "number") ? when : c.currentTime;
+    const dur = 1.6;
+
+    // Sägezahn als Holz-Knarz-Grund + Vibrato via LFO
+    const o = c.createOscillator();
+    o.type = "sawtooth";
+    o.frequency.value = 135;
+
+    const lfo = c.createOscillator();
+    lfo.frequency.value = 6.2;
+    const lfoGain = c.createGain();
+    lfoGain.gain.value = 11;          // ±11 Hz vibrato
+    lfo.connect(lfoGain).connect(o.frequency);
+
+    // Filter-Sweep: 900 → 280 Hz (klingt nach "öffnen / schließen")
+    const filt = c.createBiquadFilter();
+    filt.type = "lowpass";
+    filt.Q.value = 6;
+    filt.frequency.setValueAtTime(900, t);
+    filt.frequency.exponentialRampToValueAtTime(280, t + dur);
+
+    // Etwas Noise drüber für Holz-Textur
+    const sr = c.sampleRate;
+    const noiseBuf = c.createBuffer(1, sr * dur | 0, sr);
+    const nd = noiseBuf.getChannelData(0);
+    for (let i = 0; i < nd.length; i++) {
+      const phase = i / nd.length;
+      // sich verstärkende Noise zur Mitte hin, dann abklingend
+      const env = Math.sin(phase * Math.PI) * 0.18;
+      nd[i] = (Math.random() * 2 - 1) * env;
+    }
+    const noise = c.createBufferSource(); noise.buffer = noiseBuf;
+    const noiseHP = c.createBiquadFilter();
+    noiseHP.type = "highpass";
+    noiseHP.frequency.value = 600;
+
+    // Gemeinsame Hüllkurve
+    const g = c.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.18, t + 0.08);
+    g.gain.setValueAtTime(0.18, t + dur - 0.4);
+    g.gain.linearRampToValueAtTime(0, t + dur);
+
+    o.connect(filt);
+    noise.connect(noiseHP).connect(filt);
+    filt.connect(g).connect(c.destination);
+
+    o.start(t); o.stop(t + dur + 0.05);
+    lfo.start(t); lfo.stop(t + dur + 0.05);
+    noise.start(t); noise.stop(t + dur + 0.05);
+  }
+
   /* ---------- Audio-Graph init ---------- */
   function initGraph() {
     master = ctx.createGain();
@@ -224,13 +332,7 @@
   /* ---------- Public API ---------- */
   async function start() {
     if (!enabled) return;
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)();
-      initGraph();
-    }
-    if (ctx.state === "suspended") {
-      try { await ctx.resume(); } catch {}
-    }
+    ensureCtx();
     if (!state.main.isPlaying) {
       await playTrack("main");
     }
@@ -273,5 +375,6 @@
     start, toggle, setMode, setEnabled, setVolume,
     isEnabled: () => enabled,
     getVolume: () => volume,
+    playFootstep, playDoorCreak,
   };
 })();

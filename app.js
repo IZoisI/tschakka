@@ -181,6 +181,9 @@ document.getElementById("modal-close").addEventListener("click", () => closeModa
 modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) closeModal(); });
 
 function openModal(html) {
+  // Modal-Variant-Klassen (z.B. boss-cinematic) zurücksetzen,
+  // damit jedes neue Modal mit cleanem State startet
+  document.getElementById("modal").className = "modal";
   document.getElementById("modal-content").innerHTML = html;
   modalOverlay.classList.remove("hidden");
 }
@@ -641,29 +644,339 @@ function startDailyQuiz() {
   });
 }
 
-function startBossBattle() {
-  // 10 harte Fragen aus nur den bereits gelernten Themen (oder aus allen)
+/* ============================================================
+   BOSS BATTLE — Cinematic mit 25 Fragen, 3 Leben, Boss-HP,
+   getipptem Dialog und sequenzierten Bild-Crossfades.
+   Boss-Name "3,1415" in roter Schrift.
+   ============================================================ */
+async function startBossBattle() {
+  // 1. Voraussetzung: ein paar Themen müssen abgeschlossen sein
+  if (state.completed.length < 3) {
+    toast("Zu früh", "Schließe erst mindestens 3 Themen ab, bevor du gegen 3,1415 antrittst.", "");
+    return;
+  }
+
+  // 2. Frage-Pool aus den abgeschlossenen Themen + Backup
   const doneTopics = state.completed.length ? state.completed : Object.keys(TOPICS);
   const pool = [];
   doneTopics.forEach(id => {
     const t = TOPICS[id];
     if (t && t.questions) t.questions.forEach(q => pool.push({ ...q, _topic: id }));
   });
-  if (pool.length < 5) {
-    toast("Zu früh", "Schließe erst ein paar Themen ab, bevor du gegen den Boss antrittst.", "");
+  if (pool.length < 25) {
+    // Fallback: nimm aus dem ganzen TOPICS-Set
+    Object.keys(TOPICS).forEach(id => {
+      if (!doneTopics.includes(id) && pool.length < 50) {
+        const t = TOPICS[id];
+        if (t && t.questions) t.questions.forEach(q => pool.push({ ...q, _topic: id }));
+      }
+    });
+  }
+  if (pool.length < 25) {
+    toast("Hmmm", "Es sind aktuell zu wenig Quiz-Fragen verfügbar.", "");
     return;
   }
+  // Fisher-Yates shuffle, dann 25 nehmen
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  const picked = pool.slice(0, Math.min(10, pool.length));
-  runQuiz({
-    title: "Boss Battle",
-    questions: picked,
-    bossMode: true,
-    onFinish: () => checkAchievements()
-  });
+  const questions = pool.slice(0, 25);
+
+  // 3. Cinematic-Modal öffnen
+  openModal(`
+    <div class="boss-cinematic-header">
+      <div class="boss-name-pill">3,1415</div>
+      <div class="boss-hp-section">
+        <span class="boss-hp-label">BOSS</span>
+        <div class="boss-hp-bar"><div class="boss-hp-fill" id="boss-hp-fill" style="width: 100%"></div></div>
+      </div>
+      <div class="boss-lives" id="boss-lives">❤❤❤</div>
+    </div>
+    <div class="boss-cinematic-body">
+      <div class="boss-image-frame" id="boss-image-frame"></div>
+      <div class="boss-chat-panel" id="boss-chat-panel"></div>
+    </div>
+    <div class="boss-quiz-area" id="boss-quiz-area" style="display:none"></div>
+  `);
+  document.getElementById("modal").classList.add("boss-cinematic");
+
+  // Bilder vorladen (parallel, asynchron) — verhindert Lade-Glitches
+  ["ganz_ernst","nase","ernst","schmunzeln","wow","trinken","saja","stolz","ciao"]
+    .forEach(n => { const i = new Image(); i.src = `assets/${n}.png`; });
+
+  // Audio-Engine warm machen, damit SFX später sofort spielen
+  if (window.Music && Music.start) Music.start();
+
+  /* ---------- State ---------- */
+  let lives = 3;
+  let correct = 0;
+  let wrongAnswers = 0;
+  let bossHP = 100;
+  const total = questions.length;
+
+  /* ---------- Helpers ---------- */
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const isOpen = () => document.getElementById("boss-image-frame") !== null;
+
+  function setBossImage(name) {
+    return new Promise(resolve => {
+      const frame = document.getElementById("boss-image-frame");
+      if (!frame) { resolve(); return; }
+      const img = new Image();
+      const finalize = () => {
+        if (!document.getElementById("boss-image-frame")) { resolve(); return; }
+        const layer = document.createElement("div");
+        layer.className = "boss-image-layer";
+        layer.appendChild(img);
+        frame.appendChild(layer);
+        requestAnimationFrame(() => {
+          frame.querySelectorAll(".boss-image-layer").forEach(l => {
+            if (l !== layer) l.classList.remove("active");
+          });
+          layer.classList.add("active");
+          resolve();
+          setTimeout(() => {
+            const f = document.getElementById("boss-image-frame");
+            if (f) f.querySelectorAll(".boss-image-layer:not(.active)").forEach(l => l.remove());
+          }, 900);
+        });
+      };
+      if (img.complete && img.naturalWidth) finalize();
+      else { img.onload = finalize; img.onerror = () => resolve(); }
+      img.src = `assets/${name}.png`;
+    });
+  }
+
+  async function addBossMessage(text, speed = 28) {
+    if (!isOpen()) return;
+    const panel = document.getElementById("boss-chat-panel");
+    if (!panel) return;
+    const msg = document.createElement("div");
+    msg.className = "boss-chat-msg";
+    msg.innerHTML = '<div class="boss-chat-name">3,1415</div><div class="boss-chat-text typing"></div>';
+    panel.appendChild(msg);
+    panel.scrollTop = panel.scrollHeight;
+    const textEl = msg.querySelector(".boss-chat-text");
+    let skip = false;
+    const skipHandler = () => { skip = true; };
+    panel.addEventListener("click", skipHandler, { once: true });
+    for (let i = 0; i < text.length; i++) {
+      if (!isOpen()) return;
+      if (skip) {
+        textEl.textContent = text;
+        panel.scrollTop = panel.scrollHeight;
+        break;
+      }
+      textEl.textContent += text[i];
+      panel.scrollTop = panel.scrollHeight;
+      const ch = text[i];
+      let delay = speed;
+      if (ch === '.' || ch === '!' || ch === '?') delay = 240;
+      else if (ch === ',') delay = 110;
+      else if (ch === '…') delay = 380;
+      await sleep(delay);
+    }
+    if (textEl) textEl.classList.remove("typing");
+  }
+
+  function updateBossHP(percent) {
+    const fill = document.getElementById("boss-hp-fill");
+    if (fill) fill.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+  }
+  function updateLives() {
+    const el = document.getElementById("boss-lives");
+    if (el) el.textContent = "❤".repeat(lives) + "🖤".repeat(3 - lives);
+  }
+
+  function askBossQuestion(q, num) {
+    return new Promise(resolve => {
+      const area = document.getElementById("boss-quiz-area");
+      if (!area) { resolve({ correct: false, aborted: true }); return; }
+
+      // Letzte 5 Fragen: 10 Sek; sonst 15 Sek
+      const timeLimit = num > 20 ? 10 : 15;
+      let timeLeft = timeLimit;
+      let answered = false;
+      let timerInterval = null;
+
+      area.style.display = "block";
+      area.innerHTML = `
+        <div class="boss-quiz-progress">
+          <span>Frage ${num} / ${total}</span>
+          <span class="boss-quiz-timer" id="boss-quiz-timer">⏱ ${timeLimit}s</span>
+          <span>${correct} richtig &middot; ${wrongAnswers} falsch</span>
+        </div>
+        <div class="boss-quiz-question">${q.q}</div>
+        <div class="boss-quiz-answers" id="boss-answers">
+          ${q.a.map((ans, i) => `<button class="answer-btn" data-i="${i}">${String.fromCharCode(65 + i)}) ${ans}</button>`).join("")}
+        </div>
+        <div class="boss-quiz-next" id="boss-next-slot"></div>
+      `;
+      area.scrollTop = 0;
+
+      function finalizeAnswer(chosenIdx, timedOut) {
+        if (answered) return;
+        answered = true;
+        if (timerInterval) clearInterval(timerInterval);
+        const all = document.querySelectorAll("#boss-answers .answer-btn");
+        all.forEach(b => b.disabled = true);
+        all[q.correct].classList.add("correct");
+        const isCorrect = !timedOut && chosenIdx === q.correct;
+        if (!isCorrect && chosenIdx !== null && chosenIdx !== undefined && all[chosenIdx]) {
+          all[chosenIdx].classList.add("wrong");
+        }
+        if (isCorrect) {
+          state.correctAnswers = (state.correctAnswers || 0) + 1;
+          saveState();
+        }
+        const nextSlot = document.getElementById("boss-next-slot");
+        if (nextSlot) {
+          const timeoutMsg = timedOut
+            ? '<div style="color:var(--c-red);font-weight:bold;margin-bottom:.6rem;font-family:var(--font-mono);letter-spacing:1px">⏱ ZEIT ABGELAUFEN</div>'
+            : '';
+          nextSlot.innerHTML = timeoutMsg +
+            '<button class="btn btn-primary" id="boss-next-btn">Weiter ▸</button>';
+          document.getElementById("boss-next-btn").addEventListener("click", () => {
+            resolve({ correct: isCorrect, timedOut });
+          });
+        } else {
+          resolve({ correct: isCorrect, timedOut });
+        }
+      }
+
+      // Countdown-Timer
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        const t = document.getElementById("boss-quiz-timer");
+        if (t) {
+          t.textContent = `⏱ ${timeLeft}s`;
+          if (timeLeft <= 5) t.classList.add("timer-warning");
+        }
+        if (timeLeft <= 0) {
+          finalizeAnswer(null, true);
+        }
+      }, 1000);
+
+      document.querySelectorAll("#boss-answers .answer-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          finalizeAnswer(parseInt(btn.dataset.i), false);
+        });
+      });
+    });
+  }
+
+  function hideQuizArea() {
+    const a = document.getElementById("boss-quiz-area");
+    if (a) a.style.display = "none";
+  }
+
+  function showCloseButtons() {
+    const a = document.getElementById("boss-quiz-area");
+    if (!a) return;
+    a.style.display = "block";
+    a.innerHTML = '<div style="display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap">' +
+      '<button class="btn btn-primary" id="boss-out-close">Schließen</button>' +
+      '<button class="btn btn-magenta" id="boss-out-retry">Nochmal kämpfen</button>' +
+    '</div>';
+    document.getElementById("boss-out-close").addEventListener("click", () => closeModal());
+    document.getElementById("boss-out-retry").addEventListener("click", () => {
+      closeModal();
+      setTimeout(() => startBossBattle(), 200);
+    });
+  }
+
+  /* ============== CINEMATIC INTRO ============== */
+  /* Boss-Musik spielt schon (über setMusicMode-Wrapper).
+     Wir warten 2.5 Sek, damit der Track sich aufbaut, bevor der
+     Boss erscheint. Tension-Builder ohne Sound-Effekte. */
+  await sleep(2500);
+  if (!isOpen()) return;
+
+  // Boss tritt auf
+  await setBossImage("ganz_ernst");
+  await addBossMessage("Guten Tag... Sie wollen geprüft werden?");
+  await sleep(1300);
+  if (!isOpen()) return;
+
+  await setBossImage("nase");
+  await addBossMessage("Was rieche ich denn hier? Ist das Angst?");
+  await sleep(1300);
+  if (!isOpen()) return;
+
+  await setBossImage("ernst");
+  await addBossMessage("Sie haben doch immer aufgepasst bei mir...");
+  await sleep(1500);
+  if (!isOpen()) return;
+
+  await setBossImage("schmunzeln");
+  await addBossMessage("...dann sollte das hier doch kein Problem sein.");
+  await sleep(1500);
+  if (!isOpen()) return;
+
+  /* ============== QUIZ ============== */
+  for (let qi = 0; qi < total; qi++) {
+    if (!isOpen()) return;
+    const r = await askBossQuestion(questions[qi], qi + 1);
+    if (r.aborted) return;
+    if (r.correct) {
+      correct++;
+      bossHP = 100 - (correct * (100 / total));
+      updateBossHP(bossHP);
+    } else {
+      wrongAnswers++;
+      lives--;
+      updateLives();
+      if (lives <= 0) break;
+    }
+
+    // Mid-Quiz Interludes
+    if (qi === 4 && lives > 0) {
+      await addBossMessage("Tja ja, manche Menschen möchte man vor dem Ertrinken retten — aber sie zappeln so sehr, dass sie einen mit runter ziehen.");
+      await sleep(2000);
+    }
+    if (qi === 19 && lives > 0) {
+      await setBossImage("wow");
+      await addBossMessage("Sie sind ein eigenständig denkendes Individuum… offensichtlich.");
+      await sleep(1500);
+      if (!isOpen()) return;
+      await setBossImage("trinken");
+      await addBossMessage("Lassen Sie mich etwas Kraft tanken — und dann legen wir mal eine Schippe drauf!");
+      await sleep(1700);
+      if (!isOpen()) return;
+      await setBossImage("saja");
+    }
+  }
+
+  hideQuizArea();
+  if (!isOpen()) return;
+
+  /* ============== OUTRO ============== */
+  if (lives <= 0) {
+    // Boss hat gewonnen — Spieler hatte 3 falsche Antworten
+    await setBossImage("ganz_ernst");
+    await addBossMessage("Das war nichts. Bereiten Sie sich besser vor — und versuchen Sie's nochmal.");
+    checkAchievements();
+  } else if (correct === total) {
+    // Perfekter Sieg — Win-Sequence
+    await setBossImage("stolz");
+    await addBossMessage("Ich hab doch gewusst, dass Sie was drauf haben — ich bin stolz auf Sie!");
+    await sleep(4000);
+    if (!isOpen()) return;
+    await setBossImage("ciao");
+    await addBossMessage("Ziehen Sie durch, Sie schaffen das!");
+    state.bossWins = (state.bossWins || 0) + 1;
+    saveState();
+    addXP(250, "Boss-Sieg (perfekt)");
+    checkAchievements();
+  } else {
+    // Durchgekommen, aber nicht perfekt
+    await setBossImage("ernst");
+    await addBossMessage(`Knapp daneben — ${correct} von ${total} richtig. Sie haben Lücken. Probieren Sie's nochmal.`);
+    checkAchievements();
+  }
+
+  showCloseButtons();
 }
 
 function setExamDate() {

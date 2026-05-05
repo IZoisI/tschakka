@@ -1815,3 +1815,291 @@ main {
 .whatsnew-item.whatsnew-success h3 {
   color: #00ff88;
 }
+
+/* ===========================================================
+   BOSS CINEMATIC — grosses Modal, Boss-Bild, Chat, HP-Bar
+   =========================================================== */
+.modal.boss-cinematic {
+  max-width: 1200px;
+  width: 96vw;
+  max-height: 92vh;
+  height: 92vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: linear-gradient(135deg, #18030c, #0d0410);
+  border: 2px solid var(--c-red);
+  box-shadow: 0 0 40px rgba(255, 51, 85, 0.4),
+              inset 0 0 60px rgba(255, 51, 85, 0.05);
+}
+
+.boss-cinematic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1.4rem;
+  background: linear-gradient(180deg, rgba(255, 51, 85, 0.15), transparent);
+  border-bottom: 1px solid rgba(255, 51, 85, 0.4);
+}
+
+.boss-name-pill {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--c-red);
+  text-shadow: 0 0 12px var(--c-red), 0 0 24px rgba(255, 51, 85, 0.6);
+  letter-spacing: 3px;
+  font-style: italic;
+}
+
+.boss-hp-section {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1;
+  max-width: 380px;
+}
+.boss-hp-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--c-red);
+  letter-spacing: 2px;
+}
+.boss-hp-bar {
+  flex: 1;
+  height: 18px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--c-red);
+  position: relative;
+  overflow: hidden;
+}
+.boss-hp-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #aa1133, var(--c-red), #ff5577);
+  box-shadow: 0 0 10px var(--c-red);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.boss-lives {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--c-red);
+  letter-spacing: 2px;
+  min-width: 60px;
+  text-align: right;
+}
+
+.boss-cinematic-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(280px, 42%) 1fr;
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Boss-Bild-Bereich */
+.boss-image-frame {
+  position: relative;
+  background: radial-gradient(ellipse at center, rgba(255, 51, 85, 0.08), transparent 70%);
+  border-right: 1px solid rgba(255, 51, 85, 0.25);
+  overflow: hidden;
+}
+.boss-image-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+.boss-image-layer.active {
+  opacity: 1;
+}
+.boss-image-layer img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(255, 51, 85, 0.4));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Chat-Panel */
+.boss-chat-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-red) transparent;
+}
+.boss-chat-panel::-webkit-scrollbar { width: 6px; }
+.boss-chat-panel::-webkit-scrollbar-thumb { background: var(--c-red); }
+
+.boss-chat-msg {
+  margin-bottom: 1rem;
+  animation: boss-msg-in 0.3s ease-out;
+}
+@keyframes boss-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.boss-chat-name {
+  font-family: var(--font-display);
+  color: var(--c-red);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  text-shadow: 0 0 8px var(--c-red);
+  margin-bottom: 0.25rem;
+}
+
+.boss-chat-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--c-text);
+  padding: 0.7rem 0.95rem;
+  background: rgba(255, 51, 85, 0.08);
+  border-left: 3px solid var(--c-red);
+  border-radius: 2px;
+  min-height: 1.6em;
+  position: relative;
+}
+
+.boss-chat-text.typing::after {
+  content: '▮';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--c-red);
+  animation: boss-cursor 0.7s steps(2) infinite;
+}
+@keyframes boss-cursor {
+  50% { opacity: 0; }
+}
+
+/* Quiz-Bereich (unten im Modal, nur waehrend Battle) */
+.boss-quiz-area {
+  border-top: 1px solid rgba(255, 51, 85, 0.4);
+  padding: 1rem 1.4rem 1.2rem;
+  background: rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  max-height: 38%;
+  overflow-y: auto;
+}
+.boss-quiz-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-text-dim);
+  letter-spacing: 1px;
+}
+.boss-quiz-question {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--c-text);
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.5px;
+  line-height: 1.35;
+}
+.boss-quiz-answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.boss-quiz-answers .answer-btn {
+  background: rgba(255, 51, 85, 0.06);
+  border: 1px solid rgba(255, 51, 85, 0.4);
+  color: var(--c-text);
+  padding: 0.7rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  letter-spacing: 0.3px;
+}
+.boss-quiz-answers .answer-btn:hover:not(:disabled) {
+  background: rgba(255, 51, 85, 0.18);
+  border-color: var(--c-red);
+}
+.boss-quiz-answers .answer-btn.correct {
+  background: rgba(0, 255, 136, 0.18);
+  border-color: var(--c-green);
+  color: var(--c-green);
+}
+.boss-quiz-answers .answer-btn.wrong {
+  background: rgba(255, 51, 85, 0.25);
+  border-color: var(--c-red);
+  color: var(--c-red);
+}
+.boss-quiz-answers .answer-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* "Weiter"-Button-Slot unter der Frage */
+.boss-quiz-next {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Mobile-Anpassungen */
+@media (max-width: 768px) {
+  .modal.boss-cinematic {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+  }
+  .boss-cinematic-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 35% 1fr;
+  }
+  .boss-image-frame {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 51, 85, 0.25);
+  }
+  .boss-quiz-answers {
+    grid-template-columns: 1fr;
+  }
+  .boss-name-pill { font-size: 1.2rem; }
+  .boss-hp-section { max-width: 200px; }
+  .boss-quiz-area { max-height: 50%; }
+}
+
+/* Boss-Quiz-Timer */
+.boss-quiz-timer {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  color: var(--c-cyan);
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--c-cyan);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--c-cyan);
+  background: rgba(0, 240, 255, 0.08);
+}
+.boss-quiz-timer.timer-warning {
+  color: var(--c-red);
+  border-color: var(--c-red);
+  background: rgba(255, 51, 85, 0.15);
+  text-shadow: 0 0 8px var(--c-red);
+  animation: timer-pulse 0.5s ease-in-out infinite;
+}
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.06); }
+}
