@@ -684,14 +684,19 @@ async function startBossBattle() {
   const questions = pool.slice(0, 25);
 
   // 3. Cinematic-Modal öffnen
+  const playerName = (window.Auth && Auth.displayName && Auth.displayName()) || "—";
   openModal(`
     <div class="boss-cinematic-header">
-      <div class="boss-name-pill">3,1415</div>
-      <div class="boss-hp-section">
-        <span class="boss-hp-label">BOSS</span>
-        <div class="boss-hp-bar"><div class="boss-hp-fill" id="boss-hp-fill" style="width: 100%"></div></div>
+      <div class="boss-villain-section">
+        <div class="boss-name-pill">3,1415</div>
+        <div class="boss-hp-section">
+          <div class="boss-hp-bar"><div class="boss-hp-fill" id="boss-hp-fill" style="width: 100%"></div></div>
+        </div>
       </div>
-      <div class="boss-lives" id="boss-lives">❤❤❤</div>
+      <div class="boss-player-section">
+        <div class="boss-lives" id="boss-lives"></div>
+        <div class="boss-player-name">${playerName}</div>
+      </div>
     </div>
     <div class="boss-cinematic-body">
       <div class="boss-image-frame" id="boss-image-frame"></div>
@@ -786,8 +791,15 @@ async function startBossBattle() {
   }
   function updateLives() {
     const el = document.getElementById("boss-lives");
-    if (el) el.textContent = "❤".repeat(lives) + "🖤".repeat(3 - lives);
+    if (!el) return;
+    const hearts = [];
+    for (let i = 0; i < 3; i++) {
+      hearts.push(`<span class="life ${i < lives ? 'full' : 'empty'}">${i < lives ? '♥' : '♡'}</span>`);
+    }
+    el.innerHTML = hearts.join('');
   }
+  // Initial render
+  updateLives();
 
   function askBossQuestion(q, num) {
     return new Promise(resolve => {
@@ -837,8 +849,13 @@ async function startBossBattle() {
             : '';
           nextSlot.innerHTML = timeoutMsg +
             '<button class="btn btn-primary" id="boss-next-btn">Weiter ▸</button>';
-          document.getElementById("boss-next-btn").addEventListener("click", () => {
+          const nextBtn = document.getElementById("boss-next-btn");
+          nextBtn.addEventListener("click", () => {
             resolve({ correct: isCorrect, timedOut });
+          });
+          // Sicherstellen, dass der Button im Viewport ist (Modal-Scroll)
+          requestAnimationFrame(() => {
+            try { nextBtn.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch {}
           });
         } else {
           resolve({ correct: isCorrect, timedOut });

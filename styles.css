@@ -1822,8 +1822,11 @@ main {
 .modal.boss-cinematic {
   max-width: 1200px;
   width: 96vw;
-  max-height: 92vh;
-  height: 92vh;
+  /* min() sorgt dafür, dass das Modal NIE über die verfügbare
+     Höhe (Viewport minus Overlay-Padding 4rem) hinausragt —
+     sonst werden Bottom-Inhalte abgeschnitten. */
+  max-height: min(92vh, calc(100vh - 4rem));
+  height: min(92vh, calc(100vh - 4rem));
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -1838,10 +1841,28 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 1.4rem;
+  gap: 1.5rem;
+  padding: 0.9rem 1.4rem;
   background: linear-gradient(180deg, rgba(255, 51, 85, 0.15), transparent);
   border-bottom: 1px solid rgba(255, 51, 85, 0.4);
+  flex-wrap: wrap;
+}
+
+/* Linke Seite: Boss-Name + HP-Bar zusammen */
+.boss-villain-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Rechte Seite: Lives + Username */
+.boss-player-section {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-shrink: 0;
 }
 
 .boss-name-pill {
@@ -1852,6 +1873,7 @@ main {
   text-shadow: 0 0 12px var(--c-red), 0 0 24px rgba(255, 51, 85, 0.6);
   letter-spacing: 3px;
   font-style: italic;
+  flex-shrink: 0;
 }
 
 .boss-hp-section {
@@ -1860,16 +1882,11 @@ main {
   gap: 0.8rem;
   flex: 1;
   max-width: 380px;
-}
-.boss-hp-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--c-red);
-  letter-spacing: 2px;
+  min-width: 140px;
 }
 .boss-hp-bar {
   flex: 1;
-  height: 18px;
+  height: 22px;
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid var(--c-red);
   position: relative;
@@ -1882,13 +1899,51 @@ main {
   box-shadow: 0 0 10px var(--c-red);
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Lives-Anzeige: gross, orange, mit Glow */
 .boss-lives {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 122, 0, 0.08);
+  border: 1px solid rgba(255, 122, 0, 0.5);
+  border-radius: 3px;
+}
+.boss-lives .life {
+  font-size: 1.85rem;
+  line-height: 1;
+  display: inline-block;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.boss-lives .life.full {
+  color: var(--c-orange-glow);
+  text-shadow: 0 0 8px var(--c-orange), 0 0 16px var(--c-orange-deep);
+  animation: life-beat 1.6s ease-in-out infinite;
+}
+.boss-lives .life.empty {
+  color: rgba(120, 120, 140, 0.35);
+  text-shadow: none;
+}
+@keyframes life-beat {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+/* Player-Name neben den Hearts */
+.boss-player-name {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  color: var(--c-red);
-  letter-spacing: 2px;
-  min-width: 60px;
-  text-align: right;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  color: var(--c-orange-glow);
+  text-shadow: 0 0 6px rgba(255, 153, 51, 0.5);
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-left: 2px solid var(--c-orange);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .boss-cinematic-body {
@@ -1989,10 +2044,10 @@ main {
 /* Quiz-Bereich (unten im Modal, nur waehrend Battle) */
 .boss-quiz-area {
   border-top: 1px solid rgba(255, 51, 85, 0.4);
-  padding: 1rem 1.4rem 1.2rem;
+  padding: 1rem 1.4rem 1.4rem;
   background: rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
-  max-height: 38%;
+  max-height: 50%;
   overflow-y: auto;
 }
 .boss-quiz-progress {
@@ -2056,17 +2111,37 @@ main {
   justify-content: flex-end;
 }
 
+/* Wenn das Cinematic-Modal offen ist, Overlay-Padding entfernen,
+   damit das Modal die volle Viewport-Höhe nutzen kann.
+   :has() wird von allen modernen Browsern unterstützt;
+   wenn nicht, fängt das min(...) im Modal-CSS den Fall ab. */
+.modal-overlay:has(.modal.boss-cinematic) {
+  padding: 0.6rem;
+}
+.modal-overlay:has(.modal.boss-cinematic) .modal.boss-cinematic {
+  /* Mit reduziertem Padding: nur noch 1.2rem statt 4rem abziehen */
+  max-height: calc(100vh - 1.2rem);
+  height: calc(100vh - 1.2rem);
+}
+
 /* Mobile-Anpassungen */
 @media (max-width: 768px) {
+  .modal-overlay:has(.modal.boss-cinematic) {
+    padding: 0;
+  }
   .modal.boss-cinematic {
     width: 100vw;
     height: 100vh;
     max-height: 100vh;
     max-width: 100vw;
   }
+  .modal-overlay:has(.modal.boss-cinematic) .modal.boss-cinematic {
+    height: 100vh;
+    max-height: 100vh;
+  }
   .boss-cinematic-body {
     grid-template-columns: 1fr;
-    grid-template-rows: 35% 1fr;
+    grid-template-rows: 30% 1fr;
   }
   .boss-image-frame {
     border-right: none;
@@ -2076,21 +2151,31 @@ main {
     grid-template-columns: 1fr;
   }
   .boss-name-pill { font-size: 1.2rem; }
-  .boss-hp-section { max-width: 200px; }
-  .boss-quiz-area { max-height: 50%; }
+  .boss-hp-section { max-width: 200px; min-width: 100px; }
+  .boss-quiz-area { max-height: 55%; }
+  .boss-cinematic-header {
+    padding: 0.6rem 1rem;
+    gap: 0.8rem;
+  }
+  .boss-quiz-timer { font-size: 1.1rem; padding: 0.2rem 0.7rem; }
+  .boss-lives .life { font-size: 1.5rem; }
+  .boss-player-name { font-size: 0.8rem; max-width: 100px; padding: 0.2rem 0.5rem; }
 }
 
 /* Boss-Quiz-Timer */
 .boss-quiz-timer {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 1.5px;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
   color: var(--c-cyan);
   font-weight: bold;
-  text-shadow: 0 0 6px var(--c-cyan);
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--c-cyan);
-  background: rgba(0, 240, 255, 0.08);
+  text-shadow: 0 0 8px var(--c-cyan), 0 0 16px rgba(0, 240, 255, 0.5);
+  padding: 0.3rem 0.9rem;
+  border: 2px solid var(--c-cyan);
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 3px;
+  min-width: 80px;
+  text-align: center;
 }
 .boss-quiz-timer.timer-warning {
   color: var(--c-red);
