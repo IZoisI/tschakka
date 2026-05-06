@@ -1950,6 +1950,10 @@ main {
   flex: 1;
   display: grid;
   grid-template-columns: minmax(280px, 42%) 1fr;
+  /* WICHTIG: Row-Höhe explizit auf Body-Höhe fixieren —
+     sonst auto-sizen die Grid-Rows nach Chat-Inhalt und
+     das Quiz-Area wird nach unten weggedrückt. */
+  grid-template-rows: minmax(0, 1fr);
   gap: 0;
   overflow: hidden;
   min-height: 0;
@@ -1961,6 +1965,7 @@ main {
   background: radial-gradient(ellipse at center, rgba(255, 51, 85, 0.08), transparent 70%);
   border-right: 1px solid rgba(255, 51, 85, 0.25);
   overflow: hidden;
+  min-height: 0;
 }
 .boss-image-layer {
   position: absolute;
@@ -1991,6 +1996,12 @@ main {
   flex-direction: column;
   padding: 1.2rem;
   overflow-y: auto;
+  /* min-height: 0 + height/max-height sorgen zusammen dafuer,
+     dass das Panel exakt seine Grid-Cell-Hoehe hat und nicht
+     mit dem Inhalt waechst. Inhalt scrollt intern. */
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
   scrollbar-width: thin;
   scrollbar-color: var(--c-red) transparent;
 }
@@ -2000,10 +2011,25 @@ main {
 .boss-chat-msg {
   margin-bottom: 1rem;
   animation: boss-msg-in 0.3s ease-out;
+  flex-shrink: 0;
 }
 @keyframes boss-msg-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+.boss-chat-msg.fading-out {
+  animation: boss-msg-out 0.32s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes boss-msg-out {
+  to {
+    opacity: 0;
+    transform: translateY(-14px);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 }
 
 .boss-chat-name {

@@ -761,6 +761,18 @@ async function startBossBattle() {
     msg.className = "boss-chat-msg";
     msg.innerHTML = '<div class="boss-chat-name">3,1415</div><div class="boss-chat-text typing"></div>';
     panel.appendChild(msg);
+
+    // Nur die letzten 3 Nachrichten sichtbar lassen — ältere fade-out + entfernen
+    const allMsgs = Array.from(panel.querySelectorAll(".boss-chat-msg"));
+    if (allMsgs.length > 3) {
+      allMsgs.slice(0, allMsgs.length - 3).forEach(m => {
+        if (!m.classList.contains("fading-out")) {
+          m.classList.add("fading-out");
+          setTimeout(() => m.remove(), 320);
+        }
+      });
+    }
+
     panel.scrollTop = panel.scrollHeight;
     const textEl = msg.querySelector(".boss-chat-text");
     let skip = false;
