@@ -676,12 +676,20 @@ async function startBossBattle() {
     toast("Hmmm", "Es sind aktuell zu wenig Quiz-Fragen verfügbar.", "");
     return;
   }
-  // Fisher-Yates shuffle, dann 25 nehmen
+  // Fisher-Yates shuffle
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  const questions = pool.slice(0, 25);
+  // Boss-Battle startet IMMER mit dieser Insider-Frage als Frage 1.
+  // Die restlichen 24 Fragen werden zufällig aus dem Pool gezogen.
+  const introQuestion = {
+    q: "Wie heißt der beste Lehrer am RBB mit Vornamen?",
+    a: ["Philipp", "Philip", "Phillip", "Phillipp"],
+    correct: 0,
+    explain: "Philipp — mit einem L und zwei P."
+  };
+  const questions = [introQuestion, ...pool.slice(0, 24)];
 
   // 3. Cinematic-Modal öffnen
   const playerName = (window.Auth && Auth.displayName && Auth.displayName()) || "—";
@@ -982,12 +990,16 @@ async function startBossBattle() {
 
   /* ============== OUTRO ============== */
   if (lives <= 0) {
-    // Boss hat gewonnen — Spieler hatte 3 falsche Antworten
+    // Boss hat gewonnen — Spieler hat alle 3 Leben verloren
     await setBossImage("ganz_ernst");
     await addBossMessage("Das war nichts. Bereiten Sie sich besser vor — und versuchen Sie's nochmal.");
     checkAchievements();
-  } else if (correct === total) {
-    // Perfekter Sieg — Win-Sequence
+  } else {
+    // Spieler hat alle 25 Fragen mit mindestens 1 Leben übrig
+    // beendet → Boss besiegt (Win-Sequence). HP-Bar zur Optik
+    // auf 0 ziehen, auch wenn nicht jede Frage richtig war.
+    bossHP = 0;
+    updateBossHP(0);
     await setBossImage("stolz");
     await addBossMessage("Ich hab doch gewusst, dass Sie was drauf haben — ich bin stolz auf Sie!");
     await sleep(4000);
@@ -996,12 +1008,10 @@ async function startBossBattle() {
     await addBossMessage("Ziehen Sie durch, Sie schaffen das!");
     state.bossWins = (state.bossWins || 0) + 1;
     saveState();
-    addXP(250, "Boss-Sieg (perfekt)");
-    checkAchievements();
-  } else {
-    // Durchgekommen, aber nicht perfekt
-    await setBossImage("ernst");
-    await addBossMessage(`Knapp daneben — ${correct} von ${total} richtig. Sie haben Lücken. Probieren Sie's nochmal.`);
+    // Volle 250 XP bei perfektem Run, sonst 200 XP — kleine
+    // Differenzierung damit Perfektion noch belohnt wird.
+    const xpReward = (correct === total) ? 250 : 200;
+    addXP(xpReward, correct === total ? "Boss-Sieg (perfekt)" : "Boss-Sieg");
     checkAchievements();
   }
 

@@ -1857,12 +1857,13 @@ main {
   min-width: 0;
 }
 
-/* Rechte Seite: Lives + Username */
+/* Rechte Seite: Lives + Username — etwas vom Rand weggerueckt */
 .boss-player-section {
   display: flex;
   align-items: center;
   gap: 0.9rem;
   flex-shrink: 0;
+  margin-right: 2rem;
 }
 
 .boss-name-pill {
