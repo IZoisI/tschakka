@@ -1,5 +1,5 @@
 /* ===========================================================
-   PFF32 // Public Config
+   TSCHAKKA // Public Config
    -----------------------------------------------------------
    Beide Werte sind PUBLIC — sie sind dafür gemacht, im
    Browser-JS zu landen. Der anon-Key ist explizit

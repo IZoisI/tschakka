@@ -1,5 +1,5 @@
 /* ===========================================================
-   PFF32 // LEARNING DATA
+   TSCHAKKA // LEARNING DATA
    Alle Lerninhalte für die Abschlussprüfung Pflegefachfrau/-mann
    Basis: Planungsraster RBB Müritz, 28 Unterrichtswochen
    =========================================================== */
@@ -64,7 +64,7 @@ const TOPICS = {
     ],
     flashcards: [
       { front: "VEE", back: "Verbalisieren emotionaler Erlebnisinhalte – Gefühle in Worte fassen" },
-      { front: "Zielsetzung des Verbalisierens", back: "Empathie zeigen, Patient hilft Gefühle wahrzunehmen und zu akzeptieren" },
+      { front: "Zielsetzung des Verbalisierens", back: "Empathie zeigen, dem Patienten helfen, Gefühle wahrzunehmen und zu akzeptieren" },
       { front: "Begründer der klientenzentrierten Gesprächsführung", back: "Carl Rogers" }
     ]
   },
@@ -72,7 +72,7 @@ const TOPICS = {
   gewaltfreie_kommun: {
     title: "Gewaltfreie Kommunikation (GFK)", category: "kommunikation",
     intro: "Die Gewaltfreie Kommunikation nach Marshall B. Rosenberg ist ein Vier-Schritte-Modell, das Konflikte durch wertschätzende Sprache auflösen soll.",
-    content: `<p><strong>Die 4 Schritte (BBWB):</strong></p>
+    content: `<p><strong>Die 4 Schritte (BGBB):</strong></p>
     <ol>
       <li><strong>Beobachtung</strong> – ohne Bewertung beschreiben, was passiert ist</li>
       <li><strong>Gefühl</strong> – eigenes Gefühl benennen</li>
@@ -427,7 +427,7 @@ const TOPICS = {
     </ul>`,
     questions: [
       { q: "Wie viele Halswirbel hat der Mensch?", a: ["5","7","12","24"], correct: 1, explain: "7 HWS (auch bei der Giraffe)." },
-      { q: "Welches Gelenk ist ein Sattelgelenk?", a: ["Schulter","Knie","Daumengrundgelenk","Hüfte"], correct: 2, explain: "Daumensattelgelenk (Carpometacarpal I)." },
+      { q: "Welches Gelenk ist ein Sattelgelenk?", a: ["Schulter","Knie","Daumensattelgelenk","Hüfte"], correct: 2, explain: "Daumensattelgelenk (Carpometacarpal I)." },
       { q: "Wo liegt das rote Knochenmark beim Erwachsenen hauptsächlich?", a: ["Röhrenknochenschaft","Platte Knochen (Becken, Sternum)","Schädelknochen","Zehen"], correct: 1, explain: "Im Erwachsenenalter v.a. in platten Knochen und Wirbeln." }
     ],
     flashcards: [
@@ -470,7 +470,7 @@ const TOPICS = {
       { q: "Welche Liegeposition wird empfohlen?", a: ["Kissenberg","Flach ohne Kissen","Seitlich gebeugt","Sitzend"], correct: 1, explain: "Flach liegen, um einer Kyphose entgegenzuwirken." }
     ],
     flashcards: [
-      { front: "Bechterew = ", back: "Spondylitis ankylosans – chronisch-entz. Wirbelsäulenerkr." },
+      { front: "Morbus Bechterew", back: "Spondylitis ankylosans – chronisch-entz. Wirbelsäulenerkr." },
       { front: "Labor-Marker", back: "HLA-B27 (ca. 90% positiv)" },
       { front: "Bambusstab-WS", back: "Radiologisches Bild durch Ankylose" }
     ]
@@ -545,7 +545,7 @@ const TOPICS = {
       <li><strong>Hypotonie</strong>: &lt; 100/60 mmHg</li>
       <li><strong>Regulation</strong>: RAAS, Baroreflex, Sympathikus</li>
       <li><strong>Symptome Hypertonie</strong>: oft symptomlos ("stiller Killer"), Kopfschmerzen, Schwindel, Nasenbluten</li>
-      <li><strong>Hypertensive Krise</strong>: &gt;230/120 mmHg – Notfall, besonders bei Endorganschäden</li>
+      <li><strong>Hypertensive Krise</strong>: ab ca. &gt;180/110–120 mmHg; mit akuten Organschäden (z. B. Brustschmerz, Atemnot, neurologische Ausfälle) = hypertensiver Notfall</li>
     </ul>
     <p><strong>Messtechnik</strong>: Ruheposition, entspannter Arm auf Herzhöhe, richtige Manschettengröße, keine Kaffee/Zigarette 30 Min vorher.</p>
     <p><strong>Medikamente</strong>: ACE-Hemmer, AT1-Blocker, Betablocker, Ca-Antagonisten, Diuretika (die "großen Fünf").</p>`,
@@ -556,7 +556,7 @@ const TOPICS = {
     ],
     flashcards: [
       { front: "Normotoniewert", back: "< 120/80 mmHg (optimal)" },
-      { front: "Hypertensive Krise", back: "> 230/120 mmHg – Notfall bei Endorganschäden" },
+      { front: "Hypertensive Krise", back: "ab ca. > 180/110–120 mmHg – mit akuten Organschäden = hypertensiver Notfall" },
       { front: "Die großen 5 Antihypertensiva", back: "ACE-H, AT1-B, Betablocker, Ca-Antagonisten, Diuretika" }
     ]
   },
@@ -687,7 +687,7 @@ const TOPICS = {
       <li>Höhere ICS-Dosis</li>
       <li>+ Omalizumab, Kortison, LAMA</li>
     </ol></p>
-    <p><strong>Status asthmaticus</strong>: schwerer Anfall > 24h, kein Ansprechen auf Inhalativa – Notfall!</p>
+    <p><strong>Status asthmaticus</strong>: schwerer Anfall, der auf die übliche Notfalltherapie (SABA) nicht anspricht – Notfall!</p>
     <p><strong>Pflege</strong>: Kutschersitz, Inhalation anleiten, beruhigen, O2, PEF-Messung, Auslöser meiden.</p>`,
     questions: [
       { q: "Welches Atemgeräusch ist typisch?", a: ["Inspiratorischer Stridor","Exspiratorisches Giemen","Feuchte Rasselgeräusche","Reibegeräusch"], correct: 1, explain: "Giemen v.a. in Exspiration bei Asthma." },
@@ -717,7 +717,7 @@ const TOPICS = {
     <p><strong>Resorption</strong>: Dünndarmzotten und Mikrovilli vergrößern Oberfläche auf ~200 m².</p>`,
     questions: [
       { q: "Wo findet die Hauptresorption statt?", a: ["Magen","Dünndarm","Dickdarm","Rektum"], correct: 1, explain: "Jejunum/Ileum – Zotten/Mikrovilli." },
-      { q: "Welche Enzyme liefert der Pankreas?", a: ["Amylase, Lipase, Protease","Pepsin","Gallensäuren","HCl"], correct: 0, explain: "Exokrine Pankreas-Enzyme zur Verdauung." },
+      { q: "Welche Enzyme liefert das Pankreas?", a: ["Amylase, Lipase, Protease","Pepsin","Gallensäuren","HCl"], correct: 0, explain: "Exokrine Pankreas-Enzyme zur Verdauung." },
       { q: "Länge des Darms ca.:", a: ["1 m","4 m","8 m","16 m"], correct: 2, explain: "Dünn- + Dickdarm ca. 7–8 m beim Erwachsenen." }
     ],
     flashcards: [
@@ -772,7 +772,7 @@ const TOPICS = {
     intro: "Zweithäufigster bösartiger Tumor in Deutschland. Meist Adenokarzinom aus Adenom-Karzinom-Sequenz.",
     content: `<p><strong>Risikofaktoren</strong>: Alter, fleisch-/fettreiche Ernährung, ballaststoffarm, Rauchen, Alkohol, Adipositas, Bewegungsmangel, CED, familiäre Belastung (Lynch-Syndrom, FAP).</p>
     <p><strong>Symptome</strong>: <em>spät</em>! Blut im Stuhl, Stuhlunregelmäßigkeiten, Bleistiftstuhl, Gewichtsverlust, Anämie, Ileus.</p>
-    <p><strong>Screening</strong>: iFOBT ab 50, Koloskopie ab 50 (Frauen) bzw. 50 (Männer), alle 10 Jahre.</p>
+    <p><strong>Screening</strong>: iFOBT ab 50, Koloskopie ab 50 (Frauen und Männer), alle 10 Jahre.</p>
     <p><strong>Therapie</strong>: OP (Hemikolektomie, Rektumresektion), Chemo (FOLFOX), ggf. Radiatio, ggf. Stoma.</p>
     <p><strong>Pflege</strong>: Stomapflege, Ernährungsberatung, psychoonkologische Begleitung.</p>`,
     questions: [
@@ -792,7 +792,7 @@ const TOPICS = {
     intro: "Obstipation: Stuhlfrequenz < 3/Woche, harter Stuhl, starkes Pressen, Gefühl unvollständiger Entleerung.",
     content: `<p><strong>Ursachen</strong>: Bewegungsmangel, zu wenig Flüssigkeit/Ballaststoffe, Medikamente (Opioide, Eisen, Anticholinergika), Alter, Darmerkrankung, psychisch.</p>
     <p><strong>Pflegerische Prophylaxe</strong>: Bewegung, Ballaststoffe, Flüssigkeit (≥ 1,5–2 l), feste Zeiten, Intimsphäre, Bauchmassage (im Uhrzeigersinn).</p>
-    <p><strong>Stufenplan (WHO)</strong>:
+    <p><strong>Stufenplan</strong>:
     <ol>
       <li>Lebensstil, Quellmittel (Leinsamen, Flohsamen)</li>
       <li>Osmotische Laxantien (Macrogol, Laktulose)</li>
@@ -808,7 +808,7 @@ const TOPICS = {
     ],
     flashcards: [
       { front: "Obstipation", back: "< 3 Stühle/Woche, hart, Pressen" },
-      { front: "WHO-Stufe 1", back: "Lebensstil + Quellmittel (Flohsamen, Leinsamen)" },
+      { front: "Stufe 1 der Obstipationstherapie", back: "Lebensstil + Quellmittel (Flohsamen, Leinsamen)" },
       { front: "Bauchmassage", back: "Im Uhrzeigersinn – folgt Dickdarmverlauf" }
     ]
   }
@@ -837,7 +837,7 @@ const TOPICS = {
       { q: "Warum ist Wärmeerhalt zentral?", a: ["Neugeborene sind überhitzt","Große KOF + wenig Fett → rasche Auskühlung","Sie schwitzen stark","Nicht wichtig"], correct: 1, explain: "Verhältnis Oberfläche/Masse hoch + wenig subkutanes Fett." }
     ],
     flashcards: [
-      { front: "U1–U3 Zeitpunkte", back: "U1 post partum · U2 3.–10. LT · U3 4.–6. LW" },
+      { front: "U1–U3 Zeitpunkte", back: "U1 post partum · U2 3.–10. LT · U3 4.–5. LW" },
       { front: "Vit. K – wozu?", back: "Vorbeugung M. haemorrhagicus (Blutungen)" },
       { front: "Normales Geburtsgewicht", back: "2500–4500 g" }
     ]
@@ -855,10 +855,10 @@ const TOPICS = {
       <li><strong>R – Reflexe</strong>: 0 keine / 1 Grimassieren / 2 Schreien</li>
     </ul>
     <p><strong>Bewertung</strong>: 9–10 optimal · 7–8 gut · 4–6 Überwachung · &lt;4 Notfall.</p>
-    <p><strong>Vorsorgeuntersuchungen U1–U9</strong>: U1 (Geburt), U2 (3.–10. LT), U3 (4.–6. LW), U4 (3.–4. LM), U5 (6.–7. LM), U6 (10.–12. LM), U7 (21.–24. LM), U7a (34.–36. LM), U8 (46.–48. LM), U9 (5 J.), J1 (12–14 J.).</p>`,
+    <p><strong>Vorsorgeuntersuchungen U1–U9</strong>: U1 (Geburt), U2 (3.–10. LT), U3 (4.–5. LW), U4 (3.–4. LM), U5 (6.–7. LM), U6 (10.–12. LM), U7 (21.–24. LM), U7a (34.–36. LM), U8 (46.–48. LM), U9 (5 J.), J1 (12–14 J.).</p>`,
     questions: [
       { q: "Was bedeutet 'A' bei APGAR?", a: ["Alter","Atmung und Aussehen","Aktivität","Augen"], correct: 1, explain: "2× A: Atmung und Aussehen (Hautkolorit)." },
-      { q: "Wann wird der APGAR gemessen?", a: ["Sofort, nach 5, 10 Min","Nur 1 mal","Nach 1 Stunde","Täglich"], correct: 0, explain: "Standardmäßig 1., 5. und 10. Lebensminute." },
+      { q: "Wann wird der APGAR gemessen?", a: ["Nach 1, 5 und 10 Min","Nur 1 mal","Nach 1 Stunde","Täglich"], correct: 0, explain: "Standardmäßig 1., 5. und 10. Lebensminute." },
       { q: "Maximale Punktzahl:", a: ["6","8","10","12"], correct: 2, explain: "5 Kriterien × 2 Punkte = 10." }
     ],
     flashcards: [
@@ -945,9 +945,9 @@ const TOPICS = {
   schwangerschaft: {
     title: "Schwangerschaft", category: "paed",
     intro: "Dauer: 40 SSW (280 Tage post menstruationem) oder 38 Wochen post conceptionem. Einteilung in 3 Trimena.",
-    content: `<p><strong>Sichere Zeichen</strong>: fetale Herzaktion (Doppler ab 10. SSW), Kindsbewegungen, sichtbare Kindsteile.</p>
+    content: `<p><strong>Sichere Zeichen</strong>: fetale Herzaktion (Ultraschall ab ca. 6.–7. SSW), Kindsbewegungen, sichtbare Kindsteile.</p>
     <p><strong>Unsichere</strong>: Ausbleiben der Regel, Übelkeit, Brustspannen, Müdigkeit.</p>
-    <p><strong>Vorsorge (Mutterschutzrichtlinien)</strong>: alle 4 Wochen, ab 32. SSW alle 2 Wo. Inhalt: Gewicht, RR, Urin, Herztöne, Fundusstand, Ultraschall (3×).</p>
+    <p><strong>Vorsorge (Mutterschafts-Richtlinien)</strong>: alle 4 Wochen, ab 32. SSW alle 2 Wo. Inhalt: Gewicht, RR, Urin, Herztöne, Fundusstand, Ultraschall (3×).</p>
     <p><strong>Risikoschwangerschaften</strong>: &lt;18 oder &gt;35 J, Diabetes, Hypertonie, Mehrlinge, Präeklampsie-Symptome.</p>
     <p><strong>Mutterpass</strong>: Dokumentation aller Befunde, ist immer mitzuführen.</p>
     <p><strong>Präeklampsie (Gestose)</strong>: RR&gt;140/90, Proteinurie, Ödeme – Notfall: Eklampsie (Krampfanfall). HELLP-Syndrom: Hämolyse, Enzymanstieg, Thrombopenie.</p>`,
@@ -1028,7 +1028,7 @@ const TOPICS = {
       <li><em>Psychosoziale Beratung</em>: Krankheitsbewältigung</li>
     </ul></p>
     <p><strong>Phasen nach WHO/SDM</strong>: Auftragsklärung – Informationssammlung – Zieldefinition – Maßnahmenplan – Evaluation.</p>
-    <p><strong>§ 37 SGB V</strong>: Pflegeberatung ist eigenständige Leistung. Expertenstandard "Entlassungsmanagement" fordert strukturierte Beratung.</p>`,
+    <p><strong>§ 7a SGB XI</strong>: Anspruch auf individuelle Pflegeberatung. Expertenstandard "Entlassungsmanagement" fordert strukturierte Beratung.</p>`,
     questions: [
       { q: "Beratung ≠ Anleitung. Anleitung umfasst:", a: ["Nur Informationsweitergabe","Handlungsschritte zeigen und üben","Therapieentscheidung","Medikamentenverordnung"], correct: 1, explain: "Anleitung = Vormachen, Üben, Evaluieren." },
       { q: "Zielrichtung pflegerischer Beratung:", a: ["Autoritäre Anweisung","Empowerment / Selbstpflegefähigkeit","Verordnen","Diagnose stellen"], correct: 1, explain: "Ziel ist Stärkung der Selbständigkeit." },
@@ -1037,7 +1037,7 @@ const TOPICS = {
     flashcards: [
       { front: "Beratungsarten", back: "Info · Schulung · Anleitung · psychosoz. Beratung" },
       { front: "Beratungs-Ziel", back: "Empowerment – Selbstpflegefähigkeit stärken" },
-      { front: "Gesetzl. Grundlage", back: "§ 37 SGB V (Pflegeberatung), Expertenstandard Entlassungsmanagement" }
+      { front: "Gesetzl. Grundlage", back: "§ 7a SGB XI (Pflegeberatung), Expertenstandard Entlassungsmanagement" }
     ]
   },
 
@@ -1097,7 +1097,7 @@ const TOPICS = {
       <li><strong>Ergebnisqualität</strong>: Ergebnis (Outcome: Dekubitus-Rate, Zufriedenheit)</li>
     </ul></p>
     <p><strong>PDCA-Zyklus (Deming)</strong>: Plan – Do – Check – Act (KVP).</p>
-    <p><strong>Instrumente</strong>: Audits, Standards, Fehlermeldung (CIRS), Kundenbefragungen, Kennzahlen, MDK-Prüfungen, Expertenstandards.</p>`,
+    <p><strong>Instrumente</strong>: Audits, Standards, Fehlermeldung (CIRS), Kundenbefragungen, Kennzahlen, MD-Prüfungen, Expertenstandards.</p>`,
     questions: [
       { q: "Das Bett ist schlecht erreichbar. Welche Qualitätsdimension?", a: ["Struktur","Prozess","Ergebnis","Outcome"], correct: 0, explain: "Räumliche Ausstattung = Struktur." },
       { q: "PDCA steht für:", a: ["Plan-Do-Check-Act","Prüfen-Dokumentieren-Controlling-Analyse","Patient-Doktor-Care-Act","Planung-Durchführung-Checkliste-Abschluss"], correct: 0, explain: "Deming-Zyklus Plan-Do-Check-Act." },
@@ -1203,7 +1203,7 @@ const TOPICS = {
     ],
     flashcards: [
       { front: "SGB V / XI / IX / XII", back: "V Kranken · XI Pflege · IX Reha · XII Sozialhilfe" },
-      { front: "SGB II vs. III", back: "II Bürgergeld (Jobcenter) · III Arbeitsförderung (BfA)" }
+      { front: "SGB II vs. III", back: "II Bürgergeld (Jobcenter) · III Arbeitsförderung (BA)" }
     ]
   },
 
@@ -1246,7 +1246,7 @@ const TOPICS = {
     <p><strong>ICF</strong>: Klassifikation der Funktionsfähigkeit (Körperfunktion, Aktivität, Teilhabe, Umwelt).</p>`,
     questions: [
       { q: "AHB muss beginnen innerhalb:", a: ["24 h","14 Tagen","3 Monaten","6 Wochen"], correct: 1, explain: "Anschlussheilbehandlung – innerhalb von 14 Tagen." },
-      { q: "ICF steht für:", a: ["Internationale Classifikation of Functioning","International Cardiac Failure","Intensive Care Function","Inklusions-Check-Faktor"], correct: 0, explain: "WHO-Modell zur Teilhabe." },
+      { q: "ICF steht für:", a: ["International Classification of Functioning, Disability and Health","International Cardiac Failure","Intensive Care Function","Inklusions-Check-Faktor"], correct: 0, explain: "WHO-Modell zur Teilhabe." },
       { q: "Grundsatz:", a: ["Pflege vor Reha","Reha vor Pflege","Nur ambulant","Nur stationär"], correct: 1, explain: "§ 5 SGB XI: Reha vor Pflege." }
     ],
     flashcards: [
@@ -1366,8 +1366,8 @@ const TOPICS = {
     content: `<p><strong>6 Module</strong> (gewichtet):
     <ol>
       <li>Mobilität (10%)</li>
-      <li>Kognitive und kommunikative Fähigkeiten (7,5%)</li>
-      <li>Verhaltensweisen und psychische Problemlagen (7,5% – Modul 2 und 3 zusammen)</li>
+      <li>Kognitive und kommunikative Fähigkeiten</li>
+      <li>Verhaltensweisen und psychische Problemlagen<br><em>Modul 2 und 3 zusammen 15% – es zählt nur das Modul mit dem höheren Wert</em></li>
       <li>Selbstversorgung (40%)</li>
       <li>Bewältigung krankheitsbedingter Anforderungen (20%)</li>
       <li>Gestaltung des Alltagslebens und soziale Kontakte (15%)</li>
@@ -1416,14 +1416,14 @@ const TOPICS = {
     title: "Diabetes mellitus", category: "innere",
     intro: "Chronische Stoffwechselstörung mit Hyperglykämie durch Insulinmangel (Typ 1) oder Insulinresistenz (Typ 2).",
     content: `<p><strong>Typ 1</strong>: Autoimmun, absoluter Insulinmangel, oft junge Menschen, lebenslang Insulin. Entgleisung → Ketoazidose.</p>
-    <p><strong>Typ 2</strong>: Relatives Insulinmangel + Resistenz, meist >40 Jahre, Adipositas-assoziiert. Therapie: Lebensstil → Metformin → weitere OAD → Insulin. Entgleisung: hyperosmolares Koma.</p>
+    <p><strong>Typ 2</strong>: Relativer Insulinmangel + Resistenz, meist >40 Jahre, Adipositas-assoziiert. Therapie: Lebensstil → Metformin → weitere OAD → Insulin. Entgleisung: hyperosmolares Koma.</p>
     <p><strong>Symptome (Hyperglykämie)</strong>: Polyurie, Polydipsie, Gewichtsverlust, Müdigkeit, Sehstörungen, Wundheilungsstörung.</p>
     <p><strong>Diagnostik</strong>: Nü-BZ ≥ 126 mg/dl, Gelegenheits-BZ ≥ 200 mg/dl, HbA1c ≥ 6,5%.</p>
     <p><strong>Therapieziele</strong>: HbA1c individuell (meist 6,5–7,5%), BD &lt;140/85, LDL niedrig, Nichtraucher.</p>`,
     questions: [
       { q: "Welcher Diabetes-Typ ist Autoimmunerkrankung?", a: ["Typ 1","Typ 2","Gestationsdiabetes","MODY"], correct: 0, explain: "Typ 1 ist Autoimmun (ß-Zell-Zerstörung)." },
       { q: "HbA1c-Ziel bei vielen Typ-2-Diabetikern:", a: ["< 4,5%","6,5–7,5%","9–10%","~12%"], correct: 1, explain: "Individualisiert, typisch 6,5–7,5%." },
-      { q: "Typische 4-P-Symptomatik:", a: ["Polyurie, Polydipsie, Polyphagie, Pruritus","Polyurie, Pollakisurie, Parese, Paranoia","Pruritus, Parese, Parkinson, Paranoia","Polyurie, Pyurie, Polyphagie, Paranoia"], correct: 0, explain: "4 P: Polyurie, Polydipsie, Polyphagie, Pruritus." }
+      { q: "Klassische Symptome einer Hyperglykämie:", a: ["Polyurie, Polydipsie, Gewichtsverlust","Bradykardie, Hypothermie, Ödeme","Zittern, Heißhunger, Schweißausbruch","Hypertonie, Nasenbluten, Kopfschmerz"], correct: 0, explain: "Viel Wasserlassen, starker Durst und Gewichtsverlust. Zittern, Heißhunger und Schwitzen sprechen dagegen für eine Hypoglykämie." }
     ],
     flashcards: [
       { front: "Diabetes-Diagnose", back: "Nü-BZ ≥ 126 · HbA1c ≥ 6,5% · Gelegenheits ≥ 200 mg/dl" },
@@ -1477,7 +1477,7 @@ const TOPICS = {
     questions: [
       { q: "Fontaine IV bedeutet:", a: ["Symptomfrei","Schmerzfreie Gehstrecke < 200 m","Ruheschmerz","Nekrose/Gangrän"], correct: 3, explain: "Stadium IV: trophische Hautschäden." },
       { q: "Wie sollen Beine bei PAVK gelagert werden?", a: ["Hochlagerung","Tieflagerung","Bettruhe","Kaltpackung"], correct: 1, explain: "Tieflagerung fördert arterielle Perfusion." },
-      { q: "Bekannter Spitzname:", a: ["Witwenmacher","Schaufensterkrankheit","Raucherbein (korrekt)","A & B"], correct: 2, explain: "Beides stimmt: 'Schaufensterkrankheit' (IIb) bzw. 'Raucherbein'." }
+      { q: "Warum heißt die pAVK auch 'Schaufensterkrankheit'?", a: ["Betroffene bleiben wegen Beinschmerzen beim Gehen immer wieder stehen","Die Haut wird glasig-durchscheinend","Sie tritt vor allem bei Verkäufern auf","Die Beine werden kalt wie Glas"], correct: 0, explain: "Claudicatio intermittens: Schmerzen zwingen nach kurzer Gehstrecke zum Stehenbleiben – unauffällig wie beim Schaufensterbummel. Wegen des Hauptrisikofaktors heißt sie auch 'Raucherbein'." }
     ],
     flashcards: [
       { front: "Fontaine-Stadien", back: "I asymp · II Claudicatio · III Ruheschmerz · IV Nekrose" },
@@ -1611,7 +1611,7 @@ const TOPICS = {
     content: `<p><strong>Kardinalsymptome (TRAP)</strong>:
     <ul>
       <li><strong>T</strong>remor (Ruhetremor, Pillendreher)</li>
-      <li><strong>R</strong>igor (wächserner Tonuserhöhung, Zahnradphänomen)</li>
+      <li><strong>R</strong>igor (wächserne Tonuserhöhung, Zahnradphänomen)</li>
       <li><strong>A</strong>kinese (Bewegungsarmut, Starthemmung, kleine Schritte)</li>
       <li><strong>P</strong>osturale Instabilität (Sturzneigung)</li>
     </ul></p>
@@ -1812,7 +1812,7 @@ const TOPICS = {
   noro_rota: {
     title: "Norovirus & Rotavirus", category: "hygiene",
     intro: "Hochansteckende Magen-Darm-Viren. Gastroenteritis mit schwallartigem Erbrechen und Durchfall. Meldepflicht nach IfSG.",
-    content: `<p><strong>Noro</strong>: Hauptursache viraler Gastroenteritis bei Erwachsenen. Minimaler Infektionsdosis (ca. 10 Viren), Übertragung fäkal-oral und über Erbrochenes (aerogen!).</p>
+    content: `<p><strong>Noro</strong>: Hauptursache viraler Gastroenteritis bei Erwachsenen. Minimale Infektionsdosis (ca. 10 Viren), Übertragung fäkal-oral und über Erbrochenes (aerogen!).</p>
     <p><strong>Rota</strong>: v.a. Kinder &lt;5 J., Impfung empfohlen.</p>
     <p><strong>Inkubation</strong>: 6–48 h. <strong>Ansteckungsfähigkeit</strong>: bis 48 h nach Symptomende.</p>
     <p><strong>Hygiene</strong>: <em>Einzelzimmer</em>, Kittel, Handschuhe, Mund-Nasen-Schutz bei Erbrechen, <em>Händewaschen</em> (Noro ist teils unempfindlich gegen Alkohol – viruzid wirksames Präparat verwenden), Schutzkittel, Flächendesinfektion mit viruziden Mitteln.</p>
@@ -1865,7 +1865,7 @@ const TOPICS = {
     </ul></p>
     <p><strong>TNM-Klassifikation</strong>: T (Tumorgröße), N (Lymphknoten), M (Metastasen).</p>
     <p><strong>Prävention</strong>: Nichtrauchen, UV-Schutz, Impfung (HPV, HBV), Ernährung, Bewegung, Vorsorgeuntersuchungen.</p>
-    <p><strong>Screening in D</strong>: Darmkrebs (ab 50), Mamma-MG (50–69), Zervix (ab 20), Hautkrebs (ab 35), PSA (Männer ab 45).</p>`,
+    <p><strong>Screening in D</strong>: Darmkrebs (ab 50), Mamma-MG (50–75), Zervix (ab 20), Hautkrebs (ab 35), Prostata-Tastuntersuchung (Männer ab 45; PSA-Test ist Selbstzahlerleistung).</p>`,
     questions: [
       { q: "Ein Tumor der Epithelzellen heißt:", a: ["Sarkom","Karzinom","Myelom","Lymphom"], correct: 1, explain: "Karzinome = epithelialen Ursprungs." },
       { q: "TNM-Klassifikation umfasst:", a: ["Typ, Nekrose, Malignität","Tumor, Nodus, Metastase","Total, Nerve, Muscle","Time, Number, Mortality"], correct: 1, explain: "T-N-M." },
@@ -2008,7 +2008,7 @@ const TOPICS = {
 
   atl_abedl: {
     title: "ATL / ABEDL", category: "pflegeprozess",
-    intro: "Strukturierungsmodelle für Pflegeanamnese: Liliane Juchlis ATL (13) und Monika Krohwinkels ABEDL (13).",
+    intro: "Strukturierungsmodelle für Pflegeanamnese: Liliane Juchlis ATL (12) und Monika Krohwinkels ABEDL (13).",
     content: `<p><strong>ATLs (Juchli, 1973)</strong>: Aktivitäten des täglichen Lebens – 12 Bereiche (atmen, essen, trinken, ausscheiden, schlafen, sich bewegen, sich waschen und kleiden, Körpertemperatur regulieren, für Sicherheit sorgen, sich beschäftigen, kommunizieren, Sinn finden in Werden-Sein-Vergehen).</p>
     <p><strong>ABEDL (Krohwinkel, 1993)</strong>: Aktivitäten, Beziehungen und Existenzielle Erfahrungen des Lebens – 13 Bereiche, ganzheitlicher Ansatz mit Beziehungsgestaltung und existenziellen Erfahrungen.</p>
     <p><strong>Zweck</strong>: strukturierte Anamnese, keine wichtigen Bereiche vergessen, Pflegediagnosen ableiten.</p>`,
@@ -2030,7 +2030,7 @@ const TOPICS = {
     content: `<p><strong>PESR-Struktur</strong>:
     <ul>
       <li><strong>P</strong>roblem (Pflegediagnose)</li>
-      <li><strong>Ä</strong>tiologie (Ursache)</li>
+      <li><strong>E</strong> – Ätiologie (Ursache)</li>
       <li><strong>S</strong>ymptome/Kennzeichen</li>
       <li><strong>R</strong>essourcen</li>
     </ul></p>
@@ -2100,6 +2100,7 @@ const TOPICS = {
       <li>Ernährungsmanagement</li>
       <li>Beziehungsgestaltung bei Menschen mit Demenz</li>
       <li>Erhaltung und Förderung der Mobilität</li>
+      <li>Förderung der Mundgesundheit in der Pflege</li>
     </ol></p>
     <p><strong>Struktur</strong>: jede Ebene hat Struktur-, Prozess- und Ergebniskriterien.</p>
     <p><strong>Verbindlichkeit</strong>: Stand der Pflegewissenschaft, rechtlich relevant (§ 113a SGB XI).</p>`,
@@ -2415,7 +2416,7 @@ const TOPICS = {
 
   patientenverfuegung: {
     title: "Patientenverfügung", category: "sozialrecht",
-    intro: "Schriftliche Vorausverfügung, welche medizinischen Maßnahmen bei Einwilligungsunfähigkeit erwünscht/abgelehnt werden. § 1901a BGB.",
+    intro: "Schriftliche Vorausverfügung, welche medizinischen Maßnahmen bei Einwilligungsunfähigkeit erwünscht/abgelehnt werden. § 1827 BGB (bis 2022: § 1901a).",
     content: `<p><strong>Voraussetzungen</strong>:
     <ul>
       <li>Volljährig, einwilligungsfähig bei Errichtung</li>
@@ -2428,14 +2429,14 @@ const TOPICS = {
       <li>Vorsorgevollmacht: benennt Person, die im Notfall entscheidet</li>
       <li>Betreuungsverfügung: Wunsch nach bestimmter Betreuungsperson, falls Gericht einen Betreuer bestellt</li>
     </ul></p>
-    <p><strong>Praxis</strong>: Patientenverfügung ist bindend – der mutmaßliche Wille ist umzusetzen (§ 1901b BGB). Bei Unklarheit Ermittlung durch Betreuer/Bevollmächtigten und Arzt.</p>`,
+    <p><strong>Praxis</strong>: Eine wirksame Patientenverfügung ist bindend. Gibt es keine oder passt sie nicht zur Situation, ist der mutmaßliche Wille zu ermitteln und umzusetzen – durch Betreuer/Bevollmächtigten im Gespräch mit dem Arzt (§ 1828 BGB).</p>`,
     questions: [
-      { q: "Rechtsgrundlage Patientenverfügung:", a: ["§ 37 SGB V","§ 1901a BGB","§ 216 StGB","§ 7 SGB XI"], correct: 1, explain: "§ 1901a BGB." },
+      { q: "Rechtsgrundlage Patientenverfügung:", a: ["§ 37 SGB V","§ 1827 BGB","§ 216 StGB","§ 7 SGB XI"], correct: 1, explain: "§ 1827 BGB (bis Ende 2022: § 1901a BGB)." },
       { q: "Welche Form ist vorgeschrieben?", a: ["Notariell beglaubigt","Schriftform mit Unterschrift","Mündlich","Video"], correct: 1, explain: "Schriftform reicht." },
       { q: "Vorsorgevollmacht ≠ Patientenverfügung, weil:", a: ["Sie benennt eine entscheidende Person, PV regelt Maßnahmen","Sie ist teurer","Sie ist nicht bindend","Sie ist für Kinder"], correct: 0, explain: "Vollmacht = Person · Verfügung = Inhalte." }
     ],
     flashcards: [
-      { front: "Patientenverfügung – § ?", back: "§ 1901a BGB" },
+      { front: "Patientenverfügung – § ?", back: "§ 1827 BGB (bis 2022: § 1901a)" },
       { front: "Form", back: "Schriftlich, eigenhändig unterschrieben" },
       { front: "Vorsorgevollmacht", back: "Bevollmächtigt eine Person zur Entscheidung (< Patientenverfügung)" }
     ]
@@ -2446,7 +2447,7 @@ const TOPICS = {
     intro: "Rechtliche Betreuung (seit 1992) – ersetzt die Entmündigung. Ziel: Unterstützung bei Entscheidungen, nicht Bevormundung.",
     content: `<p><strong>Grundsätze</strong>:
     <ul>
-      <li>Erforderlichkeitsprinzip (§ 1896 BGB): nur soweit nötig</li>
+      <li>Erforderlichkeitsprinzip (§ 1814 BGB): nur soweit nötig</li>
       <li>Subsidiarität: andere Hilfe (Vollmacht) geht vor</li>
       <li>Wohl und Wünsche des Betreuten stehen im Vordergrund</li>
     </ul></p>
@@ -2468,11 +2469,11 @@ const TOPICS = {
   freiheitsentziehende: {
     title: "Freiheitsentziehende Maßnahmen (FEM)", category: "sozialrecht",
     intro: "Jede Einschränkung der Bewegungsfreiheit gegen den Willen oder bei nicht einwilligungsfähigen Personen. Nur als Ultima Ratio!",
-    content: `<p><strong>Beispiele</strong>: Bettgitter, Bauch-/Hüftgurte, Vorsatztische, Sedierung zur Bewegungseinschränkung, Stecknadeln, verschlossene Türen.</p>
+    content: `<p><strong>Beispiele</strong>: Bettgitter, Bauch-/Hüftgurte, Vorsatztische, Sedierung zur Bewegungseinschränkung, verschlossene Türen.</p>
     <p><strong>Rechtliche Grundlage</strong>: Nur zulässig bei
     <ol>
       <li>Einwilligung des einwilligungsfähigen Patienten, oder</li>
-      <li>Richterlicher Genehmigung (§ 1906 BGB) auf Antrag des Betreuers</li>
+      <li>Richterlicher Genehmigung (§ 1831 BGB) auf Antrag des Betreuers</li>
       <li>Rechtfertigender Notstand (akute Eigen-/Fremdgefährdung, § 34 StGB)</li>
     </ol></p>
     <p><strong>Alternativen (Werdenfelser Weg)</strong>: Niedrigflurbetten, Sensormatten, Hüftprotektoren, Bewegungsförderung, Beleuchtung, Biografiearbeit.</p>
@@ -2480,11 +2481,11 @@ const TOPICS = {
     questions: [
       { q: "Bettgitter ohne Einverständnis bei einwilligungsfähigem Patienten:", a: ["Erlaubt","FEM, nur mit Einwilligung/Genehmigung","Pflegerischer Standard","Kein Problem"], correct: 1, explain: "Ist eine freiheitsentziehende Maßnahme." },
       { q: "Werdenfelser Weg zielt auf:", a: ["Mehr FEM","Reduktion von FEM","Verschärfung","Sedierung"], correct: 1, explain: "Alternative Konzepte statt FEM." },
-      { q: "Rechtsgrundlage:", a: ["§ 37 SGB V","§ 1906 BGB","§ 216 StGB","§ 113 SGB XI"], correct: 1, explain: "Richterliche Genehmigung nach § 1906 BGB." }
+      { q: "Rechtsgrundlage:", a: ["§ 37 SGB V","§ 1831 BGB","§ 216 StGB","§ 113 SGB XI"], correct: 1, explain: "Richterliche Genehmigung nach § 1831 BGB (bis Ende 2022: § 1906 BGB)." }
     ],
     flashcards: [
       { front: "FEM", back: "Freiheitsentziehende Maßnahme – nur mit Einwilligung oder richterlicher Genehmigung" },
-      { front: "§ 1906 BGB", back: "Rechtsgrundlage der FEM" },
+      { front: "§ 1831 BGB", back: "Rechtsgrundlage der FEM (bis 2022: § 1906)" },
       { front: "Werdenfelser Weg", back: "Vermeidung von FEM durch Alternativen" }
     ]
   },
@@ -2534,7 +2535,7 @@ const TOPICS = {
     <p><strong>Prophylaxe</strong>: Bewegungsförderung, Druckentlastung (Positionswechsel alle 2h, Mikrolagerung, Weichlagerung), Hautpflege, Ernährung (EW, Flüssigkeit), Inkontinenz-Management. <em>Keine</em> Massage, <em>keine</em> eisgekühlten Umschläge!</p>`,
     questions: [
       { q: "Stadium II Dekubitus:", a: ["Rötung ohne Hautdefekt","Teilverlust der Haut (Blase)","Muskelsichtbar","Knochen"], correct: 1, explain: "II = Hautteilverlust." },
-      { q: "Welche Prädilektionsstelle fehlt? Sacrum – Fersen – Trochanter – …", a: ["Schulterblatt","Okziput","Ellbogen","alle"], correct: 3, explain: "Weitere sind Okziput, Schulterblatt, Malleolen – Liste ist länger." },
+      { q: "Welche Körperstelle ist in Rückenlage KEINE typische Prädilektionsstelle für Dekubitus?", a: ["Kreuzbein (Sacrum)","Fersen","Hinterkopf (Okziput)","Bauchnabel"], correct: 3, explain: "Typisch sind Stellen, an denen Knochen dicht unter der Haut liegen: Sacrum, Fersen, Okziput, Schulterblätter, Ellenbogen." },
       { q: "Was ist KEINE Prophylaxe?", a: ["Druckentlastung","Hautpflege","Massieren von Hautrötungen","Mobilisation"], correct: 2, explain: "Massieren verstärkt Gewebsschaden!" }
     ],
     flashcards: [

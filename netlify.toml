@@ -1,5 +1,5 @@
 # =============================================================
-# Netlify-Konfiguration für Tschakka! / PFF32
+# Netlify-Konfiguration für Tschakka!
 # =============================================================
 # Subdomain wird im Netlify-Dashboard gesetzt (Site → Domain
 # management → Site name → "tschakka"). Diese Datei steuert

@@ -1,4 +1,4 @@
-# Tschakka! — PFF32 Neural Training
+# Tschakka! — Neural Training
 
 Cyberpunk-style Lern-App zur Vorbereitung auf die schriftliche Abschlussprüfung
 **Pflegefachfrau/-mann** an der RBB Müritz.

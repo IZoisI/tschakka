@@ -1,5 +1,5 @@
 // ============================================================
-// PFF32 // Tschakka! — Edge Function: register
+// Tschakka! — Edge Function: register
 // ============================================================
 // Validiert das Initial-Passwort SERVERSEITIG (Env-Var INITIAL_CODE),
 // legt einen Auth-User mit synthetischer Pseudo-Email an

@@ -1,5 +1,5 @@
 /* ===========================================================
-   PFF32 // APP LOGIC
+   TSCHAKKA // APP LOGIC
    State-Management, Gamification, Views, Spiele
    =========================================================== */
 
@@ -442,6 +442,18 @@ function startQuiz(topicId, opts = {}) {
   });
 }
 
+/* Antwortoptionen zufällig mischen, damit die richtige Antwort nicht
+   immer an derselben Stelle steht. Liefert eine Kopie; q.correct wird
+   auf die neue Position umgerechnet. */
+function shuffleAnswers(q) {
+  const order = q.a.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return { ...q, a: order.map(i => q.a[i]), correct: order.indexOf(q.correct) };
+}
+
 function runQuiz({ title, questions, onFinish, bossMode = false }) {
   let idx = 0, correct = 0;
   const total = questions.length;
@@ -449,6 +461,7 @@ function runQuiz({ title, questions, onFinish, bossMode = false }) {
 
   function render() {
     if (idx >= total || (bossMode && hp <= 0)) return finish();
+    questions[idx] = shuffleAnswers(questions[idx]);
     const q = questions[idx];
     const progress = ((idx) / total) * 100;
 
@@ -822,6 +835,7 @@ async function startBossBattle() {
   updateLives();
 
   function askBossQuestion(q, num) {
+    q = shuffleAnswers(q);
     return new Promise(resolve => {
       const area = document.getElementById("boss-quiz-area");
       if (!area) { resolve({ correct: false, aborted: true }); return; }
@@ -1493,7 +1507,7 @@ function renderStats(root) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `pff32_fortschritt_${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `tschakka_fortschritt_${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast("Export", "Datei heruntergeladen.", "green");

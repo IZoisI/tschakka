@@ -1,5 +1,5 @@
 -- ============================================================
--- PFF32 // Tschakka! — Supabase Schema (Stufe B)
+-- Tschakka! — Supabase Schema (Stufe B)
 -- ============================================================
 -- Dieses Skript läuft einmal im Supabase SQL-Editor.
 -- Es ist idempotent (kann mehrfach ausgeführt werden).

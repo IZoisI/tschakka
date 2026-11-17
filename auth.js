@@ -1,5 +1,5 @@
 /* ===========================================================
-   PFF32 // AUTH (Stufe B — Supabase)
+   TSCHAKKA // AUTH (Stufe B — Supabase)
    -----------------------------------------------------------
    Backend: Supabase (Postgres + Auth + Edge Function).
    Initial-Passwort wird SERVERSEITIG geprüft (Edge Function
