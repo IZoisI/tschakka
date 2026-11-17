@@ -2320,3 +2320,12 @@ main {
   border-bottom: 1px solid var(--c-border);
 }
 .achievement-group span { font-family: var(--font-mono); font-size: .8rem; color: var(--c-text-dim); margin-left: .5rem; }
+
+.whatsnew-older {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+  margin: 1.4rem 0 .6rem;
+}

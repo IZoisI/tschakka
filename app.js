@@ -1895,70 +1895,85 @@ if (typeof _origStartBossBattle === "function") {
     document.addEventListener("touchstart", _kickMusic);
   }
 
-  /* Migration-Bestätigung + What's-New-Modal */
+  /* Migration-Bestätigung + What's-New-Modal (einmal je neuer Version) */
   const migratedXp = Auth.consumeMigrationFlag?.();
-  if (state.seenWhatsNewV12) {
-    // Modal schon mal gesehen → Migration als Toast bestätigen (falls relevant)
-    if (migratedXp !== null && migratedXp !== undefined) {
-      toast(
-        "✓ Fortschritt übernommen",
-        `${migratedXp} XP von deinem alten Account migriert — willkommen zurück!`,
-        "green",
-      );
-    }
-  } else {
-    // Erstes Mal v1.2 → Modal zeigen, Migration ggf. integriert
-    maybeShowWhatsNew(migratedXp);
+  if (!maybeShowWhatsNew(migratedXp) && migratedXp !== null && migratedXp !== undefined) {
+    toast(
+      "✓ Fortschritt übernommen",
+      `${migratedXp} XP von deinem alten Account migriert — willkommen zurück!`,
+      "green",
+    );
   }
 })();
 
 /* ===========================================================
-   WHAT'S NEW — einmalige Info-Anzeige nach v1.2-Update
+   WHAT'S NEW — erscheint einmal pro neuer Version nach dem Login
+   Inhalte & Versionsnummer: release-notes.js
    =========================================================== */
-function maybeShowWhatsNew(migratedXp) {
-  if (state.seenWhatsNewV12) return;
+function versionNewer(a, b) {
+  const pa = String(a).split(".").map(Number), pb = String(b).split(".").map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) > (pb[i] || 0);
+  }
+  return false;
+}
 
-  const migrationBlock = (migratedXp !== null && migratedXp !== undefined)
-    ? `
+/* Gibt true zurück, wenn das Fenster angezeigt wurde. */
+function maybeShowWhatsNew(migratedXp) {
+  if (typeof APP_VERSION === "undefined") return false;
+  /* Altbestand: wer das v1.2-Fenster gesehen hat, steht auf 1.2 */
+  const seen = state.seenVersion || (state.seenWhatsNewV12 ? "1.2" : null);
+  if (seen && !versionNewer(APP_VERSION, seen)) return false;
+
+  /* Alle Versionen seit dem letzten Besuch; neue Nutzer sehen nur die aktuelle */
+  const notes = seen
+    ? RELEASE_NOTES.filter(n => versionNewer(n.version, seen) && !versionNewer(n.version, APP_VERSION))
+    : RELEASE_NOTES.filter(n => n.version === APP_VERSION);
+  if (!notes.length) {
+    state.seenVersion = APP_VERSION; saveState(); return false;
+  }
+
+  const migrationBlock = (migratedXp !== null && migratedXp !== undefined) ? `
       <div class="whatsnew-item whatsnew-success">
         <div class="whatsnew-icon">✓</div>
         <div class="whatsnew-text">
           <h3>Fortschritt übernommen</h3>
-          <p>Wir haben deinen alten Lernstand auf diesem Gerät gefunden und in dein neues Cloud-Konto übertragen — <strong>${migratedXp} XP</strong>, Streaks und freigeschaltete Achievements sind alle wieder da. Willkommen zurück!</p>
+          <p>Wir haben deinen alten Lernstand auf diesem Gerät gefunden und in dein Cloud-Konto übertragen — <strong>${migratedXp} XP</strong>, Streaks und Achievements sind wieder da. Willkommen zurück!</p>
         </div>
-      </div>`
-    : "";
+      </div>` : "";
 
-  const html = `
-    <h2 class="modal-title">// SYSTEM-UPDATE v1.2</h2>
-    <p class="whatsnew-sub">Während du weg warst, hat sich was getan:</p>
-
+  const sections = notes.map((n, i) => `
+    ${i > 0 ? `<h3 class="whatsnew-older">Außerdem aus v${n.version}</h3>` : ""}
     <div class="whatsnew">
-      ${migrationBlock}
-      <div class="whatsnew-item">
-        <div class="whatsnew-icon">☁</div>
-        <div class="whatsnew-text">
-          <h3>Cross-Device Sync aktiv</h3>
-          <p>Dein Fortschritt liegt jetzt in der <strong>Cloud</strong> — nicht mehr nur lokal. Du kannst dich auf Handy, Tablet und Laptop einloggen und überall dort weitermachen, wo du aufgehört hast. XP, Streaks und Achievements wandern automatisch mit.</p>
-        </div>
-      </div>
+      ${n.items.map(it => `
+        <div class="whatsnew-item">
+          <div class="whatsnew-icon">${it.icon}</div>
+          <div class="whatsnew-text">
+            <h3>${it.title}</h3>
+            <p>${it.text}</p>
+          </div>
+        </div>`).join("")}
+    </div>`).join("");
 
-      <div class="whatsnew-item">
-        <div class="whatsnew-icon">★</div>
-        <div class="whatsnew-text">
-          <h3>23 neue Achievements</h3>
-          <p>Es gibt jetzt <strong>45 statt 22</strong> Achievements zu freischalten: neue Kategorie-Master (Innere, Onko, Notfall, Hygiene, Wunde, Päd u.a.), höhere Streak-, Level- und Boss-Stufen — und zwei Feiertags-Specials für den <strong>1. Mai</strong> und <strong>Christi Himmelfahrt</strong>. Schau mal im Achievements-Tab vorbei.</p>
-        </div>
-      </div>
-    </div>
-
+  openModal(`
+    <h2 class="modal-title">// SYSTEM-UPDATE v${notes[0].version}</h2>
+    <p class="whatsnew-sub">${notes[0].intro || "Das ist neu:"}</p>
+    ${migrationBlock ? `<div class="whatsnew">${migrationBlock}</div>` : ""}
+    ${sections}
     <button class="btn btn-primary" id="whatsnew-ack" style="width:100%;margin-top:1.5rem">Verstanden ▸</button>
-  `;
+  `);
 
-  openModal(html);
-  document.getElementById("whatsnew-ack")?.addEventListener("click", () => {
-    state.seenWhatsNewV12 = true;
-    saveState();
-    closeModal();
-  });
+  /* Sofort als gesehen merken – auch wenn per ✕ geschlossen wird */
+  state.seenVersion = APP_VERSION;
+  state.seenWhatsNewV12 = true;
+  saveState();
+  document.getElementById("whatsnew-ack")?.addEventListener("click", closeModal);
+  return true;
 }
+
+/* Fußzeile zeigt immer die aktuelle Version */
+(function showVersionInFooter() {
+  if (typeof APP_VERSION === "undefined") return;
+  const el = document.querySelector(".app-footer span");
+  if (el) el.textContent = `NEURAL TRAINING v${APP_VERSION}`;
+})();
