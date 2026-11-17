@@ -1,7 +1,7 @@
 /* ===========================================================
    TSCHAKKA // LEARNING DATA
    Alle Lerninhalte für die Abschlussprüfung Pflegefachfrau/-mann
-   Basis: Planungsraster RBB Müritz, 28 Unterrichtswochen
+   Basis: Planungsraster RBB Müritz · Wochenplan ab 23.11.2026 bis Juni 2027
    =========================================================== */
 
 const CATEGORIES = {
@@ -2605,35 +2605,41 @@ const TOPICS = {
    WOCHENPLAN (28 Lernwochen) – nach Planung RBB Müritz
    =========================================================== */
 
+/* Wochenplan bis zur schriftlichen Prüfung (Juni 2027).
+   PLAN_START = Montag der ersten Woche; jede Zeile ist eine Kalenderwoche.
+   type: "learn" (Mo–Fr je ein Thema) · "pause" · "review" (Kategorie je Tag)
+         · "exam" (Generalprobe: gemischte Prüfungsfragen) */
+const PLAN_START = "2026-11-23";
+
 const WEEKS = [
-  { n: 1,  mo: "paraphrasieren",       di: "nervensystem",         mi: "beratung",             do: "herz_anatomie",       fr: "lunge_anatomie" },
-  { n: 2,  mo: "verbalisieren",        di: "gefaesssystem",        mi: "beobachtungsprozess",  do: "blutdruck",           fr: "lungenembolie" },
-  { n: 3,  mo: "gewaltfreie_kommun",   di: "apoplex",              mi: "anleitung",            do: "thrombose",           fr: "pneumonie" },
-  { n: 4,  mo: "watzlawick",           di: "hirnareale",           mi: null,                    do: "virchow_trias",       fr: "copd" },
-  { n: 5,  mo: "schulz_von_thun",      di: null,                   mi: null,                    do: "herzerkrankungen",    fr: "asthma_b" },
-  { n: 6,  mo: "niere_anatomie",       di: "qm",                   mi: "verdauungssystem",     do: "vers_neugeborener",   fr: "diabetes_m" },
-  { n: 7,  mo: "urinbeobachtung",      di: "pflegestuetzpunkt",    mi: "morbus_crohn",         do: "apgar",               fr: "stoffwechsel" },
-  { n: 8,  mo: "zystitis",             di: "solidaritaetsprinzip", mi: "colitis_ulcerosa",     do: "neurodermitis",       fr: "pavk" },
-  { n: 9,  mo: "dialyse",              di: "krankenhausfinanzierung", mi: "darmkrebs",         do: "perzentile",          fr: "funktion_insulin" },
-  { n: 10, mo: "nierenerkrankungen",   di: "leistungstraeger",     mi: "obstipation",          do: "frakturen",           fr: "folgeerkrankungen" },
-  { n: 11, mo: "bewegungsapp_anat",    di: "gesundheitsfoerderung", mi: "depressionen",        do: "qm",                  fr: "nosokomiale" },
-  { n: 12, mo: "osteoporose",          di: "rehabilitation",       mi: "ptbs",                 do: "leitlinien_standards", fr: "noro_rota" },
-  { n: 13, mo: "bechterew",            di: "pflegeforschung",      mi: "essstoerungen",        do: "fallbesprechungen",   fr: "mrsa" },
-  { n: 14, mo: "bandscheibenvorfall",  di: null,                   mi: null,                    do: "casemanagement",      fr: null },
-  { n: 15, mo: null,                   di: null,                   mi: null,                    do: "sdm",                 fr: null },
-  { n: 16, mo: "rheumatoider_formenk", di: "pflegebeduerftigkeit", mi: "morbus_parkinson",     do: "onko_erkrankungen",   fr: "pflegeprozess" },
-  { n: 17, mo: null,                   di: "pflegesysteme",        mi: null,                    do: "tumorklassen",        fr: "atl_abedl" },
-  { n: 18, mo: null,                   di: null,                   mi: null,                    do: "metastasierung",      fr: "pesr_smart" },
-  { n: 19, mo: null,                   di: null,                   mi: null,                    do: "risikofaktoren",      fr: "sis" },
-  { n: 20, mo: null,                   di: null,                   mi: null,                    do: "therapieformen",      fr: "expertenstandard" },
-  { n: 21, mo: "ethik",                di: "notfall_vergiftung",   mi: "tod_sterben",          do: "betreuungsrecht",     fr: "wundmanagement" },
-  { n: 22, mo: "icn",                  di: "lungenembolie",        mi: null,                    do: "sterbehilfe",         fr: "dekubitus" },
-  { n: 23, mo: "wuerde_respekt",       di: "herzinfarkt",          mi: null,                    do: "patientenverfuegung", fr: "chronische_wunden" },
-  { n: 24, mo: "pflegecharta",         di: "apoplex",              mi: null,                    do: "freiheitsentziehende", fr: "akute_wunden" },
-  { n: 25, mo: "utilitarismus_kant",   di: "atemnot",              mi: null,                    do: null,                  fr: null },
-  { n: 26, mo: "demenz",               di: "blut_anatomie",        mi: "schwangerschaft",      do: "pflegediagnosen",     fr: null },
-  { n: 27, mo: "demenz_formen",        di: "leukaemie",            mi: "wochenbett",           do: null,                  fr: null },
-  { n: 28, mo: "umgang_dementen",      di: "anaemie",              mi: "zyklus",               do: null,                  fr: null }
+  { type: "learn", mo: "paraphrasieren", di: "nervensystem", mi: "beratung", do: "herz_anatomie", fr: "lunge_anatomie" },
+  { type: "learn", mo: "verbalisieren", di: "gefaesssystem", mi: "beobachtungsprozess", do: "blutdruck", fr: "lungenembolie" },
+  { type: "learn", mo: "gewaltfreie_kommun", di: "apoplex", mi: "anleitung", do: "thrombose", fr: "pneumonie" },
+  { type: "learn", mo: "watzlawick", di: "hirnareale", mi: "virchow_trias", do: "copd", fr: "schulz_von_thun" },
+  { type: "pause", label: "Weihnachtspause" },
+  { type: "pause", label: "Weihnachtspause" },
+  { type: "learn", mo: "herzerkrankungen", di: "asthma_b", mi: "niere_anatomie", do: "qm", fr: "verdauungssystem" },
+  { type: "learn", mo: "vers_neugeborener", di: "diabetes_m", mi: "urinbeobachtung", do: "pflegestuetzpunkt", fr: "morbus_crohn" },
+  { type: "learn", mo: "apgar", di: "stoffwechsel", mi: "zystitis", do: "solidaritaetsprinzip", fr: "colitis_ulcerosa" },
+  { type: "learn", mo: "neurodermitis", di: "pavk", mi: "dialyse", do: "krankenhausfinanzierung", fr: "darmkrebs" },
+  { type: "learn", mo: "perzentile", di: "funktion_insulin", mi: "nierenerkrankungen", do: "leistungstraeger", fr: "obstipation" },
+  { type: "learn", mo: "frakturen", di: "folgeerkrankungen", mi: "bewegungsapp_anat", do: "gesundheitsfoerderung", fr: "depressionen" },
+  { type: "learn", mo: "nosokomiale", di: "osteoporose", mi: "rehabilitation", do: "ptbs", fr: "leitlinien_standards" },
+  { type: "learn", mo: "noro_rota", di: "bechterew", mi: "pflegeforschung", do: "essstoerungen", fr: "fallbesprechungen" },
+  { type: "learn", mo: "mrsa", di: "bandscheibenvorfall", mi: "casemanagement", do: "sdm", fr: "rheumatoider_formenk" },
+  { type: "learn", mo: "pflegebeduerftigkeit", di: "morbus_parkinson", mi: "onko_erkrankungen", do: "pflegeprozess", fr: "pflegesysteme" },
+  { type: "learn", mo: "tumorklassen", di: "atl_abedl", mi: "metastasierung", do: "pesr_smart", fr: "risikofaktoren" },
+  { type: "learn", mo: "sis", di: "therapieformen", mi: "expertenstandard", do: "ethik", fr: "notfall_vergiftung" },
+  { type: "learn", mo: "tod_sterben", di: "betreuungsrecht", mi: "wundmanagement", do: "icn", fr: "sterbehilfe" },
+  { type: "learn", mo: "dekubitus", di: "wuerde_respekt", mi: "herzinfarkt", do: "patientenverfuegung", fr: "chronische_wunden" },
+  { type: "learn", mo: "pflegecharta", di: "freiheitsentziehende", mi: "akute_wunden", do: "utilitarismus_kant", fr: "atemnot" },
+  { type: "learn", mo: "demenz", di: "blut_anatomie", mi: "schwangerschaft", do: "pflegediagnosen", fr: "demenz_formen" },
+  { type: "learn", mo: "leukaemie", di: "wochenbett", mi: "umgang_dementen", do: "anaemie", fr: "zyklus" },
+  { type: "review", label: "Wiederholung I · Pflegeprozess, Wissenschaft, Recht", mo: "pflegeprozess", di: "pflegewiss", mi: "kommunikation", do: "ethik", fr: "sozialrecht" },
+  { type: "review", label: "Wiederholung II · Körper & Krankheit", mo: "anatomie", di: "innere", mi: "innere", do: "notfall", fr: "hygiene" },
+  { type: "review", label: "Wiederholung III · Spezielle Pflege", mo: "psychiatrie", di: "onko", mi: "paed", do: "wunde", fr: "innere" },
+  { type: "exam", label: "Generalprobe I" },
+  { type: "exam", label: "Generalprobe II" }
 ];
 
 /* ===========================================================
@@ -2666,6 +2672,70 @@ function ascensionDay(year) {
   const e = easterSunday(year);
   const dt = new Date(Date.UTC(year, e.month - 1, e.day + 39));
   return { month: dt.getUTCMonth() + 1, day: dt.getUTCDate() };
+}
+
+
+/* ---------- Lerntage für datumsbasierte Achievements ----------
+   Ein Tag zählt, wenn an ihm ein Thema abgeschlossen (studyLog)
+   oder irgendeine Lernaktivität mit XP stattfand (activityLog). */
+function learnedDays(state) {
+  const days = new Set();
+  [state.studyLog || {}, state.activityLog || {}].forEach(log =>
+    Object.keys(log).forEach(d => { if (log[d] > 0) days.add(d); }));
+  return [...days].map(d => d.split("-").map(Number)).filter(([y, m, d]) => y && m && d);
+}
+function learnedOnDate(state, month, day) {
+  return learnedDays(state).some(([, m, d]) => m === month && d === day);
+}
+function studiedOnEasterOffset(state, offset) {
+  return learnedDays(state).some(([y, m, d]) => {
+    const e = easterSunday(y);
+    const dt = new Date(Date.UTC(y, e.month - 1, e.day + offset));
+    return dt.getUTCMonth() + 1 === m && dt.getUTCDate() === d;
+  });
+}
+function studiedOnEaster(state) {
+  return studiedOnEasterOffset(state, 0) || studiedOnEasterOffset(state, 1);
+}
+function studiedAllAdvents(state) {
+  const set = new Set(learnedDays(state).map(([y, m, d]) => `${y}-${m}-${d}`));
+  const years = new Set(learnedDays(state).map(([y]) => y));
+  for (const y of years) {
+    const dec24 = new Date(y, 11, 24);
+    const fourth = new Date(y, 11, 24 - dec24.getDay());     // Sonntag vor/an Heiligabend
+    const all = [0, 7, 14, 21].every(off => {
+      const dt = new Date(fourth); dt.setDate(dt.getDate() - off);
+      return set.has(`${dt.getFullYear()}-${dt.getMonth() + 1}-${dt.getDate()}`);
+    });
+    if (all) return true;
+  }
+  return false;
+}
+function learnedBothXmasDays(state) {
+  const days = learnedDays(state);
+  return days.some(([y, m, d]) => m === 12 && d === 25 && days.some(([y2, m2, d2]) => y2 === y && m2 === 12 && d2 === 26));
+}
+function learnedBetweenYears(state) {
+  const byYear = {};
+  learnedDays(state).forEach(([y, m, d]) => { if (m === 12 && d >= 27 && d <= 30) byYear[y] = (byYear[y] || 0) + 1; });
+  return Math.max(0, ...Object.values(byYear));
+}
+/* Weihnachtsferien = 21.12. bis 3.1. (gezählt je Winter) */
+function learnedInXmasBreak(state) {
+  const byWinter = {};
+  learnedDays(state).forEach(([y, m, d]) => {
+    if (m === 12 && d >= 21) byWinter[y] = (byWinter[y] || 0) + 1;
+    else if (m === 1 && d <= 3) byWinter[y - 1] = (byWinter[y - 1] || 0) + 1;
+  });
+  return Math.max(0, ...Object.values(byWinter));
+}
+function openFullCount(state) {
+  return Object.values(state.openScores || {}).filter(v => v >= 100).length;
+}
+function openAllDone(state) {
+  if (typeof OPEN_QUESTIONS === "undefined") return false;
+  const total = Object.values(OPEN_QUESTIONS).reduce((n, a) => n + a.length, 0);
+  return total > 0 && Object.keys(state.openScores || {}).length >= total;
 }
 
 /* Hat irgendein Eintrag in studyLog ein YYYY-05-01 mit count > 0? */
@@ -2717,57 +2787,82 @@ const ICON_ASCENSION =
 
 const ACHIEVEMENTS = [
   /* ===== Bestand: Themen-Meilensteine ===== */
-  { id: "first_steps",   icon: "🚀", name: "Erste Schritte",        desc: "1. Thema abgeschlossen",                  check: s => s.completed.length >= 1 },
-  { id: "ten_topics",    icon: "📚", name: "Fleißig gelernt",       desc: "10 Themen abgeschlossen",                 check: s => s.completed.length >= 10 },
-  { id: "topics_25",     icon: "📘", name: "Aufgewacht",            desc: "25 Themen abgeschlossen",                 check: s => s.completed.length >= 25 },
-  { id: "half_way",      icon: "⚡", name: "Halbzeit",              desc: "50 Themen abgeschlossen",                 check: s => s.completed.length >= 50 },
-  { id: "topics_75",     icon: "📗", name: "Im Flow",               desc: "75 Themen abgeschlossen",                 check: s => s.completed.length >= 75 },
-  { id: "all_done",      icon: "🏆", name: "Examen-Ready",          desc: "Alle Themen abgeschlossen",               check: s => s.completed.length >= Object.keys(TOPICS).length },
+  { group: "Meilensteine", id: "first_steps",   icon: "🚀", name: "Erste Schritte",        desc: "1. Thema abgeschlossen",                  check: s => s.completed.length >= 1 },
+  { group: "Meilensteine", id: "ten_topics",    icon: "📚", name: "Fleißig gelernt",       desc: "10 Themen abgeschlossen",                 check: s => s.completed.length >= 10 },
+  { group: "Meilensteine", id: "topics_25",     icon: "📘", name: "Aufgewacht",            desc: "25 Themen abgeschlossen",                 check: s => s.completed.length >= 25 },
+  { group: "Meilensteine", id: "half_way",      icon: "⚡", name: "Halbzeit",              desc: "50 Themen abgeschlossen",                 check: s => s.completed.length >= 50 },
+  { group: "Meilensteine", id: "topics_75",     icon: "📗", name: "Im Flow",               desc: "75 Themen abgeschlossen",                 check: s => s.completed.length >= 75 },
+  { group: "Meilensteine", id: "all_done",      icon: "🏆", name: "Examen-Ready",          desc: "Alle Themen abgeschlossen",               check: s => s.completed.length >= Object.keys(TOPICS).length },
 
   /* ===== Bestand + Block A: Kategorie-Master ===== */
-  { id: "anatomy_ace",   icon: "🫀", name: "Anatomie-Ass",          desc: "Alle Anatomie-Themen geschafft",          check: s => categoryComplete(s, "anatomie") },
-  { id: "ethics_expert", icon: "⚖️",  name: "Ethik-Experte",         desc: "Alle Ethik-Themen geschafft",             check: s => categoryComplete(s, "ethik") },
-  { id: "psych_pro",     icon: "🧠", name: "Psych-Profi",           desc: "Alle Psychiatrie-Themen geschafft",       check: s => categoryComplete(s, "psychiatrie") },
-  { id: "innere_master", icon: "💉", name: "Innere-Spezialist",     desc: "Alle Innere-Medizin-Themen geschafft",    check: s => categoryComplete(s, "innere") },
-  { id: "onko_master",   icon: "☢️",  name: "Onko-Krieger",          desc: "Alle Onkologie-Themen geschafft",         check: s => categoryComplete(s, "onko") },
-  { id: "notfall_master",icon: "🚑", name: "Notfall-Held",          desc: "Alle Notfall-Themen geschafft",           check: s => categoryComplete(s, "notfall") },
-  { id: "hygiene_master",icon: "🦠", name: "Hygiene-Wächter",       desc: "Alle Hygiene-Themen geschafft",           check: s => categoryComplete(s, "hygiene") },
-  { id: "wunde_master",  icon: "🩹", name: "Wund-Doc",              desc: "Alle Wundmanagement-Themen geschafft",    check: s => categoryComplete(s, "wunde") },
-  { id: "prozess_master",icon: "📋", name: "Prozess-Architekt",     desc: "Alle Pflegeprozess-Themen geschafft",     check: s => categoryComplete(s, "pflegeprozess") },
-  { id: "wiss_master",   icon: "📖", name: "Theoretiker",           desc: "Alle Pflegewissenschafts-Themen geschafft", check: s => categoryComplete(s, "pflegewiss") },
-  { id: "sozial_master", icon: "📜", name: "Paragraphen-Ninja",     desc: "Alle Sozialrechts-Themen geschafft",      check: s => categoryComplete(s, "sozialrecht") },
-  { id: "paed_master",   icon: "👶", name: "Päd-Profi",             desc: "Alle Pädiatrie-Themen geschafft",         check: s => categoryComplete(s, "paed") },
-  { id: "kommun_master", icon: "💬", name: "Wort-Akrobat",          desc: "Alle Kommunikations-Themen geschafft",    check: s => categoryComplete(s, "kommunikation") },
+  { group: "Kategorien", id: "anatomy_ace",   icon: "🫀", name: "Anatomie-Ass",          desc: "Alle Anatomie-Themen geschafft",          check: s => categoryComplete(s, "anatomie") },
+  { group: "Kategorien", id: "ethics_expert", icon: "⚖️",  name: "Ethik-Experte",         desc: "Alle Ethik-Themen geschafft",             check: s => categoryComplete(s, "ethik") },
+  { group: "Kategorien", id: "psych_pro",     icon: "🧠", name: "Psych-Profi",           desc: "Alle Psychiatrie-Themen geschafft",       check: s => categoryComplete(s, "psychiatrie") },
+  { group: "Kategorien", id: "innere_master", icon: "💉", name: "Innere-Spezialist",     desc: "Alle Innere-Medizin-Themen geschafft",    check: s => categoryComplete(s, "innere") },
+  { group: "Kategorien", id: "onko_master",   icon: "☢️",  name: "Onko-Krieger",          desc: "Alle Onkologie-Themen geschafft",         check: s => categoryComplete(s, "onko") },
+  { group: "Kategorien", id: "notfall_master",icon: "🚑", name: "Notfall-Held",          desc: "Alle Notfall-Themen geschafft",           check: s => categoryComplete(s, "notfall") },
+  { group: "Kategorien", id: "hygiene_master",icon: "🦠", name: "Hygiene-Wächter",       desc: "Alle Hygiene-Themen geschafft",           check: s => categoryComplete(s, "hygiene") },
+  { group: "Kategorien", id: "wunde_master",  icon: "🩹", name: "Wund-Doc",              desc: "Alle Wundmanagement-Themen geschafft",    check: s => categoryComplete(s, "wunde") },
+  { group: "Kategorien", id: "prozess_master",icon: "📋", name: "Prozess-Architekt",     desc: "Alle Pflegeprozess-Themen geschafft",     check: s => categoryComplete(s, "pflegeprozess") },
+  { group: "Kategorien", id: "wiss_master",   icon: "📖", name: "Theoretiker",           desc: "Alle Pflegewissenschafts-Themen geschafft", check: s => categoryComplete(s, "pflegewiss") },
+  { group: "Kategorien", id: "sozial_master", icon: "📜", name: "Paragraphen-Ninja",     desc: "Alle Sozialrechts-Themen geschafft",      check: s => categoryComplete(s, "sozialrecht") },
+  { group: "Kategorien", id: "paed_master",   icon: "👶", name: "Päd-Profi",             desc: "Alle Pädiatrie-Themen geschafft",         check: s => categoryComplete(s, "paed") },
+  { group: "Kategorien", id: "kommun_master", icon: "💬", name: "Wort-Akrobat",          desc: "Alle Kommunikations-Themen geschafft",    check: s => categoryComplete(s, "kommunikation") },
 
   /* ===== Bestand + Block B: Streaks, Levels, Quiz, Boss, Mini-Games ===== */
-  { id: "streak_3",      icon: "🔥", name: "3-Tage-Streak",         desc: "3 Tage in Folge gelernt",                 check: s => s.streak >= 3 },
-  { id: "streak_7",      icon: "🔥", name: "Wochen-Streak",         desc: "7 Tage in Folge gelernt",                 check: s => s.streak >= 7 },
-  { id: "streak_14",     icon: "🔥", name: "Zwei-Wochen-Glut",      desc: "14 Tage in Folge gelernt",                check: s => s.streak >= 14 },
-  { id: "streak_30",     icon: "🌋", name: "Unaufhaltsam",          desc: "30 Tage Streak",                          check: s => s.streak >= 30 },
-  { id: "quiz_king",     icon: "👑", name: "Quiz-König",            desc: "100 richtige Antworten",                  check: s => s.correctAnswers >= 100 },
-  { id: "quiz_legend",   icon: "🎯", name: "Quiz-Legende",          desc: "500 richtige Antworten",                  check: s => s.correctAnswers >= 500 },
-  { id: "perfect",       icon: "💯", name: "Perfektionist",         desc: "Quiz mit 100% abgeschlossen",             check: s => s.perfectQuizzes >= 1 },
-  { id: "perfect_5",     icon: "💯", name: "Perfektion ×5",         desc: "5× Quiz mit 100%",                        check: s => s.perfectQuizzes >= 5 },
-  { id: "night_owl",     icon: "🦉", name: "Nachteule",             desc: "Nach 22 Uhr gelernt",                     check: s => s.lateNight },
-  { id: "early_bird",    icon: "🌅", name: "Frühaufsteher",         desc: "Vor 7 Uhr gelernt",                       check: s => s.earlyBird },
-  { id: "weekend",       icon: "🎮", name: "Wochenendkrieger",      desc: "Am Wochenende gelernt",                   check: s => s.weekendWarrior },
-  { id: "marathon",      icon: "🏃", name: "Marathon",              desc: "10 Themen an einem Tag",                  check: s => s.maxPerDay >= 10 },
-  { id: "level_5",       icon: "⭐", name: "Level 5",                desc: "Level 5 erreicht",                        check: s => s.level >= 5 },
-  { id: "level_10",      icon: "🌟", name: "Level 10",              desc: "Level 10 erreicht",                       check: s => s.level >= 10 },
-  { id: "level_20",      icon: "✨", name: "Level 20",              desc: "Level 20 erreicht",                       check: s => s.level >= 20 },
-  { id: "level_30",      icon: "🌠", name: "Level 30",              desc: "Level 30 erreicht",                       check: s => s.level >= 30 },
-  { id: "level_50",      icon: "💎", name: "Level 50",              desc: "Level 50 erreicht",                       check: s => s.level >= 50 },
-  { id: "boss_win",      icon: "💀", name: "Boss besiegt",          desc: "Boss-Battle gewonnen",                    check: s => s.bossWins >= 1 },
-  { id: "boss_hunter",   icon: "☠️",  name: "Boss-Hunter",           desc: "5 Boss-Battles gewonnen",                 check: s => s.bossWins >= 5 },
-  { id: "boss_legend",   icon: "👹", name: "Boss-Legende",          desc: "25 Boss-Battles gewonnen",                check: s => s.bossWins >= 25 },
-  { id: "flashcard_fan", icon: "🗂️", name: "Karteikarten-König",   desc: "100 Karteikarten studiert",               check: s => s.flashcardsStudied >= 100 },
-  { id: "flashcard_500", icon: "🗃️", name: "Karteikarten-Maniac",  desc: "500 Karteikarten studiert",               check: s => s.flashcardsStudied >= 500 },
-  { id: "match_master",  icon: "🧩", name: "Matching-Meister",      desc: "Matching-Spiel in < 30 Sek",              check: s => s.matchBestTime && s.matchBestTime < 30 },
-  { id: "match_lightning",icon: "⚡", name: "Matching-Blitz",       desc: "Matching-Spiel in < 15 Sek",              check: s => s.matchBestTime && s.matchBestTime < 15 },
+  { group: "Fleiß & Spiele", id: "streak_3",      icon: "🔥", name: "3-Tage-Streak",         desc: "3 Tage in Folge gelernt",                 check: s => s.streak >= 3 },
+  { group: "Fleiß & Spiele", id: "streak_7",      icon: "🔥", name: "Wochen-Streak",         desc: "7 Tage in Folge gelernt",                 check: s => s.streak >= 7 },
+  { group: "Fleiß & Spiele", id: "streak_14",     icon: "🔥", name: "Zwei-Wochen-Glut",      desc: "14 Tage in Folge gelernt",                check: s => s.streak >= 14 },
+  { group: "Fleiß & Spiele", id: "streak_30",     icon: "🌋", name: "Unaufhaltsam",          desc: "30 Tage Streak",                          check: s => s.streak >= 30 },
+  { group: "Fleiß & Spiele", id: "quiz_king",     icon: "👑", name: "Quiz-König",            desc: "100 richtige Antworten",                  check: s => s.correctAnswers >= 100 },
+  { group: "Fleiß & Spiele", id: "quiz_legend",   icon: "🎯", name: "Quiz-Legende",          desc: "500 richtige Antworten",                  check: s => s.correctAnswers >= 500 },
+  { group: "Fleiß & Spiele", id: "perfect",       icon: "💯", name: "Perfektionist",         desc: "Quiz mit 100% abgeschlossen",             check: s => s.perfectQuizzes >= 1 },
+  { group: "Fleiß & Spiele", id: "perfect_5",     icon: "💯", name: "Perfektion ×5",         desc: "5× Quiz mit 100%",                        check: s => s.perfectQuizzes >= 5 },
+  { group: "Fleiß & Spiele", id: "night_owl",     icon: "🦉", name: "Nachteule",             desc: "Nach 22 Uhr gelernt",                     check: s => s.lateNight },
+  { group: "Fleiß & Spiele", id: "early_bird",    icon: "🌅", name: "Frühaufsteher",         desc: "Vor 7 Uhr gelernt",                       check: s => s.earlyBird },
+  { group: "Fleiß & Spiele", id: "weekend",       icon: "🎮", name: "Wochenendkrieger",      desc: "Am Wochenende gelernt",                   check: s => s.weekendWarrior },
+  { group: "Fleiß & Spiele", id: "marathon",      icon: "🏃", name: "Marathon",              desc: "10 Themen an einem Tag",                  check: s => s.maxPerDay >= 10 },
+  { group: "Fleiß & Spiele", id: "level_5",       icon: "⭐", name: "Level 5",                desc: "Level 5 erreicht",                        check: s => s.level >= 5 },
+  { group: "Fleiß & Spiele", id: "level_10",      icon: "🌟", name: "Level 10",              desc: "Level 10 erreicht",                       check: s => s.level >= 10 },
+  { group: "Fleiß & Spiele", id: "level_20",      icon: "✨", name: "Level 20",              desc: "Level 20 erreicht",                       check: s => s.level >= 20 },
+  { group: "Fleiß & Spiele", id: "level_30",      icon: "🌠", name: "Level 30",              desc: "Level 30 erreicht",                       check: s => s.level >= 30 },
+  { group: "Fleiß & Spiele", id: "level_50",      icon: "💎", name: "Level 50",              desc: "Level 50 erreicht",                       check: s => s.level >= 50 },
+  { group: "Fleiß & Spiele", id: "boss_win",      icon: "💀", name: "Boss besiegt",          desc: "Boss-Battle gewonnen",                    check: s => s.bossWins >= 1 },
+  { group: "Fleiß & Spiele", id: "boss_hunter",   icon: "☠️",  name: "Boss-Hunter",           desc: "5 Boss-Battles gewonnen",                 check: s => s.bossWins >= 5 },
+  { group: "Fleiß & Spiele", id: "boss_legend",   icon: "👹", name: "Boss-Legende",          desc: "25 Boss-Battles gewonnen",                check: s => s.bossWins >= 25 },
+  { group: "Fleiß & Spiele", id: "flashcard_fan", icon: "🗂️", name: "Karteikarten-König",   desc: "100 Karteikarten studiert",               check: s => s.flashcardsStudied >= 100 },
+  { group: "Fleiß & Spiele", id: "flashcard_500", icon: "🗃️", name: "Karteikarten-Maniac",  desc: "500 Karteikarten studiert",               check: s => s.flashcardsStudied >= 500 },
+  { group: "Fleiß & Spiele", id: "match_master",  icon: "🧩", name: "Matching-Meister",      desc: "Matching-Spiel in < 30 Sek",              check: s => s.matchBestTime && s.matchBestTime < 30 },
+  { group: "Fleiß & Spiele", id: "match_lightning",icon: "⚡", name: "Matching-Blitz",       desc: "Matching-Spiel in < 15 Sek",              check: s => s.matchBestTime && s.matchBestTime < 15 },
 
   /* ===== Holiday-Specials ===== */
-  { id: "labor_day",     icon: ICON_LABOR_DAY, name: "Heldin der Arbeit",   desc: "Am 1. Mai gelernt",               check: s => studiedOnLaborDay(s) },
-  { id: "ascension_day", icon: ICON_ASCENSION, name: "Goldener Bollerwagen", desc: "An Christi Himmelfahrt gelernt", check: s => studiedOnAscension(s) }
+  { group: "Feiertage", id: "labor_day",     icon: ICON_LABOR_DAY, name: "Heldin der Arbeit",   desc: "Am 1. Mai gelernt",               check: s => learnedOnDate(s, 5, 1) },
+  { group: "Feiertage", id: "ascension_day", icon: ICON_ASCENSION, name: "Goldener Bollerwagen", desc: "An Christi Himmelfahrt gelernt", check: s => studiedOnEasterOffset(s, 39) },
+  { group: "Feiertage", id: "easter",        icon: "🐣", name: "Ostereier-Suche",      desc: "An Ostersonntag oder Ostermontag gelernt",        check: s => studiedOnEaster(s) },
+  { group: "Feiertage", id: "nurses_day",    icon: "🩺", name: "Tag der Pflegenden",   desc: "Am 12. Mai gelernt – Internationaler Tag der Pflegenden", check: s => learnedOnDate(s, 5, 12) },
+  { group: "Feiertage", id: "pentecost",     icon: "🕊️", name: "Pfingstwunder",        desc: "An Pfingstmontag gelernt",                         check: s => studiedOnEasterOffset(s, 50) },
+
+  /* ===== Weihnachten ===== */
+  { group: "Weihnachten", id: "xmas_advent",   icon: "🕯️", name: "Lichterkette",        desc: "An allen vier Adventssonntagen eines Jahres gelernt", check: s => studiedAllAdvents(s) },
+  { group: "Weihnachten", id: "xmas_eve",      icon: "🎄", name: "Heiligabend-Held",    desc: "Am 24. Dezember gelernt",                          check: s => learnedOnDate(s, 12, 24) },
+  { group: "Weihnachten", id: "xmas_shift",    icon: "🎅", name: "Feiertagsdienst",     desc: "Am 25. und 26. Dezember gelernt – wie im echten Pflegealltag", check: s => learnedBothXmasDays(s) },
+  { group: "Weihnachten", id: "xmas_between",  icon: "✨", name: "Zwischen den Jahren", desc: "An 3 Tagen zwischen 27. und 30. Dezember gelernt", check: s => learnedBetweenYears(s) >= 3 },
+  { group: "Weihnachten", id: "xmas_nye",      icon: "🎆", name: "Letzter Dienst",      desc: "An Silvester gelernt",                             check: s => learnedOnDate(s, 12, 31) },
+  { group: "Weihnachten", id: "xmas_newyear",  icon: "🥂", name: "Guter Vorsatz",       desc: "Am 1. Januar gelernt",                             check: s => learnedOnDate(s, 1, 1) },
+  { group: "Weihnachten", id: "xmas_break",    icon: "❄️", name: "Winterfest",          desc: "In den Weihnachtsferien (21.12.–3.1.) an 7 Tagen gelernt", check: s => learnedInXmasBreak(s) >= 7 },
+
+  /* ===== Prüfungsfragen ===== */
+  { group: "Prüfungsfragen", id: "open_first",   icon: "✍️", name: "Erste Klausurfrage",  desc: "1 Prüfungsfrage beantwortet",                  check: s => (s.openAnswered || 0) >= 1 },
+  { group: "Prüfungsfragen", id: "open_25",      icon: "📝", name: "Schreibhand",         desc: "25 Prüfungsfragen beantwortet",                check: s => (s.openAnswered || 0) >= 25 },
+  { group: "Prüfungsfragen", id: "open_100",     icon: "🖋️", name: "Klausur-Routine",     desc: "100 Prüfungsfragen beantwortet",               check: s => (s.openAnswered || 0) >= 100 },
+  { group: "Prüfungsfragen", id: "open_full",    icon: "🎓", name: "Volle Punktzahl",     desc: "Eine Prüfungsfrage mit 100 % bewertet",        check: s => openFullCount(s) >= 1 },
+  { group: "Prüfungsfragen", id: "open_full_10", icon: "🏅", name: "Erwartungshorizont-Profi", desc: "10 Prüfungsfragen mit 100 % bewertet",     check: s => openFullCount(s) >= 10 },
+  { group: "Prüfungsfragen", id: "open_all",     icon: "📚", name: "Alles beantwortet",   desc: "Jede Prüfungsfrage mindestens einmal bearbeitet", check: s => openAllDone(s) },
+  { group: "Prüfungsfragen", id: "exam_pass",    icon: "🎯", name: "Generalprobe bestanden", desc: "Prüfungstraining mit 10 Fragen und mind. 80 %", check: s => (s.examTrainingBest || 0) >= 80 },
+
+  /* ===== Wochenplan ===== */
+  { group: "Wochenplan", id: "week_done",      icon: "✅", name: "Wochenziel",          desc: "Alle 5 Themen einer Lernwoche abgeschlossen",  check: s => WEEKS.some(w => (w.type || "learn") === "learn" && ["mo","di","mi","do","fr"].every(k => !w[k] || s.completed.includes(w[k]))) },
+  { group: "Wochenplan", id: "week_five",      icon: "🗓️", name: "Fünf im Kasten",      desc: "5 Lernwochen vollständig abgeschlossen",       check: s => WEEKS.filter(w => (w.type || "learn") === "learn" && ["mo","di","mi","do","fr"].every(k => !w[k] || s.completed.includes(w[k]))).length >= 5 }
 ];
 
 function categoryComplete(state, cat) {
@@ -2777,7 +2872,7 @@ function categoryComplete(state, cat) {
 }
 
 /* Expose to app.js */
-window.APP_DATA = { TOPICS, WEEKS, CATEGORIES, ACHIEVEMENTS, categoryComplete };
+window.APP_DATA = { TOPICS, WEEKS, PLAN_START, CATEGORIES, ACHIEVEMENTS, categoryComplete };
 
 
 

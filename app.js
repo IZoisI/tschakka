@@ -15,6 +15,7 @@ const DEFAULT_STATE = {
   completed: [],        // topic IDs
   topicScores: {},      // topicId -> best % in quiz
   studyLog: {},         // 'YYYY-MM-DD' -> count
+  activityLog: {},      // lokales Datum 'YYYY-MM-DD' -> Anzahl Lernaktivitäten (jede XP-Vergabe)
   correctAnswers: 0,
   perfectQuizzes: 0,
   bossWins: 0,
@@ -53,7 +54,17 @@ function xpNeededForLevel(lvl) {
   return Math.floor(100 * Math.pow(1.25, lvl - 1));
 }
 
+/* Lokales Datum (nicht UTC) – wichtig für Feiertags-Achievements kurz vor Mitternacht */
+function localDateKey(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function addXP(amount, reason = "") {
+  /* Jede XP-Vergabe ist eine Lernaktivität: zählt für Streak und Datums-Achievements */
+  updateStreak();
+  state.activityLog = state.activityLog || {};
+  const today = localDateKey();
+  state.activityLog[today] = (state.activityLog[today] || 0) + 1;
   state.xp += amount;
   let leveled = false;
   while (state.xp >= xpNeededForLevel(state.level)) {
@@ -302,41 +313,137 @@ function progressRing(pct) {
   </div>`;
 }
 
-function renderWeeks(root) {
-  const html = WEEKS.map(w => {
-    const days = [["Mo", w.mo], ["Di", w.di], ["Mi", w.mi], ["Do", w.do], ["Fr", w.fr]];
-    const validDays = days.filter(d => d[1]);
-    const doneCount = validDays.filter(d => state.completed.includes(d[1])).length;
-    const daysHtml = days.map(([label, id]) => {
-      if (!id) return `<div class="day-item" style="opacity:.3"><span class="day-label">${label}</span><span class="day-title">– frei –</span></div>`;
-      const t = TOPICS[id];
-      const done = state.completed.includes(id);
-      return `<div class="day-item ${done ? 'completed' : ''}" data-id="${id}">
-        <span class="day-label">${label}</span>
-        <span class="day-title">${t.title}</span>
-        <span class="day-status">${done ? '✓' : '▸'}</span>
-      </div>`;
-    }).join("");
+/* Datum des Montags von Woche i (0-basiert) ab PLAN_START */
+function weekMonday(i) {
+  const d = new Date(PLAN_START + "T00:00:00");
+  d.setDate(d.getDate() + i * 7);
+  return d;
+}
+function fmtDay(d) {
+  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+}
+function isoWeek(d) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return Math.ceil(((t - y0) / 86400000 + 1) / 7);
+}
+function currentWeekIndex() {
+  const diff = Math.floor((new Date() - weekMonday(0)) / 86400000);
+  return diff < 0 ? -1 : Math.floor(diff / 7);
+}
 
-    return `<div class="week-card">
+function renderWeeks(root) {
+  const DAYS = [["Mo", "mo"], ["Di", "di"], ["Mi", "mi"], ["Do", "do"], ["Fr", "fr"]];
+  const cur = currentWeekIndex();
+  const learnTotal = WEEKS.filter(w => (w.type || "learn") === "learn").length;
+  let learnNo = 0;
+
+  const html = WEEKS.map((w, i) => {
+    const type = w.type || "learn";
+    const mon = weekMonday(i);
+    const fri = new Date(mon); fri.setDate(fri.getDate() + 4);
+    const dateLabel = `KW ${isoWeek(mon)} · ${fmtDay(mon)}–${fmtDay(fri)}`;
+    const isCur = i === cur;
+    let title, body, progress = "";
+
+    if (type === "learn") {
+      learnNo++;
+      title = `Lernwoche ${learnNo} / ${learnTotal}`;
+      const ids = DAYS.map(([, k]) => w[k]).filter(Boolean);
+      progress = `${ids.filter(id => state.completed.includes(id)).length} / ${ids.length}`;
+      body = DAYS.map(([label, k]) => {
+        const id = w[k];
+        if (!id || !TOPICS[id]) return `<div class="day-item" style="opacity:.3"><span class="day-label">${label}</span><span class="day-title">– frei –</span></div>`;
+        const done = state.completed.includes(id);
+        return `<div class="day-item ${done ? "completed" : ""}" data-id="${id}">
+          <span class="day-label">${label}</span>
+          <span class="day-title">${TOPICS[id].title}</span>
+          <span class="day-status">${done ? "✓" : "▸"}</span>
+        </div>`;
+      }).join("");
+    } else if (type === "review") {
+      title = w.label;
+      body = DAYS.map(([label, k]) => {
+        const cat = w[k];
+        const c = CATEGORIES[cat];
+        if (!c) return "";
+        return `<div class="day-item" data-review="${cat}">
+          <span class="day-label">${label}</span>
+          <span class="day-title">${c.icon} ${c.name}</span>
+          <span class="day-status">↻</span>
+        </div>`;
+      }).join("");
+    } else if (type === "exam") {
+      title = w.label;
+      body = DAYS.map(([label]) => `<div class="day-item" data-exam="1">
+          <span class="day-label">${label}</span>
+          <span class="day-title">✍ Prüfungstraining (10 Fragen)</span>
+          <span class="day-status">▸</span>
+        </div>`).join("");
+    } else {
+      title = w.label || "Pause";
+      body = `<div class="day-item" data-flash="1" style="opacity:.75">
+          <span class="day-label">☕</span>
+          <span class="day-title">Kein neuer Stoff · optional: Karteikarten-Marathon</span>
+          <span class="day-status">▸</span>
+        </div>`;
+    }
+
+    return `<div class="week-card week-${type} ${isCur ? "week-current" : ""}" ${isCur ? 'id="week-current"' : ""}>
       <div class="week-header">
-        <span class="week-number">SW ${String(w.n).padStart(2,"0")}</span>
-        <span class="week-progress">${doneCount} / ${validDays.length}</span>
+        <span class="week-number">${isCur ? "▶ " : ""}${title}</span>
+        <span class="week-progress">${progress}</span>
       </div>
-      ${daysHtml}
+      <div class="week-date">${dateLabel}${isCur ? " · diese Woche" : ""}</div>
+      ${body}
     </div>`;
   }).join("");
 
+  const last = weekMonday(WEEKS.length - 1);
+  last.setDate(last.getDate() + 4);
   root.innerHTML = `
     <h1 class="view-title">Wochenplan</h1>
-    <p class="view-subtitle">28 Unterrichtswochen · ${Object.keys(TOPICS).length} Themen</p>
+    <p class="view-subtitle">${fmtDay(weekMonday(0))}${weekMonday(0).getFullYear()} – ${fmtDay(last)}${last.getFullYear()} · ${learnTotal} Lernwochen · Wiederholung · Generalprobe</p>
     <div class="weeks-container">${html}</div>
   `;
 
-  root.querySelectorAll(".day-item[data-id]").forEach(el => {
-    el.addEventListener("click", () => openTopic(el.dataset.id));
-  });
+  root.querySelectorAll(".day-item[data-id]").forEach(el =>
+    el.addEventListener("click", () => openTopic(el.dataset.id)));
+  root.querySelectorAll(".day-item[data-review]").forEach(el =>
+    el.addEventListener("click", () => openCategoryReview(el.dataset.review)));
+  root.querySelectorAll(".day-item[data-exam]").forEach(el =>
+    el.addEventListener("click", () => startExamTraining(10)));
+  root.querySelectorAll(".day-item[data-flash]").forEach(el =>
+    el.addEventListener("click", startFlashcardMarathon));
+
+  const curEl = root.querySelector("#week-current");
+  if (curEl) setTimeout(() => curEl.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
 }
+
+/* Wiederholungstag: Quiz-Drill oder Prüfungsfragen einer Kategorie */
+function openCategoryReview(cat) {
+  const c = CATEGORIES[cat];
+  const ids = Object.keys(TOPICS).filter(id => TOPICS[id].category === cat);
+  const openCount = (typeof OPEN_QUESTIONS !== "undefined")
+    ? ids.reduce((s, id) => s + (OPEN_QUESTIONS[id]?.length || 0), 0) : 0;
+  openModal(`
+    <div class="topic-header">
+      <div class="topic-category">↻ Wiederholung</div>
+      <div class="topic-title">${c.icon} ${c.name}</div>
+    </div>
+    <p style="color:var(--c-text-dim)">${ids.length} Themen in dieser Kategorie.</p>
+    <div class="topic-actions">
+      <button class="btn btn-primary" id="rev-quiz">🎯 Quiz-Drill (15 Fragen)</button>
+      ${openCount ? `<button class="btn btn-cyan" id="rev-open">✍ Prüfungsfragen (${openCount})</button>` : ""}
+    </div>
+  `);
+  document.getElementById("rev-quiz").addEventListener("click", () => startCategoryDrill(cat));
+  const ro = document.getElementById("rev-open");
+  if (ro) ro.addEventListener("click", () => startCategoryOpenQuestions(cat));
+}
+window.openCategoryReview = openCategoryReview;
 
 function renderThemen(root) {
   const allCats = Object.entries(CATEGORIES);
@@ -1268,35 +1375,36 @@ function openCategoryDrill() {
     <div class="games-grid">${html}</div>
   `);
   document.querySelectorAll("[data-cat]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const cat = btn.dataset.cat;
-      const questions = [];
-      Object.entries(TOPICS).forEach(([id, t]) => {
-        if (t.category !== cat) return;
-        (t.questions || []).forEach(q => questions.push({ ...q, _topic: id }));
-      });
-      if (questions.length === 0) {
-        toast("Keine Fragen", "Diese Kategorie hat keine Fragen.", "");
-        return;
+    btn.addEventListener("click", () => startCategoryDrill(btn.dataset.cat));
+  });
+}
+
+function startCategoryDrill(cat) {
+  const questions = [];
+  Object.entries(TOPICS).forEach(([id, t]) => {
+    if (t.category !== cat) return;
+    (t.questions || []).forEach(q => questions.push({ ...q, _topic: id }));
+  });
+  if (questions.length === 0) {
+    toast("Keine Fragen", "Diese Kategorie hat keine Fragen.", "");
+    return;
+  }
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+  const pool = questions.slice(0, Math.min(15, questions.length));
+  runQuiz({
+    title: `Drill: ${CATEGORIES[cat].name}`,
+    questions: pool,
+    onFinish: (score) => {
+      addXP(25 + Math.round(score / 4), `Drill ${CATEGORIES[cat].name}: ${score}%`);
+      if (score === 100) {
+        state.perfectQuizzes = (state.perfectQuizzes || 0) + 1;
+        saveState();
       }
-      for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [questions[i], questions[j]] = [questions[j], questions[i]];
-      }
-      const pool = questions.slice(0, Math.min(15, questions.length));
-      runQuiz({
-        title: `Drill: ${CATEGORIES[cat].name}`,
-        questions: pool,
-        onFinish: (score) => {
-          addXP(25 + Math.round(score / 4), `Drill ${CATEGORIES[cat].name}: ${score}%`);
-          if (score === 100) {
-            state.perfectQuizzes = (state.perfectQuizzes || 0) + 1;
-            saveState();
-          }
-          checkAchievements();
-        }
-      });
-    });
+      checkAchievements();
+    }
   });
 }
 
@@ -1373,15 +1481,29 @@ function renderAchievements(root) {
   const unlocked = state.unlockedAchievements?.length || 0;
   const pct = Math.round((unlocked / total) * 100);
 
-  const cards = ACHIEVEMENTS.map(a => {
-    const isUnlocked = state.unlockedAchievements.includes(a.id);
-    return `<div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
-      <div class="achievement-icon">${a.icon}</div>
-      <div class="achievement-info">
-        <h4>${a.name}</h4>
-        <p>${a.desc}</p>
-      </div>
-    </div>`;
+  /* Nach Gruppen sortiert anzeigen (Reihenfolge wie in data.js) */
+  const groups = [];
+  ACHIEVEMENTS.forEach(a => {
+    const g = a.group || "Weitere";
+    let entry = groups.find(x => x.name === g);
+    if (!entry) groups.push(entry = { name: g, items: [] });
+    entry.items.push(a);
+  });
+
+  const sections = groups.map(g => {
+    const got = g.items.filter(a => state.unlockedAchievements.includes(a.id)).length;
+    const cards = g.items.map(a => {
+      const isUnlocked = state.unlockedAchievements.includes(a.id);
+      return `<div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
+        <div class="achievement-icon">${a.icon}</div>
+        <div class="achievement-info">
+          <h4>${a.name}</h4>
+          <p>${a.desc}</p>
+        </div>
+      </div>`;
+    }).join("");
+    return `<h2 class="achievement-group">${g.name} <span>${got} / ${g.items.length}</span></h2>
+      <div class="achievements-grid">${cards}</div>`;
   }).join("");
 
   root.innerHTML = `
@@ -1390,7 +1512,7 @@ function renderAchievements(root) {
     <div class="xp-bar-wrapper" style="height:10px;margin-bottom:2rem;max-width:400px">
       <div class="xp-bar" style="width:${pct}%"></div>
     </div>
-    <div class="achievements-grid">${cards}</div>
+    ${sections}
   `;
 }
 

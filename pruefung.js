@@ -33,9 +33,9 @@ function startOpenQuestions(topicId) {
   runOpenQuestions({ title: TOPICS[topicId]?.title || "Prüfungsfragen", questions: qs });
 }
 
-/* Prüfungstraining: 5 Fragen, bevorzugt noch nicht bearbeitete
-   oder schwach bewertete. */
-function startExamTraining() {
+/* Prüfungstraining: n Fragen (Standard 5), bevorzugt noch nicht
+   bearbeitete oder schwach bewertete. */
+function startExamTraining(n = 5) {
   const scores = state.openScores || {};
   const pool = allOpenQuestions();
   if (!pool.length) return;
@@ -44,7 +44,16 @@ function startExamTraining() {
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
   pool.sort((a, b) => (scores[a._id] ?? -1) - (scores[b._id] ?? -1));
-  runOpenQuestions({ title: "Prüfungstraining", questions: pool.slice(0, 5) });
+  runOpenQuestions({ title: "Prüfungstraining", questions: pool.slice(0, n) });
+}
+
+/* Alle Prüfungsfragen einer Kategorie (Wiederholungswochen) */
+function startCategoryOpenQuestions(cat) {
+  const qs = Object.keys(OPEN_QUESTIONS)
+    .filter(id => TOPICS[id]?.category === cat)
+    .flatMap(openQuestionsFor);
+  if (!qs.length) { toast("Keine Prüfungsfragen", "Für diese Kategorie gibt es noch keine.", ""); return; }
+  runOpenQuestions({ title: `Wiederholung: ${CATEGORIES[cat].name}`, questions: qs });
 }
 
 function runOpenQuestions({ title, questions }) {
@@ -140,6 +149,10 @@ function runOpenQuestions({ title, questions }) {
   function finish() {
     const pct = possible ? Math.round((earned / possible) * 100) : 0;
     const xp = 5 + earned * 2;
+    if (total >= 10) {
+      state.examTrainingBest = Math.max(state.examTrainingBest || 0, pct);
+      saveState();
+    }
     openModal(`
       <div class="topic-header">
         <div class="topic-category">✍ Prüfungsfragen</div>
@@ -163,3 +176,4 @@ function runOpenQuestions({ title, questions }) {
 
 window.startOpenQuestions = startOpenQuestions;
 window.startExamTraining = startExamTraining;
+window.startCategoryOpenQuestions = startCategoryOpenQuestions;
