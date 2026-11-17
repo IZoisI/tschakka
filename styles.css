@@ -2215,3 +2215,79 @@ main {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.65; transform: scale(1.06); }
 }
+
+/* ===========================================================
+   PRÜFUNGSFRAGEN (offene Fragen)
+   =========================================================== */
+.op-badge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem .8rem;
+  margin: 1rem 0 .6rem;
+  padding: .6rem .9rem;
+  border-left: 3px solid var(--c-cyan);
+  background: rgba(0, 240, 255, 0.06);
+}
+.op-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--c-cyan);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.op-afb { font-family: var(--font-mono); font-size: .8rem; color: var(--c-text-dim); }
+.op-text { flex-basis: 100%; font-size: .92rem; color: var(--c-text-dim); }
+.open-case {
+  margin: .4rem 0 .8rem;
+  padding: .8rem 1rem;
+  border: 1px dashed var(--c-border);
+  background: rgba(0, 0, 0, 0.3);
+  line-height: 1.5;
+}
+.open-answer {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: .8rem;
+  padding: .8rem 1rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+.open-answer:focus { outline: none; border-color: var(--c-orange); box-shadow: 0 0 10px rgba(255, 122, 0, 0.3); }
+.open-label {
+  margin: 1rem 0 .5rem;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.open-own-text {
+  padding: .7rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--c-text-dim);
+  line-height: 1.5;
+  max-height: 14rem;
+  overflow-y: auto;
+}
+.open-rubric { display: flex; flex-direction: column; gap: .5rem; }
+.rubric-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  padding: .7rem .9rem;
+  border: 1px solid var(--c-border);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.rubric-item:hover { border-color: var(--c-orange); }
+.rubric-item.checked { border-color: var(--c-green); background: rgba(0, 255, 136, 0.1); }
+.rubric-item input { margin-top: .25rem; accent-color: var(--c-green); flex-shrink: 0; }
+.rubric-text { flex: 1; line-height: 1.45; }
+.rubric-pts { font-family: var(--font-mono); color: var(--c-orange); white-space: nowrap; }

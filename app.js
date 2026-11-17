@@ -403,6 +403,7 @@ function openTopic(id) {
     <div class="topic-actions">
       <button class="btn btn-primary" onclick="startQuiz('${id}')">▶ Quiz starten (${t.questions.length} Fragen)</button>
       <button class="btn btn-cyan" onclick="startFlashcards('${id}')">🗂️ Karteikarten</button>
+      ${(typeof OPEN_QUESTIONS !== "undefined" && OPEN_QUESTIONS[id]) ? `<button class="btn btn-primary" onclick="startOpenQuestions('${id}')">✍ Prüfungsfragen (${OPEN_QUESTIONS[id].length})</button>` : ""}
       <button class="btn btn-green" onclick="markRead('${id}')">✓ Als gelesen markieren</button>
     </div>
   `);
@@ -1082,6 +1083,11 @@ function renderSpiele(root) {
         <div class="game-title">Tages-Quiz</div>
         <div class="game-desc">10 zufällige Fragen aus allen Themen. Perfekt zum täglichen Warmlaufen.</div>
       </div>
+      <div class="game-card" data-g="exam">
+        <div class="game-icon">✍</div>
+        <div class="game-title">Prüfungstraining</div>
+        <div class="game-desc">5 offene Prüfungsfragen mit Erwartungshorizont. Selbst bewerten, Punkte sammeln – wie in der schriftlichen Prüfung.</div>
+      </div>
       <div class="game-card" data-g="boss">
         <div class="game-icon">💀</div>
         <div class="game-title">Boss Battle</div>
@@ -1111,6 +1117,7 @@ function renderSpiele(root) {
   `;
   root.querySelector('[data-g="daily"]').addEventListener("click", startDailyQuiz);
   root.querySelector('[data-g="boss"]').addEventListener("click", startBossBattle);
+  root.querySelector('[data-g="exam"]').addEventListener("click", () => startExamTraining());
   root.querySelector('[data-g="random"]').addEventListener("click", startRandomTopic);
   root.querySelector('[data-g="match"]').addEventListener("click", startMatchGame);
   root.querySelector('[data-g="category"]').addEventListener("click", openCategoryDrill);
