@@ -59,7 +59,7 @@ const TOPICS = {
     </ul>`,
     questions: [
       { q: "Verbalisieren zielt auf:", a: ["Den sachlichen Inhalt","Die emotionale Ebene","Die Körpersprache","Die Beziehungsebene nach Watzlawick"], correct: 1, explain: "VEE = Verbalisieren emotionaler Erlebnisinhalte → Gefühle ansprechen." },
-      { q: "Welcher Satz verbalisiert?", a: ["Sie haben heute keinen Besuch bekommen.","Sie wirken traurig und verlassen.","Es kommt sicher noch jemand.","Das tut mir leid für Sie."], correct: 1, explain: "Gefühle werden benannt (traurig, verlassen), ohne zu interpretieren oder zu vertrösten." },
+      { q: "Pat.: „Keiner besucht mich.“ Welcher Satz verbalisiert?", a: ["Sie haben heute keinen Besuch bekommen.","Sie wirken traurig und verlassen.","Es kommt sicher noch jemand.","Das tut mir leid für Sie."], correct: 1, explain: "Gefühle werden benannt (traurig, verlassen), ohne zu interpretieren oder zu vertrösten." },
       { q: "Welches Modell gehört zum Hintergrund des VEE?", a: ["Watzlawick","Rogers (klientenzentrierte Gesprächsführung)","Maslow","Kohlberg"], correct: 1, explain: "Das Verbalisieren stammt aus der Gesprächstherapie nach Carl Rogers." }
     ],
     flashcards: [
@@ -353,7 +353,7 @@ const TOPICS = {
     <p><strong>Risiko</strong>: Dauerkatheter → Katheterassoziierte HWI (geschlossenes System, Hygiene!)</p>`,
     questions: [
       { q: "Häufigster Erreger der Zystitis:", a: ["Staphylococcus aureus","E. coli","Pseudomonas","Klebsiellen"], correct: 1, explain: "E. coli verursacht ca. 80% der HWI." },
-      { q: "Warum sind Frauen häufiger betroffen?", a: ["Hormonstatus","Kürzere Harnröhre","Geringeres Trinkverhalten","Immunschwäche"], correct: 1, explain: "Kurze Urethra (~4 cm) – schneller aszendierend." },
+      { q: "Warum sind Frauen häufiger von Harnwegsinfekten betroffen?", a: ["Hormonstatus","Kürzere Harnröhre","Geringeres Trinkverhalten","Immunschwäche"], correct: 1, explain: "Kurze Urethra (~4 cm) – schneller aszendierend." },
       { q: "Fieber bei HWI deutet auf:", a: ["Unkomplizierte Zystitis","Pyelonephritis","Urethritis","Harnretention"], correct: 1, explain: "Fieber → V.a. aufsteigende Entzündung (Nierenbeckenentzündung)." }
     ],
     flashcards: [
@@ -448,7 +448,7 @@ const TOPICS = {
     questions: [
       { q: "Welcher T-Wert definiert Osteoporose?", a: ["≤ -1,0","≤ -2,0","≤ -2,5","≤ -3,5"], correct: 2, explain: "DXA: T-Score ≤ –2,5 SD = Osteoporose." },
       { q: "Welche Medikation fördert Osteoporose?", a: ["Betablocker","Glukokortikoide","ACE-Hemmer","PPI allein"], correct: 1, explain: "Steroide (Kortisontherapie) sind ein wichtiger Risikofaktor." },
-      { q: "Wichtigste pflegerische Maßnahme:", a: ["Bettruhe","Sturzprophylaxe","Flüssigkeitsrestriktion","Wärmeanwendung"], correct: 1, explain: "Frakturen entstehen meist durch Stürze → Sturzprophylaxe zentral." }
+      { q: "Wichtigste pflegerische Maßnahme bei Osteoporose:", a: ["Bettruhe","Sturzprophylaxe","Flüssigkeitsrestriktion","Wärmeanwendung"], correct: 1, explain: "Frakturen entstehen meist durch Stürze → Sturzprophylaxe zentral." }
     ],
     flashcards: [
       { front: "Osteoporose T-Wert", back: "≤ −2,5 SD (DXA)" },
@@ -467,7 +467,7 @@ const TOPICS = {
     questions: [
       { q: "Typisches Labor bei Morbus Bechterew:", a: ["Rheumafaktor positiv","HLA-B27 positiv","ANA positiv","Anti-CCP positiv"], correct: 1, explain: "HLA-B27 ist bei ~90% positiv." },
       { q: "Wann sind die Schmerzen typischerweise am stärksten?", a: ["Nachts und morgens","Am Nachmittag","Nach Bewegung","Nach Belastung"], correct: 0, explain: "Entzündlicher Rückenschmerz: nachts/morgens, bessert sich bei Bewegung." },
-      { q: "Welche Liegeposition wird empfohlen?", a: ["Kissenberg","Flach ohne Kissen","Seitlich gebeugt","Sitzend"], correct: 1, explain: "Flach liegen, um einer Kyphose entgegenzuwirken." }
+      { q: "Welche Liegeposition wird bei Morbus Bechterew empfohlen?", a: ["Kissenberg","Flach ohne Kissen","Seitlich gebeugt","Sitzend"], correct: 1, explain: "Flach liegen, um einer Kyphose entgegenzuwirken." }
     ],
     flashcards: [
       { front: "Morbus Bechterew", back: "Spondylitis ankylosans – chronisch-entz. Wirbelsäulenerkr." },
@@ -577,7 +577,7 @@ const TOPICS = {
     questions: [
       { q: "Die Virchow-Trias umfasst:", a: ["Hypertonie, Diabetes, Rauchen","Endothelschaden, Strömungsverlangsamung, Hyperkoagulabilität","Fieber, Schmerz, Rötung","Dyspnoe, Zyanose, Tachykardie"], correct: 1, explain: "Die 3 Faktoren, die eine Thromboseentstehung begünstigen." },
       { q: "Leitsymptom der tiefen Beinvenenthrombose:", a: ["Beidseitige Schwellung","Einseitige Beinschwellung mit Schmerz","Fieber","Kopfschmerz"], correct: 1, explain: "Charakteristisch: einseitige Schwellung, livide Verfärbung, Schmerz." },
-      { q: "Welches Medikament gehört zur Prophylaxe?", a: ["Vitamin D","NMH (z. B. Enoxaparin)","Metformin","PPI"], correct: 1, explain: "Niedermolekulares Heparin zur perioperativen Prophylaxe." }
+      { q: "Welches Medikament gehört zur Thromboseprophylaxe?", a: ["Vitamin D","NMH (z. B. Enoxaparin)","Metformin","PPI"], correct: 1, explain: "Niedermolekulares Heparin zur perioperativen Prophylaxe." }
     ],
     flashcards: [
       { front: "Virchow-Trias", back: "1. Endothelschaden · 2. Strömungsverlangsamung · 3. Hyperkoagulabilität" },
@@ -624,7 +624,7 @@ const TOPICS = {
     questions: [
       { q: "Häufigster Ursprung einer LE:", a: ["Herzklappe","Tiefe Beinvenenthrombose","Luftembolie","Fett-Embolie"], correct: 1, explain: ">90% aus TVT der Becken-/Beinvenen." },
       { q: "Erste Maßnahme bei V. a. LE auf Station:", a: ["Hinlegen flach","Oberkörper hoch, O2, Arzt rufen, Monitoring","Patient mobilisieren","Kalten Umschlag"], correct: 1, explain: "OK-hoch, O2, Notfall-Kette." },
-      { q: "Typisches EKG-Bild:", a: ["ST-Hebung V1-V3","S1Q3-Typ","Sinusbradykardie","Rechtsschenkelblock obligat"], correct: 1, explain: "S-Zacke in I und Q-Zacke in III – klassisch bei akuter Rechtsherzbelastung." }
+      { q: "Typisches EKG-Bild bei Lungenembolie:", a: ["ST-Hebung V1-V3","S1Q3-Typ","Sinusbradykardie","Rechtsschenkelblock obligat"], correct: 1, explain: "S-Zacke in I und Q-Zacke in III – klassisch bei akuter Rechtsherzbelastung." }
     ],
     flashcards: [
       { front: "LE-Symptomtrias", back: "Plötzliche Dyspnoe · Thoraxschmerz · Tachykardie" },
@@ -643,7 +643,7 @@ const TOPICS = {
     <p><strong>Pflege/Prophylaxe</strong>: Oberkörperhochlagerung, Atemübungen (Triflo, Kontaktatmung), Lagerungswechsel, Impfung (Pneumokokken, Influenza), Mundpflege.</p>`,
     questions: [
       { q: "Häufigster Erreger der CAP:", a: ["E. coli","Streptococcus pneumoniae","Staph. aureus","Legionella"], correct: 1, explain: "Pneumokokken sind Haupterreger." },
-      { q: "Typisches Zeichen bei Auskultation:", a: ["Giemen","Feuchte Rasselgeräusche","Stridor","Stille Lunge"], correct: 1, explain: "Feuchte RGs über dem betroffenen Lappen." },
+      { q: "Typischer Auskultationsbefund bei Pneumonie:", a: ["Giemen","Feuchte Rasselgeräusche","Stridor","Stille Lunge"], correct: 1, explain: "Feuchte RGs über dem betroffenen Lappen." },
       { q: "Pneumonie-Prophylaxe beinhaltet NICHT:", a: ["Oberkörperhochlagerung","Bettruhe ohne Lagerungswechsel","Atemübungen","Pneumokokken-Impfung"], correct: 1, explain: "Bettruhe ohne Lagerung ist Risikofaktor, nicht Prophylaxe." }
     ],
     flashcards: [
@@ -664,7 +664,7 @@ const TOPICS = {
     <p><strong>Pflege</strong>: Lippenbremse, Kutschersitz, Inhalationstechnik schulen, Raucherentwöhnung, Atemtherapie.</p>`,
     questions: [
       { q: "Welche Lippenbremse wird COPD-Patienten empfohlen?", a: ["Schnelles Ausatmen","Dosierte Lippenbremse – Ausatmen gegen leichten Lippendruck","Druckvolles Ausatmen","Atem anhalten"], correct: 1, explain: "Dosierte Lippenbremse verhindert Bronchienkollaps." },
-      { q: "Wichtigster Risikofaktor:", a: ["Fettreiche Ernährung","Rauchen","Bewegungsmangel","Alter"], correct: 1, explain: ">80% aller COPD durch Rauchen." },
+      { q: "Wichtigster Risikofaktor für eine COPD:", a: ["Fettreiche Ernährung","Rauchen","Bewegungsmangel","Alter"], correct: 1, explain: ">80% aller COPD durch Rauchen." },
       { q: "Warum O2 bei COPD vorsichtig dosieren?", a: ["Weil er zur Sucht führt","Weil der Atemantrieb bei CO2-Retenern hypoxisch getriggert ist","Weil er teuer ist","Weil er die Lunge schädigt"], correct: 1, explain: "Bei CO2-Retenern hängt der Atemantrieb am pO2 – zu viel O2 unterdrückt die Atmung." }
     ],
     flashcards: [
@@ -690,7 +690,7 @@ const TOPICS = {
     <p><strong>Status asthmaticus</strong>: schwerer Anfall, der auf die übliche Notfalltherapie (SABA) nicht anspricht – Notfall!</p>
     <p><strong>Pflege</strong>: Kutschersitz, Inhalation anleiten, beruhigen, O2, PEF-Messung, Auslöser meiden.</p>`,
     questions: [
-      { q: "Welches Atemgeräusch ist typisch?", a: ["Inspiratorischer Stridor","Exspiratorisches Giemen","Feuchte Rasselgeräusche","Reibegeräusch"], correct: 1, explain: "Giemen v.a. in Exspiration bei Asthma." },
+      { q: "Welches Atemgeräusch ist beim Asthma bronchiale typisch?", a: ["Inspiratorischer Stridor","Exspiratorisches Giemen","Feuchte Rasselgeräusche","Reibegeräusch"], correct: 1, explain: "Giemen v.a. in Exspiration bei Asthma." },
       { q: "Welches Medikament wirkt schnell bei Anfall?", a: ["ICS","Salbutamol (SABA)","Omalizumab","Montelukast"], correct: 1, explain: "Kurzwirksames β2-Mimetikum bei akuter Atemnot." },
       { q: "Unterschied Asthma ↔ COPD:", a: ["Asthma irreversibel, COPD reversibel","Asthma reversibel, COPD nicht vollständig reversibel","Asthma betrifft nur Kinder","Beides ist identisch"], correct: 1, explain: "Asthma: reversibel. COPD: dauerhafte Obstruktion." }
     ],
@@ -716,7 +716,7 @@ const TOPICS = {
     <p><strong>Akzessorische Organe</strong>: Leber (Galle), Gallenblase, Pankreas (Enzyme + Insulin/Glukagon).</p>
     <p><strong>Resorption</strong>: Dünndarmzotten und Mikrovilli vergrößern Oberfläche auf ~200 m².</p>`,
     questions: [
-      { q: "Wo findet die Hauptresorption statt?", a: ["Magen","Dünndarm","Dickdarm","Rektum"], correct: 1, explain: "Jejunum/Ileum – Zotten/Mikrovilli." },
+      { q: "Wo findet die Hauptresorption der Nährstoffe statt?", a: ["Magen","Dünndarm","Dickdarm","Rektum"], correct: 1, explain: "Jejunum/Ileum – Zotten/Mikrovilli." },
       { q: "Welche Enzyme liefert das Pankreas?", a: ["Amylase, Lipase, Protease","Pepsin","Gallensäuren","HCl"], correct: 0, explain: "Exokrine Pankreas-Enzyme zur Verdauung." },
       { q: "Länge des Darms ca.:", a: ["1 m","4 m","8 m","16 m"], correct: 2, explain: "Dünn- + Dickdarm ca. 7–8 m beim Erwachsenen." }
     ],
@@ -757,7 +757,7 @@ const TOPICS = {
     <p><strong>Pflege</strong>: Bilanzierung, Haut um Anus schützen, Ernährung anpassen, psychische Begleitung.</p>`,
     questions: [
       { q: "Typischer Stuhl bei Colitis ulcerosa:", a: ["Unblutig-wässrig","Blutig-schleimig","Fettig","Schwarz-teerig"], correct: 1, explain: "Blutig-schleimig, bis zu 20× täglich." },
-      { q: "Welche Aussage stimmt?", a: ["CU befällt Dünndarm","CU befällt Kolon kontinuierlich vom Rektum aufwärts","CU ist nicht heilbar durch OP","CU befällt transmural"], correct: 1, explain: "Kontinuierlich vom Rektum aufsteigend, nur Mukosa/Submukosa." },
+      { q: "Welche Aussage zur Colitis ulcerosa stimmt?", a: ["CU befällt Dünndarm","CU befällt Kolon kontinuierlich vom Rektum aufwärts","CU ist nicht heilbar durch OP","CU befällt transmural"], correct: 1, explain: "Kontinuierlich vom Rektum aufsteigend, nur Mukosa/Submukosa." },
       { q: "CU-Risiko langfristig:", a: ["Magenkarzinom","Kolonkarzinom","Lebermetastasen","Thrombose"], correct: 1, explain: "Deutlich erhöhtes Kolonkarzinomrisiko." }
     ],
     flashcards: [
@@ -777,7 +777,7 @@ const TOPICS = {
     <p><strong>Pflege</strong>: Stomapflege, Ernährungsberatung, psychoonkologische Begleitung.</p>`,
     questions: [
       { q: "Ab welchem Alter Darmkrebs-Screening (Koloskopie)?", a: ["40","45","50","60"], correct: 2, explain: "Ab 50 Jahren, alle 10 Jahre." },
-      { q: "Alarmsymptom ist:", a: ["Gelegentliches Sodbrennen","Sichtbares Blut im Stuhl","Kopfschmerzen","Husten"], correct: 1, explain: "Blut ist immer abklärungsbedürftig." },
+      { q: "Alarmsymptom bei Verdacht auf Darmkrebs:", a: ["Gelegentliches Sodbrennen","Sichtbares Blut im Stuhl","Kopfschmerzen","Husten"], correct: 1, explain: "Blut ist immer abklärungsbedürftig." },
       { q: "Adenom-Karzinom-Sequenz bedeutet:", a: ["Aus Polypen kann Krebs entstehen","Krebs kommt plötzlich","Chemotherapie muss sequenziell erfolgen","Nur bei Diabetikern"], correct: 0, explain: "Adenome sind Vorstufen – rechtzeitig entfernen!" }
     ],
     flashcards: [
@@ -834,7 +834,7 @@ const TOPICS = {
     questions: [
       { q: "Wann wird die U1 durchgeführt?", a: ["Erste Lebensstunde","3.–10. Lebenstag","4.–6. Woche","3. Monat"], correct: 0, explain: "U1 direkt nach der Geburt im Kreißsaal." },
       { q: "Warum Vitamin-K-Prophylaxe?", a: ["Gegen Infektion","Zur Blutungsprophylaxe","Gegen Gelbsucht","Gegen Rachitis"], correct: 1, explain: "Vorbeugung Morbus haemorrhagicus neonatorum." },
-      { q: "Warum ist Wärmeerhalt zentral?", a: ["Neugeborene sind überhitzt","Große KOF + wenig Fett → rasche Auskühlung","Sie schwitzen stark","Nicht wichtig"], correct: 1, explain: "Verhältnis Oberfläche/Masse hoch + wenig subkutanes Fett." }
+      { q: "Warum ist Wärmeerhalt beim Neugeborenen zentral?", a: ["Neugeborene sind überhitzt","Große KOF + wenig Fett → rasche Auskühlung","Sie schwitzen stark","Nicht wichtig"], correct: 1, explain: "Verhältnis Oberfläche/Masse hoch + wenig subkutanes Fett." }
     ],
     flashcards: [
       { front: "U1–U3 Zeitpunkte", back: "U1 post partum · U2 3.–10. LT · U3 4.–5. LW" },
@@ -877,8 +877,8 @@ const TOPICS = {
     <p><strong>Pflege/Eltern-Beratung</strong>: lauwarm duschen, rückfetten direkt nach dem Bad, Baumwollkleidung, Fingernägel kurz, Kratzalternativen anbieten, Schlafhygiene.</p>`,
     questions: [
       { q: "Neurodermitis gehört zum Formenkreis:", a: ["Kollagenosen","Atopisch","Vaskulitiden","Gewebstumoren"], correct: 1, explain: "Atopischer Formenkreis: Ekzem, Heuschnupfen, Asthma." },
-      { q: "Säuglinge zeigen oft:", a: ["Nur Juckreiz","Milchschorf im Gesicht","Hautblasen am Rücken","Pigmentstörungen"], correct: 1, explain: "Milchschorf im Gesicht/Kopf im Säuglingsalter." },
-      { q: "Basistherapie besteht aus:", a: ["Ständiger Kortisongabe","Rückfettenden Salben, auch ohne Schub","Antibiotikacreme","Nur homöopathisch"], correct: 1, explain: "Rückfettende Pflege ist Grundlage der Behandlung." }
+      { q: "Säuglinge mit Neurodermitis zeigen oft:", a: ["Nur Juckreiz","Milchschorf im Gesicht","Hautblasen am Rücken","Pigmentstörungen"], correct: 1, explain: "Milchschorf im Gesicht/Kopf im Säuglingsalter." },
+      { q: "Die Basistherapie der Neurodermitis besteht aus:", a: ["Ständiger Kortisongabe","Rückfettenden Salben, auch ohne Schub","Antibiotikacreme","Nur homöopathisch"], correct: 1, explain: "Rückfettende Pflege ist Grundlage der Behandlung." }
     ],
     flashcards: [
       { front: "Atopische Trias", back: "Neurodermitis · Heuschnupfen · Asthma" },
@@ -906,8 +906,8 @@ const TOPICS = {
     <p><strong>Dokumentation</strong>: U-Heft – bei jeder Vorsorge eintragen.</p>`,
     questions: [
       { q: "Was bedeutet 'Kind liegt auf der 10. Perzentile'?", a: ["10% der Kinder sind größer","10% der Kinder sind gleich/kleiner","10% aller Werte sind normal","Das Kind ist krank"], correct: 1, explain: "10% liegen darunter (oder gleich), 90% darüber." },
-      { q: "Welcher Bereich gilt als normal?", a: ["10.–90.","3.–97.","25.–75.","0.–100."], correct: 1, explain: "Konvention: 3.–97. Perzentile." },
-      { q: "Wichtiger als einzelner Wert ist:", a: ["Der Verlauf über Zeit","Nur die Größe","Nur das Gewicht","Das Alter der Eltern"], correct: 0, explain: "Trend/Verlauf über mehrere Messungen ist entscheidend." }
+      { q: "Welcher Perzentilenbereich gilt als normal?", a: ["10.–90.","3.–97.","25.–75.","0.–100."], correct: 1, explain: "Konvention: 3.–97. Perzentile." },
+      { q: "Bei Perzentilenkurven ist wichtiger als der einzelne Wert:", a: ["Der Verlauf über Zeit","Nur die Größe","Nur das Gewicht","Das Alter der Eltern"], correct: 0, explain: "Trend/Verlauf über mehrere Messungen ist entscheidend." }
     ],
     flashcards: [
       { front: "Normbereich Perzentile", back: "3. bis 97. Perzentile" },
@@ -1032,7 +1032,7 @@ const TOPICS = {
     questions: [
       { q: "Beratung ≠ Anleitung. Anleitung umfasst:", a: ["Nur Informationsweitergabe","Handlungsschritte zeigen und üben","Therapieentscheidung","Medikamentenverordnung"], correct: 1, explain: "Anleitung = Vormachen, Üben, Evaluieren." },
       { q: "Zielrichtung pflegerischer Beratung:", a: ["Autoritäre Anweisung","Empowerment / Selbstpflegefähigkeit","Verordnen","Diagnose stellen"], correct: 1, explain: "Ziel ist Stärkung der Selbständigkeit." },
-      { q: "Welche Phase steht am Anfang?", a: ["Evaluation","Auftragsklärung","Maßnahmenplan","Dokumentation"], correct: 1, explain: "Zuerst: Anliegen/Ziel klären." }
+      { q: "Welche Phase steht am Anfang einer pflegerischen Beratung?", a: ["Evaluation","Auftragsklärung","Maßnahmenplan","Dokumentation"], correct: 1, explain: "Zuerst: Anliegen/Ziel klären." }
     ],
     flashcards: [
       { front: "Beratungsarten", back: "Info · Schulung · Anleitung · psychosoz. Beratung" },
@@ -1055,7 +1055,7 @@ const TOPICS = {
     <p><strong>Dokumentation</strong>: sachlich, objektiv, zeitnah, wertfrei – unterscheiden zwischen <em>Beobachtung</em> (was sehe ich?) und <em>Interpretation</em> (was bedeutet das?).</p>`,
     questions: [
       { q: "Halo-Effekt bedeutet:", a: ["Licht-Artefakt","Ein Gesamteindruck überstrahlt Einzelmerkmale","Sturzrisiko","Fehldiagnose"], correct: 1, explain: "Erster Eindruck beeinflusst weitere Wahrnehmung." },
-      { q: "Welche Dokumentation ist angemessen?", a: ["'Patient ist launisch'","'Patient antwortet einsilbig, wendet sich ab'","'Typisch Montag'","'Nervig'"], correct: 1, explain: "Sachliche Beobachtung ohne Wertung." },
+      { q: "Welche Dokumentation einer Beobachtung ist angemessen?", a: ["'Patient ist launisch'","'Patient antwortet einsilbig, wendet sich ab'","'Typisch Montag'","'Nervig'"], correct: 1, explain: "Sachliche Beobachtung ohne Wertung." },
       { q: "Unterschied Beobachtung vs. Interpretation:", a: ["Gleich","Beobachtung = Fakt, Interpretation = Deutung","Beobachtung = Deutung","Gibt es nicht"], correct: 1, explain: "Erst beobachten, dann interpretieren – getrennt!" }
     ],
     flashcards: [
@@ -1079,7 +1079,7 @@ const TOPICS = {
     questions: [
       { q: "Welche Stufe kommt in Peytons Modell zuletzt?", a: ["Erklären","Vormachen","Selbst durchführen und erklären","Nachmachen lassen"], correct: 2, explain: "Stufe 4: Lernender führt selbst aus und erklärt." },
       { q: "Anleitung ≠ Schulung weil…", a: ["…Anleitung praktisch ist","…Schulung schriftlich","…Schulung keinen Praxisteil hat","…Anleitung nur Ärztlich"], correct: 0, explain: "Anleitung fokussiert auf praktisches Tun." },
-      { q: "Wichtig ist:", a: ["Zeitdruck","Feedback geben und wiederholen","Alles in 1 Sitzung","Nur schriftlich"], correct: 1, explain: "Feedback + Wiederholung sind zentral." }
+      { q: "Was ist bei einer Anleitung wichtig?", a: ["Zeitdruck","Feedback geben und wiederholen","Alles in 1 Sitzung","Nur schriftlich"], correct: 1, explain: "Feedback + Wiederholung sind zentral." }
     ],
     flashcards: [
       { front: "Peyton-4-Schritt", back: "Vormachen · Erklären · Lernender erklärt/Anleiter macht · Lernender macht & erklärt" },
@@ -1125,7 +1125,7 @@ const TOPICS = {
     questions: [
       { q: "Rechtliche Grundlage Pflegestützpunkt:", a: ["§ 37 SGB V","§ 7c SGB XI","§ 14 SGB XI","§ 113 SGB XI"], correct: 1, explain: "Pflegestützpunkt in § 7c SGB XI." },
       { q: "Was ist der Pflegestützpunkt?", a: ["Kostenpflichtige Beratung","Kostenfreie, trägerneutrale Anlaufstelle","Pflegeheim","Klinik"], correct: 1, explain: "Kostenlos, neutral." },
-      { q: "Welche Aufgabe gehört NICHT dazu?", a: ["Beratung","Leistungen bewilligen (MD macht die Begutachtung)","Vermittlung","Koordination"], correct: 1, explain: "Bewilligung erfolgt durch die Pflegekasse nach MD-Begutachtung." }
+      { q: "Welche Aufgabe gehört NICHT zum Pflegestützpunkt?", a: ["Beratung","Leistungen bewilligen","Vermittlung","Koordination"], correct: 1, explain: "Bewilligung erfolgt durch die Pflegekasse nach MD-Begutachtung." }
     ],
     flashcards: [
       { front: "§ 7c SGB XI", back: "Pflegestützpunkt – kostenfreie Beratung" },
@@ -1247,7 +1247,7 @@ const TOPICS = {
     questions: [
       { q: "AHB muss beginnen innerhalb:", a: ["24 h","14 Tagen","3 Monaten","6 Wochen"], correct: 1, explain: "Anschlussheilbehandlung – innerhalb von 14 Tagen." },
       { q: "ICF steht für:", a: ["International Classification of Functioning, Disability and Health","International Cardiac Failure","Intensive Care Function","Inklusions-Check-Faktor"], correct: 0, explain: "WHO-Modell zur Teilhabe." },
-      { q: "Grundsatz:", a: ["Pflege vor Reha","Reha vor Pflege","Nur ambulant","Nur stationär"], correct: 1, explain: "§ 5 SGB XI: Reha vor Pflege." }
+      { q: "Welcher Grundsatz gilt für Rehabilitation und Pflege?", a: ["Pflege vor Reha","Reha vor Pflege","Nur ambulant","Nur stationär"], correct: 1, explain: "§ 5 SGB XI: Reha vor Pflege." }
     ],
     flashcards: [
       { front: "Reha-Arten", back: "Medizinisch · beruflich · sozial · pädagogisch" },
@@ -1275,7 +1275,7 @@ const TOPICS = {
     </ol></p>
     <p><strong>Forschungsprozess</strong>: Fragestellung → Literatur → Hypothese → Design → Ethikvotum → Datenerhebung → Analyse → Publikation.</p>`,
     questions: [
-      { q: "Höchste Evidenzstufe:", a: ["Expertenmeinung","RCT","Systematischer Review","Fallbeschreibung"], correct: 2, explain: "Metaanalyse / systematischer Review." },
+      { q: "Höchste Evidenzstufe in der Forschung:", a: ["Expertenmeinung","RCT","Systematischer Review","Fallbeschreibung"], correct: 2, explain: "Metaanalyse / systematischer Review." },
       { q: "Qualitative Forschung zielt auf:", a: ["Zahlen","Verstehen von Sichtweisen","Labormessungen","Kosten"], correct: 1, explain: "Qualitativ = tiefes Verstehen von Erfahrungen." },
       { q: "RCT bedeutet:", a: ["Routine-Care-Treatment","Randomised Controlled Trial","Real Case Type","Risk Control Test"], correct: 1, explain: "Randomisierte kontrollierte Studie." }
     ],
@@ -1307,8 +1307,8 @@ const TOPICS = {
     <p><strong>Regeln</strong>: Moderation, zeitlicher Rahmen, Dokumentation, Schweigepflicht.</p>`,
     questions: [
       { q: "Ziel einer Fallbesprechung ist NICHT:", a: ["Lernen","Einen Mitarbeiter abmahnen","Qualität sichern","Handlungsstrategien finden"], correct: 1, explain: "Keine Disziplinierungs-Plattform." },
-      { q: "Wer leitet klassischerweise:", a: ["Der Arzt","Der Moderator","Der Patient","Die Heimleitung"], correct: 1, explain: "Ein Moderator strukturiert den Ablauf." },
-      { q: "Zentraler Schritt am Ende:", a: ["Essen","Evaluation","Urlaubsplanung","Pause"], correct: 1, explain: "Evaluation – was wurde erreicht, was bleibt?" }
+      { q: "Wer leitet klassischerweise eine Fallbesprechung?", a: ["Der Arzt","Der Moderator","Der Patient","Die Heimleitung"], correct: 1, explain: "Ein Moderator strukturiert den Ablauf." },
+      { q: "Zentraler Schritt am Ende einer Fallbesprechung:", a: ["Essen","Evaluation","Urlaubsplanung","Pause"], correct: 1, explain: "Evaluation – was wurde erreicht, was bleibt?" }
     ],
     flashcards: [
       { front: "Fallbesprechung", back: "Strukturierte, multiprof. Besprechung eines Einzelfalls" },
@@ -1398,7 +1398,7 @@ const TOPICS = {
     </ul>
     <p><strong>Trend</strong>: Weg von Funktionspflege → Bereichspflege/Bezugspflege.</p>`,
     questions: [
-      { q: "Höchste Kontinuität bietet:", a: ["Funktionspflege","Gruppenpflege","Primary Nursing","Zimmerpflege"], correct: 2, explain: "Primary Nursing = Bezugspflege." },
+      { q: "Welches Pflegesystem bietet die höchste Kontinuität?", a: ["Funktionspflege","Gruppenpflege","Primary Nursing","Zimmerpflege"], correct: 2, explain: "Primary Nursing = Bezugspflege." },
       { q: "Welches System ist am aufgabenorientiertesten?", a: ["Funktionspflege","Bereichspflege","Primary Nursing","Gruppenpflege"], correct: 0, explain: "Funktionspflege: Aufgaben verteilt." },
       { q: "Bezugspflege fördert:", a: ["Fluktuation","Beziehung, Kontinuität, Verantwortung","Anonymität","Zeiteinsparung"], correct: 1, explain: "Beziehungspflege mit klarer Zuordnung." }
     ],
@@ -1503,7 +1503,7 @@ const TOPICS = {
     questions: [
       { q: "Wo wird Insulin gebildet?", a: ["α-Zellen","β-Zellen des Pankreas","γ-Zellen der Niere","Leber"], correct: 1, explain: "β-Zellen in den Langerhans-Inseln." },
       { q: "Welche Wirkung hat Insulin NICHT?", a: ["Senkt BZ","Fördert Lipolyse","Fördert Glykogensynthese","Hemmt Glukoneogenese"], correct: 1, explain: "Insulin HEMMT Lipolyse (anabol)." },
-      { q: "Typische Injektionsstelle:", a: ["Intramuskulär Gesäß","Subkutan Bauch/Oberschenkel","Intravenös","Intradermal"], correct: 1, explain: "s.c. Bauch (schnell) oder Oberschenkel (langsam)." }
+      { q: "Typische Injektionsstelle für Insulin:", a: ["Intramuskulär Gesäß","Subkutan Bauch/Oberschenkel","Intravenös","Intradermal"], correct: 1, explain: "s.c. Bauch (schnell) oder Oberschenkel (langsam)." }
     ],
     flashcards: [
       { front: "Insulin – Quelle", back: "β-Zellen der Langerhans-Inseln im Pankreas" },
@@ -1575,7 +1575,7 @@ const TOPICS = {
     <p><strong>Pflege</strong>: Sicherheit schaffen, Reize reduzieren, Trigger erkennen, keine Retraumatisierung.</p>`,
     questions: [
       { q: "PTBS-Symptomtrias umfasst NICHT:", a: ["Intrusionen","Vermeidung","Hyperarousal","Halluzinationen"], correct: 3, explain: "Halluzinationen sind nicht Kern – aber Flashbacks (sensorisch)." },
-      { q: "Typisches Therapieverfahren:", a: ["Schocktherapie","EMDR","Elektrokrampftherapie","Hypnose als erstes"], correct: 1, explain: "EMDR = Eye Movement Desensitization and Reprocessing." },
+      { q: "Typisches Therapieverfahren bei PTBS:", a: ["Schocktherapie","EMDR","Elektrokrampftherapie","Hypnose als erstes"], correct: 1, explain: "EMDR = Eye Movement Desensitization and Reprocessing." },
       { q: "Beginn PTBS typischerweise:", a: ["Sofort nach Trauma","Mit Latenz Wochen–Monate","Jahre","Gar nicht"], correct: 1, explain: "Verzögerte Reaktion nach Latenz." }
     ],
     flashcards: [
@@ -1620,7 +1620,7 @@ const TOPICS = {
     <p><strong>Pflege</strong>: Medikamentengabe <em>exakt nach Zeitplan</em>, Sturzprophylaxe, Essen kleinteilig (Aspirationsgefahr!), Bewegung fördern, Logopädie, Ergotherapie.</p>`,
     questions: [
       { q: "Kardinalsymptome TRAP sind:", a: ["Tremor, Reflexsteigerung, Ataxie, Parese","Tremor, Rigor, Akinese, Posturale Instab.","Tachykardie, Reflux, Akne, Panik","Trauma, Rigor, Atmung, Puls"], correct: 1, explain: "TRAP = Tremor, Rigor, Akinese, Posturale Instab." },
-      { q: "Hauptmedikament:", a: ["Metformin","L-Dopa","Haloperidol","Paracetamol"], correct: 1, explain: "L-Dopa = Vorstufe von Dopamin." },
+      { q: "Hauptmedikament bei Morbus Parkinson:", a: ["Metformin","L-Dopa","Haloperidol","Paracetamol"], correct: 1, explain: "L-Dopa = Vorstufe von Dopamin." },
       { q: "Was ist bei L-Dopa-Therapie wichtig?", a: ["Pünktliche Einnahme","Nur nach Bedarf","Mit proteinreicher Mahlzeit","Mit Milch"], correct: 0, explain: "Strenge Zeitintervalle, protein-arm rund um die Einnahme." }
     ],
     flashcards: [
@@ -1698,7 +1698,7 @@ const TOPICS = {
     <p><strong>Herausforderndes Verhalten</strong>: Ursache suchen (Schmerz, Hunger, Durst, Harndrang, Langeweile, Angst) statt sofort sedieren.</p>`,
     questions: [
       { q: "Validation nach Feil bedeutet:", a: ["Korrektur der Realität","Anerkennung der emotionalen Welt","Sedierung","Fixierung"], correct: 1, explain: "Die Gefühlswirklichkeit wird validiert." },
-      { q: "Bei Unruhe zuerst:", a: ["Neuroleptikum","Ursache suchen (Schmerz, Harndrang, Angst)","Fixierung","Ignorieren"], correct: 1, explain: "Bedarfsanalyse vor Medikation." },
+      { q: "Was tun Sie bei Unruhe eines Menschen mit Demenz zuerst?", a: ["Neuroleptikum","Ursache suchen (Schmerz, Harndrang, Angst)","Fixierung","Ignorieren"], correct: 1, explain: "Bedarfsanalyse vor Medikation." },
       { q: "Snoezelen nutzt:", a: ["Sinnesstimulation","Medikamente","Fixierung","Lautstärke"], correct: 0, explain: "Licht, Klang, Berührung – multisensorisch." }
     ],
     flashcards: [
@@ -1819,8 +1819,8 @@ const TOPICS = {
     <p><strong>Meldung</strong>: Verdacht, Erkrankung und Tod nach § 6 IfSG; Nachweis nach § 7.</p>`,
     questions: [
       { q: "Welche Viren sind beim Erbrechen aerogen relevant?", a: ["Rota","Noro","Influenza","Adenoviren"], correct: 1, explain: "Norovirus: Aerosole beim Erbrechen sind relevant." },
-      { q: "Ansteckungsfähig bis:", a: ["Bei Beschwerdebeginn","24 h nach Ende","48 h nach Symptomende","Dauerhaft"], correct: 2, explain: "48 h nach Ende der Symptome." },
-      { q: "Welche Desinfektion nötig?", a: ["Bakterizid","Viruzid / begrenzt viruzid PLUS","Fungizid","Keine"], correct: 1, explain: "Noro ist unbehüllt – viruzid wirksames Präparat." }
+      { q: "Bei Norovirus-Infektion ansteckungsfähig bis:", a: ["Bei Beschwerdebeginn","24 h nach Ende","48 h nach Symptomende","Dauerhaft"], correct: 2, explain: "48 h nach Ende der Symptome." },
+      { q: "Welche Desinfektion ist bei Noroviren nötig?", a: ["Bakterizid","Viruzid / begrenzt viruzid PLUS","Fungizid","Keine"], correct: 1, explain: "Noro ist unbehüllt – viruzid wirksames Präparat." }
     ],
     flashcards: [
       { front: "Noro – Infektionsdosis", back: "Sehr gering (~10 Viruspartikel)" },
@@ -1841,7 +1841,7 @@ const TOPICS = {
     questions: [
       { q: "MRSA ist resistent gegen:", a: ["Penicilline / Beta-Lactame","Aminoglykoside","Tetrazykline","Alle Antibiotika"], correct: 0, explain: "Methicillin-/Beta-Lactam-Resistenz." },
       { q: "Welches Medikament zur Nasensanierung?", a: ["Vancomycin","Mupirocin","Ciprofloxacin","Metronidazol"], correct: 1, explain: "Mupirocin-Nasensalbe 3×/Tag für 5 Tage." },
-      { q: "Besiedelt vs. infiziert – was stimmt?", a: ["Besiedelt = krank","Besiedelt = Erreger nachweisbar ohne Symptome","Infiziert ohne Symptome","Kein Unterschied"], correct: 1, explain: "Kolonisation: keine Krankheit, Infektion: Symptome/Entzündung." }
+      { q: "MRSA: besiedelt vs. infiziert – was stimmt?", a: ["Besiedelt = krank","Besiedelt = Erreger nachweisbar ohne Symptome","Infiziert ohne Symptome","Kein Unterschied"], correct: 1, explain: "Kolonisation: keine Krankheit, Infektion: Symptome/Entzündung." }
     ],
     flashcards: [
       { front: "MRSA", back: "Methicillin-resistenter S. aureus (β-Lactam-resistent)" },
@@ -1995,9 +1995,9 @@ const TOPICS = {
     <p><strong>Ziele</strong>: Individualität, Kontinuität, Transparenz, Qualität, rechtliche Absicherung.</p>
     <p><strong>Dokumentation</strong>: jede Phase nachvollziehbar. SIS oder klassische Pflegedoku.</p>`,
     questions: [
-      { q: "Welche Phase ist zuerst?", a: ["Evaluation","Informationssammlung","Maßnahmenplanung","Durchführung"], correct: 1, explain: "Pflegeanamnese startet den Prozess." },
+      { q: "Welche Phase des Pflegeprozesses kommt zuerst?", a: ["Evaluation","Informationssammlung","Maßnahmenplanung","Durchführung"], correct: 1, explain: "Pflegeanamnese startet den Prozess." },
       { q: "SMART-Kriterien dienen der…", a: ["Informationssammlung","Zielformulierung","Maßnahmenplanung","Evaluation"], correct: 1, explain: "Ziele SMART formulieren." },
-      { q: "Welche Phase schließt den Kreis?", a: ["Durchführung","Evaluation","Pflegeplan","Anamnese"], correct: 1, explain: "Evaluation → Anpassung → neuer Kreislauf." }
+      { q: "Welche Phase schließt den Pflegeprozess ab?", a: ["Durchführung","Evaluation","Pflegeplan","Anamnese"], correct: 1, explain: "Evaluation → Anpassung → neuer Kreislauf." }
     ],
     flashcards: [
       { front: "6 Phasen des Pflegeprozesses", back: "Info – Probleme/Ressourcen – Ziele – Maßnahmen – Durchführung – Evaluation" },
@@ -2078,7 +2078,7 @@ const TOPICS = {
     questions: [
       { q: "Wie viele Themenfelder hat die pflegefachliche Einschätzung in der SIS?", a: ["4","5","6","8"], correct: 2, explain: "6 Themenfelder in Feld C." },
       { q: "Was beschreibt Feld B der SIS?", a: ["Risikomatrix","Sicht des Pflegebedürftigen ('Was bewegt Sie?')","Stammdaten","Hilfsmittel"], correct: 1, explain: "Feld B: Eigenperspektive des Pat." },
-      { q: "Was wird ins Berichteblatt geschrieben?", a: ["Alles","Nur Abweichungen","Nur Vitalzeichen","Nichts"], correct: 1, explain: "Fokussierte Doku nur bei Abweichungen." }
+      { q: "Was wird bei der SIS ins Berichteblatt geschrieben?", a: ["Alles","Nur Abweichungen","Nur Vitalzeichen","Nichts"], correct: 1, explain: "Fokussierte Doku nur bei Abweichungen." }
     ],
     flashcards: [
       { front: "SIS-Felder", back: "A Stammdaten · B 'Was bewegt Sie?' · C 6 Themenfelder · D Risikomatrix" },
@@ -2107,7 +2107,7 @@ const TOPICS = {
     questions: [
       { q: "Wer entwickelt Expertenstandards?", a: ["MDK","DNQP","BMG","GKV"], correct: 1, explain: "DNQP an der Hochschule Osnabrück." },
       { q: "Welcher ist KEIN aktueller Expertenstandard?", a: ["Dekubitusprophylaxe","Schmerzmanagement","Reanimation","Entlassungsmanagement"], correct: 2, explain: "Reanimation ist kein DNQP-Expertenstandard." },
-      { q: "Wie werden sie strukturiert?", a: ["Prolog/Epilog","Struktur-, Prozess-, Ergebniskriterien","Nur Maßnahmenliste","Algorithmen"], correct: 1, explain: "Donabedian-Struktur." }
+      { q: "Wie sind Expertenstandards strukturiert?", a: ["Prolog/Epilog","Struktur-, Prozess-, Ergebniskriterien","Nur Maßnahmenliste","Algorithmen"], correct: 1, explain: "Donabedian-Struktur." }
     ],
     flashcards: [
       { front: "DNQP", back: "Deutsches Netzwerk Qualitätsentwicklung in der Pflege (Osnabrück)" },
@@ -2130,7 +2130,7 @@ const TOPICS = {
     <p><strong>Formulierung nach PESR</strong> (siehe dort).</p>
     <p><em>Beispiel NANDA</em>: „Beeinträchtigte Gehfähigkeit im Zusammenhang mit Schmerzen und Muskelschwäche, erkennbar an unsicherem Gangbild."</p>`,
     questions: [
-      { q: "Welches System ist weltweit verbreitet?", a: ["ICD","NANDA-I","DSM","HCG"], correct: 1, explain: "NANDA-International (USA)." },
+      { q: "Welches Pflegediagnosen-System ist weltweit verbreitet?", a: ["ICD","NANDA-I","DSM","HCG"], correct: 1, explain: "NANDA-International (USA)." },
       { q: "Pflegediagnosen unterscheiden sich von med. Diagnosen, weil:", a: ["Sie ärztlich sind","Sie pflegerisch beeinflussbar sind","Sie nur im Heim","Unwichtiger"], correct: 1, explain: "Pflegerische Reaktion/Bewältigung im Fokus." },
       { q: "Risiko-Pflegediagnose heißt:", a: ["Bereits vorhanden","Möglicherweise entstehend","Ausgeschlossen","Unbewiesen"], correct: 1, explain: "Risiko = potenziell, prophylaxeorientiert." }
     ],
@@ -2205,7 +2205,7 @@ const TOPICS = {
     </ul></p>`,
     questions: [
       { q: "Wer gibt den ICN-Ethikkodex heraus?", a: ["WHO","ICN","DBfK","BGM"], correct: 1, explain: "International Council of Nurses." },
-      { q: "Welche Verantwortung gehört NICHT dazu?", a: ["Gesundheit fördern","Krankheit verhüten","Diagnose stellen","Leiden lindern"], correct: 2, explain: "Diagnose ist ärztliche Aufgabe." },
+      { q: "Welche Aufgabe gehört NICHT zu den Grundverantwortungen im ICN-Kodex?", a: ["Gesundheit fördern","Krankheit verhüten","Diagnose stellen","Leiden lindern"], correct: 2, explain: "Diagnose ist ärztliche Aufgabe." },
       { q: "Wann wurde der Kodex erstmals verabschiedet?", a: ["1900","1953","1990","2015"], correct: 1, explain: "1953 ICN-Kodex." }
     ],
     flashcards: [
@@ -2253,7 +2253,7 @@ const TOPICS = {
     <p><strong>Rechtlich</strong>: nicht bindend, aber Orientierungsrahmen.</p>`,
     questions: [
       { q: "Wie viele Artikel hat die Pflegecharta?", a: ["5","8","10","12"], correct: 1, explain: "8 Artikel." },
-      { q: "Artikel 1 regelt:", a: ["Selbstbestimmung","Religion","Sterben","Sicherheit"], correct: 0, explain: "Artikel 1: Selbstbestimmung und Hilfe zur Selbsthilfe." },
+      { q: "Artikel 1 der Pflegecharta regelt:", a: ["Selbstbestimmung","Religion","Sterben","Sicherheit"], correct: 0, explain: "Artikel 1: Selbstbestimmung und Hilfe zur Selbsthilfe." },
       { q: "Pflegecharta ist:", a: ["Gesetz","Orientierungsrahmen/Empfehlung","EU-Verordnung","Pflegevertrag"], correct: 1, explain: "Nicht bindend, aber orientierend." }
     ],
     flashcards: [
@@ -2297,7 +2297,7 @@ const TOPICS = {
     <p><strong>Aktivkohle</strong>: binnen 1 h nach oraler Aufnahme vieler Gifte (außer Säuren, Laugen, Eisen, Lithium).</p>
     <p><strong>Antidote</strong>: Naloxon (Opiate), Flumazenil (Benzos), N-Acetylcystein (Paracetamol), Atropin (Organophosphate).</p>`,
     questions: [
-      { q: "Was NICHT tun?", a: ["Erbrechen herbeiführen bei ätzenden Stoffen","112 rufen","Packung sichern","Frischluft zuführen"], correct: 0, explain: "Kein Erbrechen bei ätzenden Stoffen oder Bewusstseinsstörung." },
+      { q: "Was ist bei einer Vergiftung NICHT zu tun?", a: ["Erbrechen herbeiführen bei ätzenden Stoffen","112 rufen","Packung sichern","Frischluft zuführen"], correct: 0, explain: "Kein Erbrechen bei ätzenden Stoffen oder Bewusstseinsstörung." },
       { q: "Antidot bei Paracetamol-Intox:", a: ["N-Acetylcystein","Flumazenil","Naloxon","Vitamin K"], correct: 0, explain: "NAC bindet toxische Metaboliten." },
       { q: "Naloxon ist Antidot bei:", a: ["Benzodiazepinen","Opioiden","Paracetamol","Alkohol"], correct: 1, explain: "Opioid-Antagonist." }
     ],
@@ -2432,7 +2432,7 @@ const TOPICS = {
     <p><strong>Praxis</strong>: Eine wirksame Patientenverfügung ist bindend. Gibt es keine oder passt sie nicht zur Situation, ist der mutmaßliche Wille zu ermitteln und umzusetzen – durch Betreuer/Bevollmächtigten im Gespräch mit dem Arzt (§ 1828 BGB).</p>`,
     questions: [
       { q: "Rechtsgrundlage Patientenverfügung:", a: ["§ 37 SGB V","§ 1827 BGB","§ 216 StGB","§ 7 SGB XI"], correct: 1, explain: "§ 1827 BGB (bis Ende 2022: § 1901a BGB)." },
-      { q: "Welche Form ist vorgeschrieben?", a: ["Notariell beglaubigt","Schriftform mit Unterschrift","Mündlich","Video"], correct: 1, explain: "Schriftform reicht." },
+      { q: "Welche Form ist für eine Patientenverfügung vorgeschrieben?", a: ["Notariell beglaubigt","Schriftform mit Unterschrift","Mündlich","Video"], correct: 1, explain: "Schriftform reicht." },
       { q: "Vorsorgevollmacht ≠ Patientenverfügung, weil:", a: ["Sie benennt eine entscheidende Person, PV regelt Maßnahmen","Sie ist teurer","Sie ist nicht bindend","Sie ist für Kinder"], correct: 0, explain: "Vollmacht = Person · Verfügung = Inhalte." }
     ],
     flashcards: [
@@ -2456,7 +2456,7 @@ const TOPICS = {
     <p><strong>Reform 2023</strong>: Stärkere Wünsche-Orientierung, digitale Register, Ehegatten-Notvertretungsrecht (§ 1358 BGB).</p>`,
     questions: [
       { q: "Wer bestellt Betreuer?", a: ["Hausarzt","Betreuungsgericht","Pflegekasse","Sozialamt"], correct: 1, explain: "Gericht." },
-      { q: "Grundprinzip ist:", a: ["Bevormundung","Erforderlichkeit","Alternativlosigkeit","Schnelligkeit"], correct: 1, explain: "Nur so viel Betreuung wie nötig." },
+      { q: "Grundprinzip des Betreuungsrechts:", a: ["Bevormundung","Erforderlichkeit","Alternativlosigkeit","Schnelligkeit"], correct: 1, explain: "Nur so viel Betreuung wie nötig." },
       { q: "Ehegatten-Notvertretung (seit 2023) regelt:", a: ["Erbfragen","Gesundheitsentscheidungen bis 6 Monate bei Einwilligungsunfähigkeit","Scheidung","Kinderunterhalt"], correct: 1, explain: "§ 1358 BGB, max. 6 Monate Gesundheitsentscheidungen." }
     ],
     flashcards: [
@@ -2481,7 +2481,7 @@ const TOPICS = {
     questions: [
       { q: "Bettgitter ohne Einverständnis bei einwilligungsfähigem Patienten:", a: ["Erlaubt","FEM, nur mit Einwilligung/Genehmigung","Pflegerischer Standard","Kein Problem"], correct: 1, explain: "Ist eine freiheitsentziehende Maßnahme." },
       { q: "Werdenfelser Weg zielt auf:", a: ["Mehr FEM","Reduktion von FEM","Verschärfung","Sedierung"], correct: 1, explain: "Alternative Konzepte statt FEM." },
-      { q: "Rechtsgrundlage:", a: ["§ 37 SGB V","§ 1831 BGB","§ 216 StGB","§ 113 SGB XI"], correct: 1, explain: "Richterliche Genehmigung nach § 1831 BGB (bis Ende 2022: § 1906 BGB)." }
+      { q: "Rechtsgrundlage für die Genehmigung freiheitsentziehender Maßnahmen:", a: ["§ 37 SGB V","§ 1831 BGB","§ 216 StGB","§ 113 SGB XI"], correct: 1, explain: "Richterliche Genehmigung nach § 1831 BGB (bis Ende 2022: § 1906 BGB)." }
     ],
     flashcards: [
       { front: "FEM", back: "Freiheitsentziehende Maßnahme – nur mit Einwilligung oder richterlicher Genehmigung" },
@@ -2536,7 +2536,7 @@ const TOPICS = {
     questions: [
       { q: "Stadium II Dekubitus:", a: ["Rötung ohne Hautdefekt","Teilverlust der Haut (Blase)","Muskelsichtbar","Knochen"], correct: 1, explain: "II = Hautteilverlust." },
       { q: "Welche Körperstelle ist in Rückenlage KEINE typische Prädilektionsstelle für Dekubitus?", a: ["Kreuzbein (Sacrum)","Fersen","Hinterkopf (Okziput)","Bauchnabel"], correct: 3, explain: "Typisch sind Stellen, an denen Knochen dicht unter der Haut liegen: Sacrum, Fersen, Okziput, Schulterblätter, Ellenbogen." },
-      { q: "Was ist KEINE Prophylaxe?", a: ["Druckentlastung","Hautpflege","Massieren von Hautrötungen","Mobilisation"], correct: 2, explain: "Massieren verstärkt Gewebsschaden!" }
+      { q: "Was ist KEINE Dekubitusprophylaxe?", a: ["Druckentlastung","Hautpflege","Massieren von Hautrötungen","Mobilisation"], correct: 2, explain: "Massieren verstärkt Gewebsschaden!" }
     ],
     flashcards: [
       { front: "Dekubitus = ", back: "Druck × Zeit + Scherkräfte → Gewebsschaden" },
@@ -2869,6 +2869,16 @@ function categoryComplete(state, cat) {
   const ids = Object.keys(TOPICS).filter(id => TOPICS[id].category === cat);
   if (ids.length === 0) return false;
   return ids.every(id => state.completed.includes(id));
+}
+
+/* ---------- Zusätzliche Quizfragen (Ordner fragen/) ----------
+   addQuestions("themenId", [ ["Frage", ["richtig", "falsch", "falsch", "falsch"], "Erklärung"], ... ])
+   Die richtige Antwort steht immer an erster Stelle – das Quiz mischt
+   die Antworten ohnehin bei jeder Anzeige neu. */
+function addQuestions(topicId, list) {
+  const t = TOPICS[topicId];
+  if (!t) { console.warn("addQuestions: unbekanntes Thema", topicId); return; }
+  list.forEach(([q, a, explain]) => t.questions.push({ q, a, correct: 0, explain: explain || "" }));
 }
 
 /* Expose to app.js */

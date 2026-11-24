@@ -2329,3 +2329,32 @@ main {
   color: var(--c-text-dim);
   margin: 1.4rem 0 .6rem;
 }
+
+/* ===========================================================
+   QUIZ-BAUKASTEN
+   =========================================================== */
+.qb-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem; margin: 1rem 0; }
+.qb-lengths, .qb-quick { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.qb-label { font-family: var(--font-mono); font-size: .8rem; color: var(--c-text-dim); margin-right: .3rem; text-transform: uppercase; }
+.qb-len {
+  min-width: 2.8rem; padding: .4rem .6rem; cursor: pointer;
+  background: rgba(0,0,0,.4); color: var(--c-text);
+  border: 1px solid var(--c-border); font-family: var(--font-mono); font-size: 1rem;
+}
+.qb-len.active { border-color: var(--c-orange); color: var(--c-orange); box-shadow: 0 0 10px rgba(255,122,0,.35); }
+.qb-cats { display: flex; flex-direction: column; gap: .5rem; max-height: 50vh; overflow-y: auto; padding-right: .3rem; }
+.qb-cat { border: 1px solid var(--c-border); background: rgba(0,0,0,.3); }
+.qb-cat summary { display: flex; align-items: center; gap: .7rem; padding: .7rem .9rem; cursor: pointer; list-style: none; }
+.qb-cat summary::-webkit-details-marker { display: none; }
+.qb-cat summary::after { content: "▸"; color: var(--c-text-dim); margin-left: .2rem; transition: transform .2s; }
+.qb-cat[open] summary::after { transform: rotate(90deg); }
+.qb-cat-name { flex: 1; }
+.qb-cat-count { font-family: var(--font-mono); font-size: .8rem; color: var(--c-text-dim); }
+.qb-topics { display: flex; flex-direction: column; padding: 0 .9rem .7rem 2.4rem; gap: .2rem; }
+.qb-topic { display: flex; align-items: center; gap: .6rem; padding: .3rem 0; cursor: pointer; }
+.qb-topic span:nth-child(2) { flex: 1; }
+.qb-q { font-family: var(--font-mono); font-size: .75rem; color: var(--c-text-dim); }
+.qb-cat input, .qb-topic input { accent-color: var(--c-orange); width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
+.qb-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; margin-top: 1.2rem; }
+#qb-summary { font-family: var(--font-mono); font-size: .85rem; color: var(--c-text-dim); }
+#qb-start:disabled { opacity: .4; cursor: not-allowed; }

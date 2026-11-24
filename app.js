@@ -1190,6 +1190,11 @@ function renderSpiele(root) {
         <div class="game-title">Tages-Quiz</div>
         <div class="game-desc">10 zufällige Fragen aus allen Themen. Perfekt zum täglichen Warmlaufen.</div>
       </div>
+      <div class="game-card" data-g="builder">
+        <div class="game-icon">🧪</div>
+        <div class="game-title">Quiz-Baukasten</div>
+        <div class="game-desc">Themen frei wählen und kombinieren – Quiz mit 10, 20, 30 oder 50 Fragen.</div>
+      </div>
       <div class="game-card" data-g="exam">
         <div class="game-icon">✍</div>
         <div class="game-title">Prüfungstraining</div>
@@ -1225,6 +1230,7 @@ function renderSpiele(root) {
   root.querySelector('[data-g="daily"]').addEventListener("click", startDailyQuiz);
   root.querySelector('[data-g="boss"]').addEventListener("click", startBossBattle);
   root.querySelector('[data-g="exam"]').addEventListener("click", () => startExamTraining());
+  root.querySelector('[data-g="builder"]').addEventListener("click", openQuizBuilder);
   root.querySelector('[data-g="random"]').addEventListener("click", startRandomTopic);
   root.querySelector('[data-g="match"]').addEventListener("click", startMatchGame);
   root.querySelector('[data-g="category"]').addEventListener("click", openCategoryDrill);
