@@ -9,9 +9,23 @@
    Die Fußzeile zeigt APP_VERSION automatisch an.
    =========================================================== */
 
-const APP_VERSION = "1.3";
+const APP_VERSION = "1.4";
 
 const RELEASE_NOTES = [
+  {
+    version: "1.4",
+    intro: "Ihr habt euch längere Quizze gewünscht – hier sind sie:",
+    items: [
+      { icon: "🧪", title: "Neu: Quiz-Baukasten",
+        text: "Unter <strong>Spiele → Quiz-Baukasten</strong> wählst du selbst, welche Themen abgefragt werden – einzeln oder ganze Fachbereiche per Häkchen, frei kombinierbar. Dazu die Länge: <strong>10, 20, 30 oder 50 Fragen</strong>. Deine Auswahl wird gespeichert." },
+      { icon: "📚", title: "Mehr als doppelt so viele Fragen",
+        text: "<strong>684 statt 313</strong> Quizfragen – neu erstellt aus euren Lernskripten und Unterrichtsmaterialien. Über 60 Themen haben jetzt 7–12 Fragen, jeweils mit Erklärung." },
+      { icon: "🎯", title: "Kein Raten mehr",
+        text: "Die richtige Antwort ist nicht mehr auffällig die längste. Wer nur nach der Länge tippt, liegt jetzt nicht öfter richtig als beim Würfeln 😉" },
+      { icon: "🛠", title: "Klarere Fragen",
+        text: "Fragen wie „Was NICHT tun?“ ergeben im gemischten Quiz jetzt auch ohne Themenüberschrift Sinn – 46 Fragen wurden eindeutiger formuliert." }
+    ]
+  },
   {
     version: "1.3",
     intro: "Frisch geupdatet für die Zielgerade bis zur Prüfung:",
