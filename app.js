@@ -198,9 +198,11 @@ function openModal(html) {
   document.getElementById("modal-content").innerHTML = html;
   modalOverlay.classList.remove("hidden");
 }
+let _afterModalClose = null;   // einmaliger Callback nach dem Schließen (z. B. Trailer → What's New)
 function closeModal() {
   modalOverlay.classList.add("hidden");
   document.getElementById("modal-content").innerHTML = "";
+  if (_afterModalClose) { const f = _afterModalClose; _afterModalClose = null; setTimeout(f, 50); }
   // on close, refresh current view
   const active = document.querySelector(".nav-btn.active");
   if (active) renderView(active.dataset.view);
@@ -1205,6 +1207,14 @@ function renderSpiele(root) {
         <div class="game-title">Boss Battle</div>
         <div class="game-desc">3 Leben. Du verlierst eins pro Fehler. Gewinne mit ≥ 70 % und +100 XP.</div>
       </div>
+      <div class="game-card${boss2Unlocked() ? "" : " locked"}" data-g="boss2">
+        ${boss2Unlocked() ? "" : `<div class="game-lock">${BOSS2_RELEASED ? `🔒 LvL ${BOSS2_MIN_LEVEL} erforderlich` : "Erscheint bald"}</div>`}
+        <div class="game-icon">🥙</div>
+        <div class="game-title">Boss Battle II</div>
+        <div class="game-desc">${BOSS2_RELEASED
+          ? "Spät abends im Dönerladen … Bestellen, bewähren, bezahlen lassen. 3 Leben, 28 Fragen."
+          : `Ein neuer Boss ist unterwegs … ▶ Trailer ansehen. Freischaltung ab <strong>LvL ${BOSS2_MIN_LEVEL}</strong>.`}</div>
+      </div>
       <div class="game-card" data-g="random">
         <div class="game-icon">🎲</div>
         <div class="game-title">Zufalls-Thema</div>
@@ -1231,6 +1241,10 @@ function renderSpiele(root) {
   root.querySelector('[data-g="boss"]').addEventListener("click", startBossBattle);
   root.querySelector('[data-g="exam"]').addEventListener("click", () => startExamTraining());
   root.querySelector('[data-g="builder"]').addEventListener("click", openQuizBuilder);
+  root.querySelector('[data-g="boss2"]').addEventListener("click", () => {
+    if (boss2Unlocked()) return startBossBattle2();
+    showBoss2Trailer();
+  });
   root.querySelector('[data-g="random"]').addEventListener("click", startRandomTopic);
   root.querySelector('[data-g="match"]').addEventListener("click", startMatchGame);
   root.querySelector('[data-g="category"]').addEventListener("click", openCategoryDrill);
@@ -1903,14 +1917,62 @@ if (typeof _origStartBossBattle === "function") {
 
   /* Migration-Bestätigung + What's-New-Modal (einmal je neuer Version) */
   const migratedXp = Auth.consumeMigrationFlag?.();
-  if (!maybeShowWhatsNew(migratedXp) && migratedXp !== null && migratedXp !== undefined) {
-    toast(
-      "✓ Fortschritt übernommen",
-      `${migratedXp} XP von deinem alten Account migriert — willkommen zurück!`,
-      "green",
-    );
-  }
+  const showUpdates = () => {
+    if (!maybeShowWhatsNew(migratedXp) && migratedXp !== null && migratedXp !== undefined) {
+      toast(
+        "✓ Fortschritt übernommen",
+        `${migratedXp} XP von deinem alten Account migriert — willkommen zurück!`,
+        "green",
+      );
+    }
+  };
+  /* Teaser-Trailer einmalig zuerst, danach das What's-New-Fenster */
+  if (!maybeShowBoss2Trailer(showUpdates)) showUpdates();
 })();
+
+/* ===========================================================
+   BOSS II – Teaser-Trailer (einmalig nach dem Login)
+   Solange BOSS2_RELEASED = false, ist Boss II gesperrt und die
+   Karte zeigt „Erscheint bald“. Danach: Freischaltung ab Level 15.
+   =========================================================== */
+const BOSS2_RELEASED = false;
+const BOSS2_MIN_LEVEL = 15;
+function boss2Unlocked() { return BOSS2_RELEASED && (state.level || 1) >= BOSS2_MIN_LEVEL; }
+
+function showBoss2Trailer(after) {
+  openModal(`
+    <div class="trailer-wrap">
+      <video id="boss2-trailer" src="assets/boss2/boss2_trailer.mp4" playsinline controls preload="auto"></video>
+    </div>
+    <h2 class="trailer-title">Neuer Boss erscheint bald</h2>
+    <div class="trailer-req">LvL ${BOSS2_MIN_LEVEL} erforderlich</div>
+    <p class="trailer-sub">Du bist gerade auf Level <strong>${state.level || 1}</strong>${(state.level || 1) >= BOSS2_MIN_LEVEL ? " – du bist bereit." : ` – sammle XP, um bereit zu sein.`}</p>
+    <button class="btn btn-primary" id="trailer-ack" style="width:100%;margin-top:1rem">Verstanden ▸</button>
+  `);
+  document.getElementById("modal").classList.add("trailer-modal");
+  if (window.Music && Music.duck) Music.duck(true);
+  _afterModalClose = () => {
+    if (window.Music && Music.duck) Music.duck(false);
+    if (after) after();
+  };
+  const v = document.getElementById("boss2-trailer");
+  /* Mit Ton starten; blockiert der Browser das, bleibt der Play-Knopf */
+  v.play().catch(() => {});
+  /* Startet die Hintergrundmusik erst durch den Klick auf Play, gleich wieder leise */
+  v.addEventListener("play", () => setTimeout(() => { if (window.Music && Music.duck) Music.duck(true); }, 150));
+  document.getElementById("trailer-ack").addEventListener("click", closeModal);
+}
+
+/* Gibt true zurück, wenn der Trailer angezeigt wurde. */
+function maybeShowBoss2Trailer(after) {
+  if (BOSS2_RELEASED) return false;
+  const seen = state.seenTrailers || [];
+  if (seen.includes("boss2")) return false;
+  state.seenTrailers = [...seen, "boss2"];   // sofort merken – auch bei ✕
+  saveState();
+  showBoss2Trailer(after);
+  return true;
+}
 
 /* ===========================================================
    WHAT'S NEW — erscheint einmal pro neuer Version nach dem Login

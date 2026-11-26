@@ -35,3 +35,8 @@ node_modules/
 # Local Claude scratch (Launch-Config bleibt drin, weil nicht sensibel)
 # .claude/ NICHT global ignorieren, nur sensibles darin:
 .claude/settings.local.json
+
+# Lokale Vorschau für Boss II (nicht veröffentlichen)
+vorschau-intro.html
+trailer.html
+Boss II Trailer.mp4

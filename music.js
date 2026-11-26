@@ -20,7 +20,7 @@
   if (!(window.AudioContext || window.webkitAudioContext)) {
     window.Music = {
       start(){}, toggle(){return false;}, setMode(){},
-      setEnabled(){}, setVolume(){},
+      setEnabled(){}, setVolume(){}, duck(){},
       isEnabled(){return false;}, getVolume(){return 0;}
     };
     return;
@@ -360,6 +360,15 @@
     return enabled;
   }
 
+  /* Musik vorübergehend stummschalten (z. B. für Film-Sequenzen),
+     ohne die gespeicherte Lautstärke zu verändern */
+  function duck(on) {
+    if (!ctx || !enabled) return;
+    const t = ctx.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value, t);
+    master.gain.linearRampToValueAtTime(on ? 0 : volume, t + (on ? 0.6 : 1.5));
+  }
   function setVolume(v) {
     volume = Math.max(0, Math.min(1, v));
     localStorage.setItem(LS_VOLUME, volume.toString());
@@ -372,7 +381,7 @@
   }
 
   window.Music = {
-    start, toggle, setMode, setEnabled, setVolume,
+    start, toggle, setMode, setEnabled, setVolume, duck,
     isEnabled: () => enabled,
     getVolume: () => volume,
     playFootstep, playDoorCreak,

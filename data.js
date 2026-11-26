@@ -2830,6 +2830,7 @@ const ACHIEVEMENTS = [
   { group: "Fleiß & Spiele", id: "boss_win",      icon: "💀", name: "Boss besiegt",          desc: "Boss-Battle gewonnen",                    check: s => s.bossWins >= 1 },
   { group: "Fleiß & Spiele", id: "boss_hunter",   icon: "☠️",  name: "Boss-Hunter",           desc: "5 Boss-Battles gewonnen",                 check: s => s.bossWins >= 5 },
   { group: "Fleiß & Spiele", id: "boss_legend",   icon: "👹", name: "Boss-Legende",          desc: "25 Boss-Battles gewonnen",                check: s => s.bossWins >= 25 },
+  { group: "Fleiß & Spiele", id: "boss2_win", icon: "🥙", name: "Geht aufs Haus", desc: "Boss Battle II im Dönerladen gewonnen", check: s => (s.boss2Wins || 0) >= 1 },
   { group: "Fleiß & Spiele", id: "flashcard_fan", icon: "🗂️", name: "Karteikarten-König",   desc: "100 Karteikarten studiert",               check: s => s.flashcardsStudied >= 100 },
   { group: "Fleiß & Spiele", id: "flashcard_500", icon: "🗃️", name: "Karteikarten-Maniac",  desc: "500 Karteikarten studiert",               check: s => s.flashcardsStudied >= 500 },
   { group: "Fleiß & Spiele", id: "match_master",  icon: "🧩", name: "Matching-Meister",      desc: "Matching-Spiel in < 30 Sek",              check: s => s.matchBestTime && s.matchBestTime < 30 },

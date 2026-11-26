@@ -2358,3 +2358,68 @@ main {
 .qb-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; margin-top: 1.2rem; }
 #qb-summary { font-family: var(--font-mono); font-size: .85rem; color: var(--c-text-dim); }
 #qb-start:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ===========================================================
+   BOSS BATTLE II – Dönerladen
+   =========================================================== */
+/* Cinematic-Intro: Bild/Video über die ganze Breite */
+.boss2-body.boss2-cine { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr); }
+.boss2-body.boss2-cine .boss-chat-panel { display: none; }
+.boss2-body.boss2-cine .boss-image-frame { border-right: none; background: #000; }
+.boss2-video-layer { container-type: size; background: #000; overflow: hidden; }
+.boss2-vbox { position: relative; width: min(100cqw, calc(100cqh * 16 / 9)); aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+.boss2-vbox video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Ausschnitt 10 % größer, oben fix: entfernt das Wasserzeichen unten rechts */
+.boss2-vbox.crop video { transform: scale(1.1); transform-origin: 50% 0; }
+/* Pixel-Szenen: Ladenhintergrund hinter dem Porträt */
+.boss2-frame {
+  background-size: cover;
+  background-position: center;
+  image-rendering: pixelated;
+}
+.boss2-frame.boss2-bg-placeholder {
+  background-image: linear-gradient(180deg, rgba(255,122,0,.18), rgba(10,6,18,.9)),
+    repeating-linear-gradient(90deg, rgba(255,43,214,.06) 0 2px, transparent 2px 24px);
+}
+.boss2-frame .boss-image-layer img { image-rendering: pixelated; }
+.boss2-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  width: min(80%, 340px); aspect-ratio: 4 / 5;
+  border: 2px dashed rgba(255,122,0,.55); background: rgba(10,6,18,.75);
+  text-align: center; padding: 1rem;
+}
+.boss2-cine-ph { width: min(90%, 640px); aspect-ratio: 16 / 9; border-color: rgba(0,240,255,.45); }
+.boss2-ph-icon { font-size: 3.4rem; }
+.boss2-ph-label { font-family: var(--font-body); font-size: 1.05rem; color: var(--c-text); }
+.boss2-ph-file { font-family: var(--font-mono); font-size: .75rem; color: var(--c-text-dim); }
+.boss2-msg-doener .boss-chat-name { color: var(--c-cyan); }
+.boss2-pixel-canvas { position: absolute; inset: 0; z-index: 5; transition: opacity .6s; }
+.boss2-pixel-canvas.fade-out { opacity: 0; }
+@keyframes boss2-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); } 40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+}
+.boss2-shake { animation: boss2-shake .4s ease; }
+/* Inhalt des Cinematic-Modals füllt die volle Höhe (auch wenn
+   Bild-/Video-Ebenen absolut positioniert sind) */
+.modal.boss-cinematic #modal-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- Boss II: Teaser-Trailer & gesperrte Karte ---------- */
+.trailer-modal { max-width: 960px; }
+.trailer-wrap { background: #000; aspect-ratio: 16 / 9; margin: .5rem 0 1.2rem; border: 1px solid var(--c-border); }
+.trailer-wrap video { width: 100%; height: 100%; display: block; background: #000; }
+.trailer-title { font-family: var(--font-display); font-weight: 900; color: var(--c-orange); text-shadow: var(--glow-orange);
+  text-transform: uppercase; letter-spacing: 2px; text-align: center; font-size: clamp(1.2rem, 3.5vw, 1.9rem); margin: 0 0 .6rem; }
+.trailer-req { display: block; width: fit-content; margin: 0 auto .8rem; padding: .3rem .9rem; border: 1px solid var(--c-orange);
+  color: var(--c-orange); font-family: var(--font-display); font-weight: 700; letter-spacing: 1.5px; }
+.trailer-sub { text-align: center; opacity: .8; margin: 0; }
+.game-card.locked { opacity: .75; }
+.game-card.locked .game-icon { filter: grayscale(.6) drop-shadow(0 0 6px var(--c-orange)); }
+.game-lock { position: absolute; top: .7rem; right: .7rem; font-size: .7rem; letter-spacing: 1px;
+  padding: .15rem .5rem; border: 1px solid var(--c-orange); color: var(--c-orange); font-family: var(--font-display); }
